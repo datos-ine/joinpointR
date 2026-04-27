@@ -1,0 +1,20 @@
+Package: joinpointR
+Type: Package
+Title: Funciones Auxiliares para Modelos de Regresión Joinpoint
+Version: 0.0.0.9000
+Authors@R: 
+    person("Tamara", "Ricardo", , "tamararicardo83@gmail.com", role = c("aut", "cre"))
+Description: Ajusta modelos de regresión lineal joinpoint por niveles de una variable categórica y calcula Cambio Porcentual Anual (APC) y Cambio Porcentual Anual Promedio (AAPC) con su intervalo de confianza al 95% (IC95%).
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports:
+    dplyr,
+    purrr,
+    tidyr,
+    tibble,
+    segmented,
+    scales,
+    flextable,
+    rlang
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
