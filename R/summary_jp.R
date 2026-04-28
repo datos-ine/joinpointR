@@ -161,15 +161,11 @@ summary_jp <- function(
   ft_obj |>
     flextable::merge_v(j = cols_merge) |>
     flextable::bold(part = "header") |>
-    flextable::font(fontname = "Calibri", part = "all") |>
-    flextable::fontsize(size = 12, part = "all") |>
-    flextable::align(align = "left", part = "all") |>
     flextable::colformat_num(
       j = names(df)[sapply(df, is.numeric)],
       decimal.mark = ",",
       big.mark = "."
     ) |>
-    flextable::autofit() |>
     flextable::add_body_row(
       top = FALSE,
       values = list(
@@ -177,5 +173,9 @@ summary_jp <- function(
       ),
       colwidths = ncol(ft_obj$body$dataset)
     ) |>
-    flextable::hline_bottom(border = officer::fp_border(width = 0))
+    flextable::hline_bottom(border = officer::fp_border(width = 0)) |>
+    flextable::font(fontname = "Calibri", part = "all") |>
+    flextable::fontsize(size = 12, part = "all") |>
+    flextable::align(align = "left", part = "all") |>
+    flextable::autofit()
 }
