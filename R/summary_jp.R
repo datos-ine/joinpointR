@@ -30,17 +30,19 @@ summary_jp <- function(
         if ("segmented" %in% class(.x)) {
           time <- names(.x$model)[2]
 
+          # ---- Puntos de corte -----
           breaks <- sort(c(
             min(.x$model[[time]]),
             .x$psi[, "Est."],
             max(.x$model[[time]])
           ))
 
+          # ---- APC ----
           segmented::slope(.x, APC = TRUE)[[time]] |>
             tibble::as_tibble() |>
-
             dplyr::rename(est = 1, ic_l = 2, ic_u = 3) |>
 
+            # Redondear
             dplyr::mutate(
               dplyr::across(
                 dplyr::where(is.numeric),
@@ -50,7 +52,7 @@ summary_jp <- function(
 
             # IC robusto
             tidyr::unite(
-              cols = c(ic_l, ic_u),
+              c(ic_l, ic_u),
               col = "IC",
               sep = "; "
             ) |>
