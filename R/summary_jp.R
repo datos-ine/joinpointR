@@ -109,5 +109,12 @@ summary_jp <- function(mods, ft = FALSE) {
   ft |>
     flextable::merge_v(j = cols_merge) |>
     flextable::bold(part = "header") |>
-    flextable::autofit()
+    flextable::autofit() |>
+    flextable::add_body_row(
+      top = FALSE,
+      values = list(
+        "APC: cambio porcentual anual; IC: intervalo de confianza al 95%; JP: número de joinpoints; AAPC: Cambio porcentual anual promedio (95% IC)."
+      ),
+      colwidths = 6
+    )
 }
