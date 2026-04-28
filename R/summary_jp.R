@@ -145,7 +145,7 @@ summary_jp <- function(
     flextable::add_body_row(
       top = FALSE,
       values = list(
-        "APC: cambio porcentual anual; IC: intervalo de confianza al 95%; JP: cantidad de joinpoints; AAPC: cambio porcentual anual promedio (95% IC)."
+        "JP: cantidad de joinpoints; APC: cambio porcentual anual; IC: intervalo de confianza al 95%; AAPC: cambio porcentual anual promedio (95% IC)."
       ),
       colwidths = ncol(ft_obj$body$dataset)
     ) |>
