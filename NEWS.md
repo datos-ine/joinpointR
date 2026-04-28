@@ -1,3 +1,5 @@
+# joinpointR 0.2.0
+
 # joinpointR 0.1.0
 
 * Primera versión del paquete.
