@@ -4,22 +4,24 @@
 \alias{get_aapc}
 \title{Cambio Porcentual Anual Promedio (AAPC)}
 \usage{
-get_aapc(mod, digits = 1)
+get_aapc(mod, digits = 1, show_ci = FALSE)
 }
 \arguments{
 \item{mod}{Modelo de regresión joinpoint (objeto segmented o lm).}
 
 \item{digits}{Número de decimales a mostrar (integer).}
+
+\item{show_ci}{Mostrar estrellas de significancia o intervalo de confianza al 95\% (logical)}
 }
 \value{
-String con AAPC e intervalo de confianza al 95\%.
+String con AAPC con significancia o intervalo de confianza.
 }
 \description{
 Calcula el Cambio Porcentual Anual Promedio (AAPC) y su intervalo de confianza al 95\%.
 }
 \examples{
 \dontrun{
-get_aapc(mod, digits = 1)
+get_aapc(mod, digits = 1, show_ci = FALSE)
 }
 }
 \author{

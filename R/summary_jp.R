@@ -24,6 +24,31 @@ summary_jp <- function(
   var1 = "Grupo",
   var2 = "Subgrupo"
 ) {
+  get_sig <- function(mod) {
+    if ("segmented" %in% class(mod)) {
+      aapc_obj <- segmented::aapc(mod)
+
+      est <- aapc_obj[1]
+      se <- aapc_obj[2]
+
+      tval <- est / se
+
+      # grados de libertad del modelo original
+      df <- mod$df.residual
+
+      pval <- 2 * (1 - stats::pt(abs(tval), df = df))
+    } else {
+      pval <- summary(mod)$coefficients[2, 4]
+    }
+
+    dplyr::case_when(
+      pval < 0.001 ~ "***",
+      pval < 0.01 ~ "**",
+      pval < 0.05 ~ "*",
+      TRUE ~ ""
+    )
+  }
+
   df <- mods |>
     purrr::map_dfr(
       ~ {
@@ -78,7 +103,7 @@ summary_jp <- function(
             dplyr::mutate(
               AAPC = dplyr::if_else(
                 dplyr::row_number() == 1,
-                get_aapc(.x),
+                get_aapc(.x, show_ci = FALSE),
                 NA_character_
               )
             )
