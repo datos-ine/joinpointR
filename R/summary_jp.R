@@ -71,8 +71,11 @@ summary_jp <- function(
                 round(tail(breaks, -1)),
                 sep = "-"
               ),
+              .before = APC
+            ) |>
 
-              # ---- AAPC ----
+            # ---- AAPC ----
+            dplyr::mutate(
               AAPC = dplyr::if_else(
                 dplyr::row_number() == 1,
                 get_aapc(.x),
