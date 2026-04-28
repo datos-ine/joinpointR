@@ -161,6 +161,9 @@ summary_jp <- function(
   ft_obj |>
     flextable::merge_v(j = cols_merge) |>
     flextable::bold(part = "header") |>
+    flextable::font(fontname = "Calibri", part = "all") |>
+    flextable::fontsize(size = 12, part = "all") |>
+    flextable::align(align = "left", part = "all") |>
     flextable::colformat_num(
       j = names(df)[sapply(df, is.numeric)],
       decimal.mark = ",",
