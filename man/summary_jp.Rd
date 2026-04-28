@@ -4,12 +4,18 @@
 \alias{summary_jp}
 \title{Tabla Resumen Joinpoint}
 \usage{
-summary_jp(mods, ft = FALSE)
+summary_jp(mods, digits = 1, ft = FALSE, var1 = "Grupo", var2 = "Subgrupo")
 }
 \arguments{
 \item{mods}{Lista de modelos (salida de model_jp()).}
 
+\item{digits}{Integer. Número de decimales a mostrar en la tabla.}
+
 \item{ft}{Logical. Si TRUE devuelve una flextable, si FALSE un tibble.}
+
+\item{var1}{Character. Variable de agrupamiento}
+
+\item{var2}{Character. Segunda variable de agrupamiento (opcional).}
 }
 \value{
 Un tibble o un objeto flextable.
@@ -20,7 +26,7 @@ a partir de una lista de modelos joinpoint.
 }
 \examples{
 \dontrun{
-summary_jp(mods, ft = TRUE)
+summary_jp(mods, digits = 1, ft = TRUE, var1 = "Grupo", var2 = "Subgrupo")
 }
 }
 \author{

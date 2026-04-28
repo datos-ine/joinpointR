@@ -25,7 +25,7 @@ get_aapc <- function(mod, digits = 1) {
       scales::percent(x, accuracy = 10^-digits, decimal.mark = ","),
       " (IC95%: ",
       scales::number(y, accuracy = 10^-digits, scale = 100, decimal.mark = ","),
-      ", ",
+      "; ",
       scales::number(z, accuracy = 10^-digits, scale = 100, decimal.mark = ","),
       ")"
     )
