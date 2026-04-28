@@ -1,3 +1,7 @@
+# joinpointR 0.4.0
+
+# joinpointR 0.3.0
+
 # joinpointR 0.2.0
 
 # joinpointR 0.1.0
