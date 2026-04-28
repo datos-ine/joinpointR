@@ -1,7 +1,7 @@
 Package: joinpointR
 Type: Package
 Title: Funciones Auxiliares Para Modelos De Regresión Joinpoint
-Version: 0.4.0
+Version: 0.4.1
 Authors@R: 
     person("Tamara", "Ricardo", , "tamararicardo83@gmail.com", role = c("aut", "cre"))
 Description: Ajusta modelos de regresión lineal joinpoint por niveles de una variable categórica y calcula Cambio Porcentual Anual (APC) y Cambio Porcentual Anual Promedio (AAPC) con su intervalo de confianza al 95% (IC95%).
