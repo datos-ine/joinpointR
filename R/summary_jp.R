@@ -101,11 +101,14 @@ summary_jp <- function(mods, ft = FALSE) {
   ft <- flextable::flextable(df)
 
   # ocultar Subgrupo si vacío
-  if ("Subgrupo" %in% names(df) && all(is.na(df$Subgrupo))) {
+  cols_merge <- intersect(
+    c("Grupo", "Subgrupo"),
+    flextable::col_keys(ft)
+  )
+
+  if ("Subgrupo" %in% cols_merge && all(is.na(df$Subgrupo))) {
     ft <- flextable::delete_columns(ft, "Subgrupo")
     cols_merge <- "Grupo"
-  } else {
-    cols_merge <- c("Grupo", "Subgrupo")
   }
 
   ft |>
