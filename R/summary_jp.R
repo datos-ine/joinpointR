@@ -32,6 +32,10 @@ summary_jp <- function(mods, ft = FALSE) {
           # ---- APC ----
           segmented::slope(.x, APC = TRUE)[[time]] |>
             tibble::as_tibble() |>
+            dplyr::mutate(dplyr::across(
+              dplyr::where(is.numeric),
+              .fns = ~ round(.x, 2)
+            )) |>
             dplyr::rename(APC = 1) |>
 
             # ---- IC 95% ----
