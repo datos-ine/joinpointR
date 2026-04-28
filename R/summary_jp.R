@@ -114,8 +114,7 @@ summary_jp <- function(mods, ft = FALSE) {
       top = FALSE,
       values = list(
         "APC: cambio porcentual anual; IC: intervalo de confianza al 95%; JP: cantidad de joinpoints; AAPC: Cambio porcentual anual promedio (95% IC)."
-      ),
-      colwidths = ncol(ft)
+      )
     ) |>
     flextable::hline_bottom(border = officer::fp_border(width = 0))
 }
