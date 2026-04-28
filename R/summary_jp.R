@@ -63,7 +63,7 @@ summary_jp <- function(mods, ft = FALSE) {
           tibble::tibble(
             JP = 0,
             Periodo = NA_character_,
-            APC = NA_double_,
+            APC = NA_real_,
             AAPC = get_aapc(.x)
           )
         }
