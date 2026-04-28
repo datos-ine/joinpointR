@@ -1,3 +1,6 @@
-# joinpointR (development version)
+# joinpointR 0.1.0
 
-* Initial CRAN submission.
+* Primera versión del paquete.
+* Implementa modelos de regresión joinpoint por grupos.
+* Incluye funciones para calcular APC y AAPC.
+* Permite generar tablas resumen en formato tidy o flextable.
