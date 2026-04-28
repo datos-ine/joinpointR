@@ -7,8 +7,8 @@
 #'
 #' @param data Dataframe conteniendo las tasas estandarizadas por edad.
 #' @param value Variable respuesta (character).
-#' @param tiempo Variable de tiempo (character).
-#' @param grupo Variable de agrupación (character).
+#' @param time Variable de tiempo (character).
+#' @param group Variable de agrupación (character).
 #' @param k Número máximo de joinpoints.
 #'
 #' @return Lista de modelos por grupo.
@@ -17,35 +17,25 @@
 #'
 #' @examples
 #' \dontrun{
-#' model_jp(data = df, value = "tasa", tiempo = "anio", grupo = "sexo")
+#' model_jp(data = df, value = "tasa", time = "anio", group = "sexo")
 #' }
-model_jp <- function(data, value, grupo, tiempo, k = 2) {
+model_jp <- function(data, value, time, group, k = 2) {
   # ---- Validaciones ----
-  if (!is.data.frame(data)) {
-    stop("`data` debe ser un data.frame")
-  }
-
-  vars <- c(grupo, tiempo, value)
-
-  if (!all(vars %in% names(data))) {
-    stop("Alguna de las variables no existe en `data`")
-  }
-
   if (any(data[[value]] <= 0, na.rm = TRUE)) {
     stop("La variable respuesta debe ser > 0 para aplicar log()")
   }
 
-  # ---- Fórmula ----
+  # ---- Formula ----
   formula <- stats::reformulate(
-    termlabels = tiempo,
+    termlabels = time,
     response = paste0("log(", value, ")")
   )
 
   # ---- Modelado ----
-  grupos <- unique(data[[grupo]])
+  groups <- unique(data[[group]])
 
-  modelos <- data |>
-    dplyr::group_by(.data[[grupo]]) |>
+  mods <- data |>
+    dplyr::group_by(.data[[group]]) |>
     dplyr::group_map(
       ~ segmented::selgmented(
         olm = stats::lm(formula, data = .x),
@@ -58,5 +48,5 @@ model_jp <- function(data, value, grupo, tiempo, k = 2) {
     )
 
   # ---- Nombrar salida ----
-  rlang::set_names(modelos, grupos)
+  rlang::set_names(mods, groups)
 }

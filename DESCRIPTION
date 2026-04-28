@@ -1,6 +1,6 @@
 Package: joinpointR
 Type: Package
-Title: Funciones Auxiliares para Modelos de Regresión Joinpoint
+Title: Funciones Auxiliares Para Modelos De Regresión Joinpoint
 Version: 0.0.0.9000
 Authors@R: 
     person("Tamara", "Ricardo", , "tamararicardo83@gmail.com", role = c("aut", "cre"))
@@ -15,7 +15,9 @@ Imports:
     segmented,
     scales,
     flextable,
-    rlang
+    rlang,
+    stringr,
+    stats
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 URL: https://github.com/datos-ine/joinpointR

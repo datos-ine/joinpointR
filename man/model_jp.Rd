@@ -4,16 +4,16 @@
 \alias{model_jp}
 \title{Modelos de Regresión Joinpoint por grupos}
 \usage{
-model_jp(data, value, grupo, tiempo, k = 2)
+model_jp(data, value, time, group, k = 2)
 }
 \arguments{
 \item{data}{Dataframe conteniendo las tasas estandarizadas por edad.}
 
 \item{value}{Variable respuesta (character).}
 
-\item{grupo}{Variable de agrupación (character).}
+\item{time}{Variable de tiempo (character).}
 
-\item{tiempo}{Variable de tiempo (character).}
+\item{group}{Variable de agrupación (character).}
 
 \item{k}{Número máximo de joinpoints.}
 }
@@ -28,7 +28,7 @@ a la variable respuesta.
 }
 \examples{
 \dontrun{
-model_jp(data = df, value = "tasa", tiempo = "anio", grupo = "sexo")
+model_jp(data = df, value = "tasa", time = "anio", group = "sexo")
 }
 }
 \author{
