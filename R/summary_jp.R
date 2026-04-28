@@ -78,12 +78,14 @@ summary_jp <- function(mods, ft = FALSE) {
     # ---- Separación robusta ----
     (\(df) {
       if (any(stringr::str_detect(df$grupo, "_"))) {
-        tidyr::separate_wider_delim(
-          df,
-          grupo,
-          names = c("Grupo", "Subgrupo"),
-          delim = "_",
-          too_few = "align_start"
+        suppressWarnings(
+          tidyr::separate_wider_delim(
+            df,
+            grupo,
+            names = c("Grupo", "Subgrupo"),
+            delim = "_",
+            too_few = "align_start"
+          )
         )
       } else {
         dplyr::rename(df, Grupo = grupo)
@@ -114,7 +116,8 @@ summary_jp <- function(mods, ft = FALSE) {
       top = FALSE,
       values = list(
         "APC: cambio porcentual anual; IC: intervalo de confianza al 95%; JP: cantidad de joinpoints; AAPC: Cambio porcentual anual promedio (95% IC)."
-      )
+      ),
+      colwidths = length(flextable::col_keys(ft))
     ) |>
     flextable::hline_bottom(border = officer::fp_border(width = 0))
 }
