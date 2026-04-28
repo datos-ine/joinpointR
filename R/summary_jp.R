@@ -40,7 +40,7 @@ summary_jp <- function(
           # ---- APC ----
           segmented::slope(.x, APC = TRUE)[[time]] |>
             tibble::as_tibble() |>
-            dplyr::rename(est = 1, ic_l = 2, ic_u = 3) |>
+            dplyr::rename(APC = 1, ic_l = 2, ic_u = 3) |>
 
             # Redondear
             dplyr::mutate(
@@ -50,15 +50,14 @@ summary_jp <- function(
               )
             ) |>
 
-            # IC robusto
+            # ---- IC 95% ----
             tidyr::unite(
               c(ic_l, ic_u),
               col = "IC",
               sep = "; "
             ) |>
 
-            dplyr::rename(APC = est) |>
-
+            # ---- Joinpoints ----
             dplyr::mutate(
               JP = dplyr::if_else(
                 dplyr::row_number() == 1,
@@ -66,12 +65,14 @@ summary_jp <- function(
                 NA_real_
               ),
 
+              # ---- Periodos -----
               Periodo = paste(
                 round(head(breaks, -1)),
                 round(tail(breaks, -1)),
                 sep = "-"
               ),
 
+              # ---- AAPC ----
               AAPC = dplyr::if_else(
                 dplyr::row_number() == 1,
                 get_aapc(.x),
