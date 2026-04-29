@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples
-#' \test{
+#' \donttest{
 #' library(dplyr)
 #' df <- mtcars |>
 #' mutate(
@@ -27,9 +27,9 @@
 #' ) |>
 #' select(year, group, rate)
 #'
-#' mod <- model_jp(data = df, value = "rate", time = "year", group = "group", test = TRUE)
+#' mods <- model_jp(data = df, value = "rate", time = "year", group = "group", k = 2, test = TRUE)
 #'
-#' mod$cyl_6
+#' mods$cyl_6
 #' }
 model_jp <- function(data, value, time, group, k = 2, test = TRUE) {
   # ---- Validations ----
