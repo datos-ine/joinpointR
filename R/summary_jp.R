@@ -105,13 +105,13 @@ summary_jp <- function(
       )
 
     footnote_txt <- paste0(
-      "* p<0,05;\n",
+      "* p < 0,05\n",
       "JP: cantidad de joinpoints; APC: cambio porcentual anual; ",
       "IC: intervalo de confianza al 95%; AAPC: cambio porcentual anual promedio (IC95%)."
     )
   } else {
     footnote_txt <- paste0(
-      "* p<0.05;\n",
+      "* p < 0.05\n",
       "JP: number of joinpoints; APC: annual percent change; ",
       "CI: 95% confidence interval; AAPC: average annual percent change (95% CI)."
     )
