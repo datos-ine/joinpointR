@@ -17,18 +17,25 @@
 #' @export
 #'
 #' @examples
+#' # Generate example data
 #' library(dplyr)
 #' df <- mtcars |>
 #' mutate(
 #'   year = seq(2000, length.out = n(), by = 1),
-#'   group = paste("cyl", cyl, sep = "_"),
+#'   group = factor(paste("cyl", cyl, sep = "_")),
 #'   rate = mpg
 #' ) |>
 #' select(year, group, rate)
 #'
+#' # Check group levels
+#' levels(df$group)
+#'
+#' # Fit models
 #' mods <- model_jp(data = df, value = "rate", time = "year", group = "group", k = 2, test = TRUE)
 #'
+#' # Show the output of the first model
 #' mods$cyl_6
+#' summary(mods$cyl_6)
 
 model_jp <- function(data, value, time, group, k = 2, test = TRUE) {
   # ---- Validations ----

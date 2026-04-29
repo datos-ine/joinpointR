@@ -8,6 +8,7 @@
 #' @param digits Number of decimal places to display (integer).
 #' @param show_ci Logical; if TRUE, displays the 95% confidence interval.
 #'   If FALSE, displays significance stars.
+#' @param dec Character. Decimal separator to use (e.g., "." or ",").
 #'
 #' @return A character string with the AAPC and either its 95% confidence
 #' interval or significance stars.
@@ -15,9 +16,17 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' get_aapc(mod, digits = 1, show_ci = TRUE, dec = ".")
-#' }
+#' # Load example data
+#' data("plant", package = "segmented")
+#'
+#' names(plant)
+#'
+#' # Fit the joinpoint models
+#' mods <- model_jp(data = plant, value = "y", time = "year", group = "group", k = 2, test = TRUE)
+#'
+#' # AAPC of the first model
+#' get_aapc(mods$RKW, digits = 1, show_ci = TRUE, dec = ".")
+
 get_aapc <- function(mod, digits = 1, show_ci = TRUE, dec = ".") {
   # ---- Validations ----
   if (!inherits(mod, c("segmented", "lm"))) {

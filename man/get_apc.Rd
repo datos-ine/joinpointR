@@ -12,6 +12,8 @@ get_apc(mod, digits = 1, time = "year", dec = ".")
 \item{digits}{Number of decimal places to display (integer).}
 
 \item{time}{Time variable used in the model (character).}
+
+\item{dec}{Character. Decimal separator to use (e.g., "." or ",").}
 }
 \value{
 A character vector with APC and 95\% CI for each segment.
@@ -21,9 +23,16 @@ Calculates the Annual Percent Change (APC) for each segment and its 95\%
 confidence interval.
 }
 \examples{
-\donttest{
-get_apc(mod, digits = 1, time = "year", dec = ".")
-}
+# Load example data
+data("plant", package = "segmented")
+
+names(plant)
+
+# Fit the joinpoint models
+mods <- model_jp(data = plant, value = "y", time = "year", group = "group", k = 2, test = TRUE)
+
+# Obtain APC (95\% CI)
+get_apc(mods$RKW, digits = 1, time = "year", dec = ".")
 }
 \author{
 Tamara Ricardo

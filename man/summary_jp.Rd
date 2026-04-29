@@ -35,17 +35,15 @@ interval, and AAPC and its statistical significance from a list of joinpoint mod
 }
 \examples{
 library(dplyr)
-df <- mtcars |>
-mutate(
-  year = seq(2000, length.out = n(), by = 1),
-  group = paste("cyl", cyl, sep = "_"),
-  rate = mpg
-) |>
-select(year, group, rate)
+# Load example data
+data("plant", package = "segmented")
 
-mods <- model_jp(data = df, value = "rate", time = "year", group = "group", k = 2, test = TRUE)
+names(plant)
 
-summary_jp(mods, digits = 1, var1 = "group", var2 = "subgroup", ft = FALSE, lan = "en")
+# Fit the joinpoint models
+mods <- model_jp(data = plant, value = "y", time = "year", group = "group", k = 2, test = TRUE)
+
+summary_jp(mods, digits = 1, var1 = "group", ft = FALSE, lan = "en")
 }
 \author{
 Tamara Ricardo

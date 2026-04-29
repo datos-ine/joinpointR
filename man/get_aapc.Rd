@@ -13,6 +13,8 @@ get_aapc(mod, digits = 1, show_ci = TRUE, dec = ".")
 
 \item{show_ci}{Logical; if TRUE, displays the 95\% confidence interval.
 If FALSE, displays significance stars.}
+
+\item{dec}{Character. Decimal separator to use (e.g., "." or ",").}
 }
 \value{
 A character string with the AAPC and either its 95\% confidence
@@ -24,9 +26,16 @@ interval. Optionally displays statistical significance using significance
 stars.
 }
 \examples{
-\donttest{
-get_aapc(mod, digits = 1, show_ci = TRUE, dec = ".")
-}
+# Load example data
+data("plant", package = "segmented")
+
+names(plant)
+
+# Fit the joinpoint models
+mods <- model_jp(data = plant, value = "y", time = "year", group = "group", k = 2, test = TRUE)
+
+# AAPC of the first model
+get_aapc(mods$RKW, digits = 1, show_ci = TRUE, dec = ".")
 }
 \author{
 Tamara Ricardo
