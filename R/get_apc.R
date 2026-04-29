@@ -25,8 +25,13 @@
 #' get_apc(mods$RKW, digits = 1, time = "time", dec = ".")
 
 get_apc <- function(mod, digits = 1, time = "year", dec = ".") {
-  segmented::slope(mod, APC = TRUE)$time |>
-    dplyr::as_tibble() |>
+  # ---- Validation ----
+  if (!inherits(mod, "segmented")) {
+    stop("`mod` must be an object of class 'segmented'")
+  }
+
+  segmented::slope(mod, APC = TRUE)[[time]] |>
+    tibble::as_tibble() |>
     dplyr::rename(
       APC = 1,
       lci = 2,
@@ -42,6 +47,7 @@ get_apc <- function(mod, digits = 1, time = "year", dec = ".") {
         suffix = "%"
       )
     ) |>
+
     # ---- 95% CI ----
     dplyr::mutate(
       CI = paste0(
@@ -61,6 +67,6 @@ get_apc <- function(mod, digits = 1, time = "year", dec = ".") {
       )
     ) |>
 
-    # ---- Discard columns ----
-    dplyr::select(-lci, -uci)
+    # ---- Output ----
+    dplyr::select(APC, CI)
 }
