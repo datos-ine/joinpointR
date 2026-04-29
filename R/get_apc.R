@@ -25,6 +25,12 @@
 #' get_apc(mods$RKW, digits = 1, time = "time", dec = ".")
 
 get_apc <- function(mod, digits = 1, time = "time", dec = ".") {
+  # ---- Validation ----
+  if (!inherits(mod, "segmented")) {
+    stop("`mod` must be an object of class 'segmented'")
+  }
+
+  # ---- APC ----
   segmented::slope(mod, APC = TRUE)[1] |>
     data.frame() |>
     dplyr::rename(APC = 1, CI_l = 2, CI_u = 3) |>
