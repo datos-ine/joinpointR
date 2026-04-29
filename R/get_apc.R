@@ -24,7 +24,7 @@ get_apc <- function(mod, digits = 1, time = "anio") {
         decimal.mark = dec,
         suffix = "%"
       ),
-      " (IC95%: ",
+      " (",
       scales::number(y, accuracy = 10^-digits, decimal.mark = dec),
       ", ",
       scales::number(z, accuracy = 10^-digits, decimal.mark = dec),
@@ -33,7 +33,8 @@ get_apc <- function(mod, digits = 1, time = "anio") {
   }
 
   segmented::slope(mod, APC = TRUE)[[time]] |>
-    # as.data.frame() |>
-    dplyr::as_tibble() #|>
+    dplyr::as_tibble() |>
+    dplyr::rename(APC = 1, CI_l = 2, CI_u = 3)
+
   # purrr::pmap_chr(~ fmt(..1, ..2, ..3))
 }
