@@ -25,43 +25,21 @@
 #' get_apc(mods$RKW, digits = 1, time = "time", dec = ".")
 
 get_apc <- function(mod, digits = 1, time = "time", dec = ".") {
-  fmt <- function(x, y, z) {
-    paste0(
-      scales::number(
-        x,
-        accuracy = 10^-digits,
-        decimal.mark = dec,
-        suffix = "%"
-      ),
-      " (",
-      scales::number(
-        y,
-        accuracy = 10^-digits,
-        decimal.mark = dec,
-        suffix = "%"
-      ),
-      ", ",
-      scales::number(
-        z,
-        accuracy = 10^-digits,
-        decimal.mark = dec,
-        suffix = "%"
-      ),
-      ")"
-    )
-  }
-
   segmented::slope(mod, APC = TRUE)[[time]] |>
-    dplyr::as_tibble() |>
-    dplyr::rename(
-      est = 1,
-      lci = 2,
-      uci = 3
-    ) |>
+    tibble::as_tibble() |>
+    dplyr::rename(APC = 1, CI_l = 2, CI_u = 3) |>
     dplyr::mutate(
-      dplyr::across(c(est, lci, uci), ~.x)
+      dplyr::across(
+        where(is.numeric),
+        ~ scales::number(
+          .x,
+          accuracy = 10^-digits,
+          decimal.mark = dec,
+          suffix = "%"
+        )
+      )
     ) |>
-    purrr::pmap_chr(~ fmt(..1, ..2, ..3))
+    tidyr::unite("CI", CI_l, CI_u, sep = "; ")
 }
 
 # get_apc <- function(mod, digits = 1, time = "year", dec = ".") {
