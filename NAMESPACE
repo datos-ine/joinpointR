@@ -2,6 +2,7 @@
 
 export(get_aapc)
 export(get_apc)
+export(gg_joinpoint)
 export(model_jp)
 export(summary_jp)
 importFrom(rlang,":=")
