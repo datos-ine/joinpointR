@@ -1,141 +1,113 @@
-#' Tabla Resumen Joinpoint
+#' Summary Table For Joinpoint Regression Models
 #'
-#' Genera una tabla con APC, AAPC, períodos y número de joinpoints
-#' a partir de una lista de modelos joinpoint.
+#' Generates a table displaying the number of joinpoints, time breaks, APC and its 95% confidence
+#' interval, and AAPC and its statistical significance from a list of joinpoint models.
 #'
-#' @param mods Lista de modelos (salida de model_jp()).
-#' @param digits Integer. Número de decimales a mostrar en la tabla.
-#' @param ft Logical. Si TRUE devuelve una flextable, si FALSE un tibble.
-#' @param var1 Character. Variable de agrupamiento
-#' @param var2 Character. Segunda variable de agrupamiento (opcional).
+#' @param mods List of joinpoint regression models (model_jp() output).
+#' @param digits Number of decimal places to display (integer).
+#' @param var1 Character. Name of the grouping variable.
+#' @param var2 Character. Name of the subgrouping variable (optional).
+#' @param ft Logical. If TRUE returns a flextable object, if FALSE returns a tibble.
+#' @param lan Language of output: "en" (English) or "es" (Spanish).
 #'
-#' @return Un tibble o un objeto flextable.
+#' @return A tibble or a flextable object.
 #' @author Tamara Ricardo
 #' @export
-#'
 #' @examples
-#' \dontrun{
-#' summary_jp(mods, digits = 1, ft = TRUE, var1 = "Grupo", var2 = "Subgrupo")
+#' \donttest{
+#' summary_jp(mods, digits = 1, var1 = "group", var2 = "subgroup", ft = FALSE, lan = "en")
 #' }
 summary_jp <- function(
   mods,
   digits = 1,
+  var1 = "group",
+  var2 = "subgroup",
   ft = FALSE,
-  var1 = "Grupo",
-  var2 = "Subgrupo"
+  lan = c("en", "es")
 ) {
-  get_sig <- function(mod) {
-    if ("segmented" %in% class(mod)) {
-      aapc_obj <- segmented::aapc(mod)
+  lan <- match.arg(lan)
+  dec <- if (lan == "en") "." else ","
 
-      est <- aapc_obj[1]
-      se <- aapc_obj[2]
+  df <- purrr::map_dfr(
+    mods,
+    function(mod) {
+      if (inherits(mod, "segmented")) {
+        time <- names(mod$model)[2]
 
-      tval <- est / se
+        breaks <- sort(c(
+          min(mod$model[[time]]),
+          mod$psi[, "Est."],
+          max(mod$model[[time]])
+        ))
 
-      # grados de libertad del modelo original
-      df <- mod$df.residual
+        n_jp <- nrow(mod$psi)
 
-      pval <- 2 * (1 - stats::pt(abs(tval), df = df))
-    } else {
-      pval <- summary(mod)$coefficients[2, 4]
-    }
+        apc_tbl <- segmented::slope(mod, APC = TRUE)[[time]] |>
+          tibble::as_tibble() |>
+          dplyr::rename(APC = 1, CI_l = 2, CI_u = 3) |>
+          dplyr::mutate(
+            dplyr::across(where(is.numeric), ~ round(.x, digits)),
+            JP = ifelse(dplyr::row_number() == 1, n_jp, NA_real_),
+            Period = paste(
+              round(head(breaks, -1)),
+              round(tail(breaks, -1)),
+              sep = "-"
+            ),
+            AAPC = ifelse(
+              dplyr::row_number() == 1,
+              get_aapc(mod, show_ci = FALSE, dec = dec),
+              NA_character_
+            )
+          ) |>
+          tidyr::unite("CI", CI_l, CI_u, sep = "; ")
 
-    dplyr::case_when(
-      pval < 0.001 ~ "***",
-      pval < 0.01 ~ "**",
-      pval < 0.05 ~ "*",
-      TRUE ~ ""
+        apc_tbl
+      } else {
+        tibble::tibble(
+          JP = 0,
+          Period = NA_character_,
+          APC = NA_real_,
+          CI = NA_character_,
+          AAPC = get_aapc(mod, show_ci = FALSE, dec = dec)
+        )
+      }
+    },
+    .id = "group"
+  )
+
+  # ---- split grouping ----
+  df <- if (any(stringr::str_detect(df$group, "_"))) {
+    tidyr::separate_wider_delim(
+      df,
+      group,
+      names = c(var1, var2),
+      delim = "_",
+      too_few = "align_start"
     )
+  } else {
+    dplyr::rename(df, !!var1 := group)
   }
 
-  df <- mods |>
-    purrr::map_dfr(
-      ~ {
-        if ("segmented" %in% class(.x)) {
-          time <- names(.x$model)[2]
+  # ---- language ----
+  if (lan == "es") {
+    df <- df |>
+      dplyr::rename(
+        Periodo = Period,
+        IC = CI
+      )
 
-          # ---- Puntos de corte -----
-          breaks <- sort(c(
-            min(.x$model[[time]]),
-            .x$psi[, "Est."],
-            max(.x$model[[time]])
-          ))
-
-          # ---- APC ----
-          segmented::slope(.x, APC = TRUE)[[time]] |>
-            tibble::as_tibble() |>
-            dplyr::rename(APC = 1, ic_l = 2, ic_u = 3) |>
-
-            # Redondear
-            dplyr::mutate(
-              dplyr::across(
-                dplyr::where(is.numeric),
-                ~ round(.x, digits)
-              )
-            ) |>
-
-            # ---- IC 95% ----
-            tidyr::unite(
-              c(ic_l, ic_u),
-              col = "IC",
-              sep = "; "
-            ) |>
-
-            # ---- Joinpoints ----
-            dplyr::mutate(
-              JP = dplyr::if_else(
-                dplyr::row_number() == 1,
-                nrow(.x$psi),
-                NA_real_
-              ),
-
-              # ---- Periodos -----
-              Periodo = paste(
-                round(head(breaks, -1)),
-                round(tail(breaks, -1)),
-                sep = "-"
-              ),
-              .before = APC
-            ) |>
-
-            # ---- AAPC ----
-            dplyr::mutate(
-              AAPC = dplyr::if_else(
-                dplyr::row_number() == 1,
-                get_aapc(.x, show_ci = FALSE),
-                NA_character_
-              )
-            )
-        } else {
-          tibble::tibble(
-            JP = 0,
-            Periodo = NA_character_,
-            APC = NA_real_,
-            IC = NA_character_,
-            AAPC = get_aapc(.x)
-          )
-        }
-      },
-      .id = "grupo"
-    ) |>
-
-    # ---- separación dinámica ----
-    (\(df) {
-      if (any(stringr::str_detect(df$grupo, "_"))) {
-        suppressWarnings(
-          tidyr::separate_wider_delim(
-            df,
-            grupo,
-            names = c(var1, var2),
-            delim = "_",
-            too_few = "align_start"
-          )
-        )
-      } else {
-        dplyr::rename(df, !!var1 := grupo)
-      }
-    })()
+    footnote_txt <- paste0(
+      "* p<0,05;\n",
+      "JP: cantidad de joinpoints; APC: cambio porcentual anual; ",
+      "IC: intervalo de confianza al 95%; AAPC: cambio porcentual anual promedio (IC95%)."
+    )
+  } else {
+    footnote_txt <- paste0(
+      "* p<0.05;\n",
+      "JP: number of joinpoints; APC: annual percent change; ",
+      "CI: 95% confidence interval; AAPC: average annual percent change (95% CI)."
+    )
+  }
 
   if (!ft) {
     return(df)
@@ -144,16 +116,9 @@ summary_jp <- function(
   # ---- flextable ----
   ft_obj <- flextable::flextable(df)
 
-  cols_merge <- intersect(
-    c(var1, var2),
-    names(ft_obj$body$dataset)
-  )
+  cols_merge <- intersect(c(var1, var2), names(df))
 
-  if (
-    var2 %in%
-      names(ft_obj$body$dataset) &&
-      all(is.na(ft_obj$body$dataset[[var2]]))
-  ) {
+  if (var2 %in% names(df) && all(is.na(df[[var2]]))) {
     ft_obj <- flextable::delete_columns(ft_obj, var2)
     cols_merge <- var1
   }
@@ -163,15 +128,13 @@ summary_jp <- function(
     flextable::bold(part = "header") |>
     flextable::colformat_num(
       j = names(df)[sapply(df, is.numeric)],
-      decimal.mark = ",",
-      big.mark = "."
+      decimal.mark = dec,
+      big.mark = ""
     ) |>
     flextable::add_body_row(
       top = FALSE,
-      values = list(
-        "*** P<0,001; ** P<0,01; * P<0,05;\n JP: cantidad de joinpoints; APC: cambio porcentual anual; IC: intervalo de confianza al 95%; AAPC: cambio porcentual anual promedio (95% IC)."
-      ),
-      colwidths = ncol(ft_obj$body$dataset)
+      values = list(footnote_txt),
+      colwidths = ncol(df)
     ) |>
     flextable::hline_bottom(border = officer::fp_border(width = 0)) |>
     flextable::font(fontname = "Calibri", part = "all") |>

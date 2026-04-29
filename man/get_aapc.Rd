@@ -2,26 +2,30 @@
 % Please edit documentation in R/get_aapc.R
 \name{get_aapc}
 \alias{get_aapc}
-\title{Cambio Porcentual Anual Promedio (AAPC)}
+\title{Average Annual Percent Change (AAPC)}
 \usage{
-get_aapc(mod, digits = 1, show_ci = FALSE)
+get_aapc(mod, digits = 1, show_ci = TRUE, dec = ".")
 }
 \arguments{
-\item{mod}{Modelo de regresión joinpoint (objeto segmented o lm).}
+\item{mod}{Joinpoint regression model (segmented object) or linear regression model (lm object).}
 
-\item{digits}{Número de decimales a mostrar (integer).}
+\item{digits}{Number of decimal places to display (integer).}
 
-\item{show_ci}{Mostrar estrellas de significancia o intervalo de confianza al 95\% (logical)}
+\item{show_ci}{Logical; if TRUE, displays the 95\% confidence interval.
+If FALSE, displays significance stars.}
 }
 \value{
-String con AAPC con significancia o intervalo de confianza.
+A character string with the AAPC and either its 95\% confidence
+interval or significance stars.
 }
 \description{
-Calcula el Cambio Porcentual Anual Promedio (AAPC) y su intervalo de confianza al 95\%.
+Estimates the Average Annual Percent Change (AAPC) and its 95\% confidence
+interval. Optionally displays statistical significance using significance
+stars.
 }
 \examples{
-\dontrun{
-get_aapc(mod, digits = 1, show_ci = FALSE)
+\donttest{
+get_aapc(mod, digits = 1, show_ci = TRUE, dec = ".")
 }
 }
 \author{

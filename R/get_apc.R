@@ -15,27 +15,43 @@
 #' \donttest{
 #' get_apc(mod, digits = 1, time = "anio", dec = ".")
 #' }
-get_apc <- function(mod, digits = 1, time = "anio") {
-  fmt <- function(x, y, z) {
-    paste0(
-      scales::number(
-        x,
+get_apc <- function(mod, digits = 1, time = "anio", dec = ".") {
+  segmented::slope(mod, APC = TRUE)[[time]] |>
+    dplyr::as_tibble() |>
+    dplyr::rename(
+      APC = 1,
+      lci = 2,
+      uci = 3
+    ) |>
+
+    # ---- APC ----
+    dplyr::mutate(
+      APC = scales::number(
+        APC,
         accuracy = 10^-digits,
         decimal.mark = dec,
         suffix = "%"
-      ),
-      " (",
-      scales::number(y, accuracy = 10^-digits, decimal.mark = dec),
-      ", ",
-      scales::number(z, accuracy = 10^-digits, decimal.mark = dec),
-      ")"
-    )
-  }
+      )
+    ) |>
+    # ---- 95% CI ----
+    dplyr::mutate(
+      CI = paste0(
+        scales::number(
+          lci,
+          accuracy = 10^-digits,
+          decimal.mark = dec,
+          suffix = "%"
+        ),
+        "; ",
+        scales::number(
+          uci,
+          accuracy = 10^-digits,
+          decimal.mark = dec,
+          suffix = "%"
+        )
+      )
+    ) |>
 
-  segmented::slope(mod, APC = TRUE)[[time]] |>
-    dplyr::as_tibble() |>
-    dplyr::rename(x = 1, y = 2, z = 3) |>
-    fmt()
-
-  # purrr::pmap_chr(~ fmt(..1, ..2, ..3))
+    # ---- Discard columns ----
+    dplyr::select(-lci, -uci)
 }

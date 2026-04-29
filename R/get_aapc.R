@@ -1,81 +1,72 @@
-#' Cambio Porcentual Anual Promedio (AAPC)
+#' Average Annual Percent Change (AAPC)
 #'
-#' Calcula el Cambio Porcentual Anual Promedio (AAPC) y su intervalo de confianza al 95%.
+#' Estimates the Average Annual Percent Change (AAPC) and its 95% confidence
+#' interval. Optionally displays statistical significance using significance
+#' stars.
 #'
-#' @param mod Modelo de regresión joinpoint (objeto segmented o lm).
-#' @param digits Número de decimales a mostrar (integer).
-#' @param show_ci Mostrar estrellas de significancia o intervalo de confianza al 95% (logical)
+#' @param mod Joinpoint regression model (segmented object) or linear regression model (lm object).
+#' @param digits Number of decimal places to display (integer).
+#' @param show_ci Logical; if TRUE, displays the 95% confidence interval.
+#'   If FALSE, displays significance stars.
 #'
-#' @return String con AAPC con significancia o intervalo de confianza.
+#' @return A character string with the AAPC and either its 95% confidence
+#' interval or significance stars.
 #' @author Tamara Ricardo
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' get_aapc(mod, digits = 1, show_ci = FALSE)
+#' \donttest{
+#' get_aapc(mod, digits = 1, show_ci = TRUE, dec = ".")
 #' }
-get_aapc <- function(mod, digits = 1, show_ci = FALSE) {
-  # ---- Validaciones ----
+get_aapc <- function(mod, digits = 1, show_ci = TRUE, dec = ".") {
+  # ---- Validations ----
   if (!inherits(mod, c("segmented", "lm"))) {
-    stop("`mod` debe ser un objeto de clase 'segmented' o 'lm'")
+    stop("`mod` must be an object of class 'segmented' or 'lm'")
   }
 
   # ---- Helpers ----
   fmt_ci <- function(x, y, z) {
     paste0(
-      scales::percent(x, accuracy = 10^-digits, decimal.mark = ","),
-      " (IC95%: ",
-      scales::number(y, accuracy = 10^-digits, scale = 100, decimal.mark = ","),
+      scales::percent(x, accuracy = 10^-digits, decimal.mark = dec),
+      " (",
+      scales::percent(y, accuracy = 10^-digits, decimal.mark = dec),
       "; ",
-      scales::number(z, accuracy = 10^-digits, scale = 100, decimal.mark = ","),
+      scales::percent(z, accuracy = 10^-digits, decimal.mark = dec),
       ")"
     )
   }
 
   fmt_stars <- function(x, stars) {
     paste0(
-      scales::percent(x, accuracy = 10^-digits, decimal.mark = ","),
-      stars
+      scales::percent(x, accuracy = 10^-digits, decimal.mark = dec),
+      ifelse(stars != "", paste0(" ", stars), "")
     )
   }
 
-  get_stars <- function(est, se) {
-    z <- abs(est / se)
-
-    if (z > 3.29) {
-      "***" # p < 0.001
-    } else if (z > 2.58) {
-      "**" # p < 0.01
-    } else if (z > 1.96) {
-      "*" # p < 0.05
-    } else {
-      ""
-    }
-  }
-
-  # ---- Cálculo ----
+  # ---- Calculations ----
   if (inherits(mod, "segmented")) {
     aapc_obj <- segmented::aapc(mod)
 
-    est <- unname(aapc_obj["Est."])
-    se <- unname(aapc_obj["St.Err"])
-    lci <- unname(aapc_obj["CI(95%).l"])
-    uci <- unname(aapc_obj["CI(95%).u"])
+    est <- unname(aapc_obj[grep("Est", names(aapc_obj))])
+    lci <- unname(aapc_obj[grep("\\.l", names(aapc_obj))])
+    uci <- unname(aapc_obj[grep("\\.u", names(aapc_obj))])
   } else {
-    est <- exp(stats::coef(mod)[2]) - 1
-    ci <- exp(stats::confint(mod)[2, ]) - 1
-    se <- summary(mod)$coefficients[2, "Std. Error"]
+    beta <- stats::coef(mod)[2]
 
-    lci <- ci[1]
-    uci <- ci[2]
+    est <- exp(beta) - 1
+    ci <- stats::confint(mod)[2, ]
+
+    lci <- exp(ci[1]) - 1
+    uci <- exp(ci[2]) - 1
   }
+
+  # ---- Significance based on CI ----
+  stars <- ifelse(lci > 0 | uci < 0, "*", "")
 
   # ---- Output ----
   if (show_ci) {
     fmt_ci(est, lci, uci)
   } else {
-    stars <- get_stars(est, se)
-
     fmt_stars(est, stars)
   }
 }

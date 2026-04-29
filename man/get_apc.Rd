@@ -4,7 +4,7 @@
 \alias{get_apc}
 \title{Annual Percent Change by Segment (APC)}
 \usage{
-get_apc(mod, digits = 1, time = "anio")
+get_apc(mod, digits = 1, time = "anio", dec = ".")
 }
 \arguments{
 \item{mod}{Joinpoint regression model (segmented object).}

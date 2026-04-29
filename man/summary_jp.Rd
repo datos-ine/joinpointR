@@ -2,31 +2,40 @@
 % Please edit documentation in R/summary_jp.R
 \name{summary_jp}
 \alias{summary_jp}
-\title{Tabla Resumen Joinpoint}
+\title{Summary Table For Joinpoint Regression Models}
 \usage{
-summary_jp(mods, digits = 1, ft = FALSE, var1 = "Grupo", var2 = "Subgrupo")
+summary_jp(
+  mods,
+  digits = 1,
+  var1 = "group",
+  var2 = "subgroup",
+  ft = FALSE,
+  lan = c("en", "es")
+)
 }
 \arguments{
-\item{mods}{Lista de modelos (salida de model_jp()).}
+\item{mods}{List of joinpoint regression models (model_jp() output).}
 
-\item{digits}{Integer. Número de decimales a mostrar en la tabla.}
+\item{digits}{Number of decimal places to display (integer).}
 
-\item{ft}{Logical. Si TRUE devuelve una flextable, si FALSE un tibble.}
+\item{var1}{Character. Name of the grouping variable.}
 
-\item{var1}{Character. Variable de agrupamiento}
+\item{var2}{Character. Name of the subgrouping variable (optional).}
 
-\item{var2}{Character. Segunda variable de agrupamiento (opcional).}
+\item{ft}{Logical. If TRUE returns a flextable object, if FALSE returns a tibble.}
+
+\item{lan}{Language of output: "en" (English) or "es" (Spanish).}
 }
 \value{
-Un tibble o un objeto flextable.
+A tibble or a flextable object.
 }
 \description{
-Genera una tabla con APC, AAPC, períodos y número de joinpoints
-a partir de una lista de modelos joinpoint.
+Generates a table displaying the number of joinpoints, time breaks, APC and its 95\% confidence
+interval, and AAPC and its statistical significance from a list of joinpoint models.
 }
 \examples{
-\dontrun{
-summary_jp(mods, digits = 1, ft = TRUE, var1 = "Grupo", var2 = "Subgrupo")
+\donttest{
+summary_jp(mods, digits = 1, var1 = "group", var2 = "subgroup", ft = FALSE, lan = "en")
 }
 }
 \author{
