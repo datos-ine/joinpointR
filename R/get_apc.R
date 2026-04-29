@@ -34,7 +34,8 @@ get_apc <- function(mod, digits = 1, time = "anio") {
 
   segmented::slope(mod, APC = TRUE)[[time]] |>
     dplyr::as_tibble() |>
-    dplyr::rename(APC = 1, CI_l = 2, CI_u = 3)
+    dplyr::rename(x = 1, y = 2, z = 3) |>
+    fmt()
 
   # purrr::pmap_chr(~ fmt(..1, ..2, ..3))
 }
