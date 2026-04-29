@@ -13,9 +13,9 @@
 #'
 #' @examples
 #' \donttest{
-#' get_apc(mod, digits = 1, time = "anio", dec = ".")
+#' get_apc(mod, digits = 1, time = "year", dec = ".")
 #' }
-get_apc <- function(mod, digits = 1, time = "anio", dec = ".") {
+get_apc <- function(mod, digits = 1, time = "year", dec = ".") {
   segmented::slope(mod, APC = TRUE)[[time]] |>
     dplyr::as_tibble() |>
     dplyr::rename(

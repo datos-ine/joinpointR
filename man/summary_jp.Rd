@@ -34,9 +34,18 @@ Generates a table displaying the number of joinpoints, time breaks, APC and its 
 interval, and AAPC and its statistical significance from a list of joinpoint models.
 }
 \examples{
-\donttest{
+library(dplyr)
+df <- mtcars |>
+mutate(
+  year = seq(2000, length.out = n(), by = 1),
+  group = paste("cyl", cyl, sep = "_"),
+  rate = mpg
+) |>
+select(year, group, rate)
+
+mods <- model_jp(data = df, value = "rate", time = "year", group = "group", k = 2, test = TRUE)
+
 summary_jp(mods, digits = 1, var1 = "group", var2 = "subgroup", ft = FALSE, lan = "en")
-}
 }
 \author{
 Tamara Ricardo

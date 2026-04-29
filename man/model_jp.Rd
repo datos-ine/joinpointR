@@ -29,7 +29,6 @@ Internally calls \code{segmented::selgmented()} and applies a log transformation
 to the response variable.
 }
 \examples{
-\test{
 library(dplyr)
 df <- mtcars |>
 mutate(
@@ -39,10 +38,9 @@ mutate(
 ) |>
 select(year, group, rate)
 
-mod <- model_jp(data = df, value = "rate", time = "year", group = "group", test = TRUE)
+mods <- model_jp(data = df, value = "rate", time = "year", group = "group", k = 2, test = TRUE)
 
-mod$cyl_6
-}
+mods$cyl_6
 }
 \author{
 Tamara Ricardo
