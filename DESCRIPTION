@@ -1,7 +1,7 @@
 Package: joinpointR
 Type: Package
 Title: Tidy Tools for Joinpoint Regression Models
-Version: 0.4.1
+Version: 0.5.0
 Authors@R: 
     person(
         "Tamara", "Ricardo", , 
