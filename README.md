@@ -97,11 +97,31 @@ The generated table includes / La tabla generada incluye:
 * 95% Confidence intervals / Intervalos de confianza al 95%
 * AAPC (global tendency / tendencia global)
 
+### Plots / Gráficos
+```r
+# Plot results
+mods |>
+  gg_joinpoint(obs = TRUE, jp = TRUE, facets = FALSE)
+
+# Facets by group
+mods |>
+  gg_jpoint(obs = TRUE, jp = TRUE, facets = TRUE)
+
+# Hide observed
+mods |>
+  gg_jpoint(obs = FALSE, jp = TRUE, facets = FALSE)
+
+# Hide joinpoints
+mods |>
+  gg_jpoint(obs = TRUE, jp = FALSE, facets = FALSE)
+```
+
 ## Dependencies / Dependencias
 The package uses / El paquete utiliza:
 
 * `segmented` for fitting jointpoint regression models / para regresión joinpoint
 * `dplyr`, `purrr`, `tidyr`, `tibble` for data management / para manipulación de datos
+* `ggplot2` for plotting results / para graficar resultados
 * `flextable` for summary tables / para tablas formateadas
 
 ## Notes / Notas

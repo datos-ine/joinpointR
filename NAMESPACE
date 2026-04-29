@@ -2,8 +2,11 @@
 
 export(get_aapc)
 export(get_apc)
-export(gg_joinpoint)
+export(gg_jpoint)
 export(model_jp)
 export(summary_jp)
+importFrom(dplyr,where)
 importFrom(rlang,":=")
 importFrom(rlang,.data)
+importFrom(utils,head)
+importFrom(utils,tail)

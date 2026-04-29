@@ -1,11 +1,14 @@
-#' Plot results For Joinpoint Regression Models
+#' Plot Joinpoint Regression Models
 #'
-#' Generates a ggplot objec displaying the number observed points, slope and joinpoints from a list of joinpoint models
+#' Creates a ggplot showing observed values, fitted joinpoint regression lines,
+#' and optional joinpoints.
 #'
-#' @param mods List of joinpoint regression models (model_jp() output).
+#' @param mods List of joinpoint regression models (output of model_jp()).
+#' @param obs Logical. If TRUE, displays observed data points.
+#' @param jp Logical. If TRUE, displays joinpoints as vertical dashed lines.
+#' @param facets Logical. If TRUE, displays one panel per group using facets.
 #'
-#' @return A ggplot2 object.
-#' @author Tamara Ricardo
+#' @return A ggplot object.
 #' @export
 #' @examples
 #' library(dplyr)
@@ -18,12 +21,12 @@
 #' mods <- model_jp(data = plant, value = "y", time = "time", group = "group", k = 2, test = TRUE)
 #'
 #' # Plot results
-#' gg_joinpoint(mods, obs = TRUE, jp = TRUE, facets = FALSE)
+#' gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = FALSE)
 #'
 #' # Facets by group
-#' gg_joinpoint(mods, obs = TRUE, jp = TRUE, facets = TRUE)
+#' gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = TRUE)
 
-gg_joinpoint <- function(mods, obs = TRUE, jp = TRUE, facets = FALSE) {
+gg_jpoint <- function(mods, obs = TRUE, jp = TRUE, facets = FALSE) {
   # ---- Detect time variable ----
   time <- names(mods[[1]]$model)[2]
 
