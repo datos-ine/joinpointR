@@ -26,7 +26,7 @@
 
 get_apc <- function(mod, digits = 1, time = "time", dec = ".") {
   segmented::slope(mod, APC = TRUE)[1] |>
-    tibble::as_tibble() |>
+    data.frame() |>
     dplyr::rename(APC = 1, CI_l = 2, CI_u = 3) |>
     dplyr::mutate(
       dplyr::across(
