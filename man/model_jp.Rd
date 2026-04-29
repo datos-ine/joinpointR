@@ -2,33 +2,35 @@
 % Please edit documentation in R/model_jp.R
 \name{model_jp}
 \alias{model_jp}
-\title{Modelos de Regresión Joinpoint por grupos}
+\title{Joinpoint Regression Models by Groups}
 \usage{
-model_jp(data, value, time, group, k = 2)
+model_jp(data, value, time, group, k = 2, test = TRUE)
 }
 \arguments{
-\item{data}{Dataframe conteniendo las tasas estandarizadas por edad.}
+\item{data}{Data frame containing age-standardized rates.}
 
-\item{value}{Variable respuesta (character).}
+\item{value}{Response variable (character).}
 
-\item{time}{Variable de tiempo (character).}
+\item{time}{Time variable (character).}
 
-\item{group}{Variable de agrupación (character).}
+\item{group}{Grouping variable (character).}
 
-\item{k}{Número máximo de joinpoints.}
+\item{k}{Maximum number of joinpoints (integer).}
+
+\item{test}{Test for differences in the t-values of the slope (logical).}
 }
 \value{
-Lista de modelos por grupo.
+A list of models by group.
 }
 \description{
-Ajusta modelos de regresión lineal segmentada por grupos para tasas estandarizadas por edad,
-usando un proceso stepwise basado en el Criterio de Información Bayesiano (BIC).
-Internamente llama la función segmented::selgmented() y aplica transformación logarítmica
-a la variable respuesta.
+Fits segmented linear regression models by groups for age-standardized rates,
+using a stepwise procedure based on the Bayesian Information Criterion (BIC).
+Internally calls \code{segmented::selgmented()} and applies a log transformation
+to the response variable.
 }
 \examples{
-\dontrun{
-model_jp(data = df, value = "tasa", time = "anio", group = "sexo")
+\donttest{
+model_jp(data = df, value = "tasa", time = "anio", group = "sexo", test = TRUE)
 }
 }
 \author{

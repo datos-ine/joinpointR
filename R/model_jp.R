@@ -1,28 +1,29 @@
-#' Modelos de Regresión Joinpoint por grupos
+#' Joinpoint Regression Models by Groups
 #'
-#' Ajusta modelos de regresión lineal segmentada por grupos para tasas estandarizadas por edad,
-#' usando un proceso stepwise basado en el Criterio de Información Bayesiano (BIC).
-#' Internamente llama la función segmented::selgmented() y aplica transformación logarítmica
-#' a la variable respuesta.
+#' Fits segmented linear regression models by groups for age-standardized rates,
+#' using a stepwise procedure based on the Bayesian Information Criterion (BIC).
+#' Internally calls \code{segmented::selgmented()} and applies a log transformation
+#' to the response variable.
 #'
-#' @param data Dataframe conteniendo las tasas estandarizadas por edad.
-#' @param value Variable respuesta (character).
-#' @param time Variable de tiempo (character).
-#' @param group Variable de agrupación (character).
-#' @param k Número máximo de joinpoints.
+#' @param data Data frame containing age-standardized rates.
+#' @param value Response variable (character).
+#' @param time Time variable (character).
+#' @param group Grouping variable (character).
+#' @param k Maximum number of joinpoints (integer).
+#' @param test Test for differences in the t-values of the slope (logical).
 #'
-#' @return Lista de modelos por grupo.
+#' @return A list of models by group.
 #' @author Tamara Ricardo
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' model_jp(data = df, value = "tasa", time = "anio", group = "sexo")
+#' \donttest{
+#' model_jp(data = df, value = "tasa", time = "anio", group = "sexo", test = TRUE)
 #' }
-model_jp <- function(data, value, time, group, k = 2) {
-  # ---- Validaciones ----
+model_jp <- function(data, value, time, group, k = 2, test = TRUE) {
+  # ---- Validations ----
   if (any(data[[value]] <= 0, na.rm = TRUE)) {
-    stop("La variable respuesta debe ser > 0 para aplicar log()")
+    stop("The response variable must be > 0 to apply log() transformation")
   }
 
   # ---- Formula ----
@@ -31,7 +32,7 @@ model_jp <- function(data, value, time, group, k = 2) {
     response = paste0("log(", value, ")")
   )
 
-  # ---- Modelado ----
+  # ---- Model fit ----
   groups <- unique(data[[group]])
 
   mods <- data |>
@@ -43,10 +44,10 @@ model_jp <- function(data, value, time, group, k = 2) {
         type = "bic",
         th = 2,
         stop.if = 4,
-        check.dslope = TRUE
+        check.dslope = test
       )
     )
 
-  # ---- Nombrar salida ----
+  # ---- Name models ----
   rlang::set_names(mods, groups)
 }

@@ -2,26 +2,27 @@
 % Please edit documentation in R/get_apc.R
 \name{get_apc}
 \alias{get_apc}
-\title{Cambio Porcentual Anual por segmento (APC)}
+\title{Annual Percent Change by Segment (APC)}
 \usage{
 get_apc(mod, digits = 1, time = "anio")
 }
 \arguments{
-\item{mod}{Modelo de regresión joinpoint (objeto segmented).}
+\item{mod}{Joinpoint regression model (segmented object).}
 
-\item{digits}{Número de decimales a mostrar (integer).}
+\item{digits}{Number of decimal places to display (integer).}
 
-\item{time}{Variable de tiempo usada en el modelo (character).}
+\item{time}{Time variable used in the model (character).}
 }
 \value{
-Vector de strings con APC e IC95\% por segmento.
+A character vector with APC and 95\% CI for each segment.
 }
 \description{
-Calcula el Cambio Porcentual Anual (APC) por segmento y su intervalo de confianza al 95\%.
+Calculates the Annual Percent Change (APC) for each segment and its 95\%
+confidence interval.
 }
 \examples{
-\dontrun{
-get_apc(mod, digits = 1, time = "anio")
+\donttest{
+get_apc(mod, digits = 1, time = "anio", dec = ".")
 }
 }
 \author{

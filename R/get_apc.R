@@ -1,18 +1,19 @@
-#' Cambio Porcentual Anual por segmento (APC)
+#' Annual Percent Change by Segment (APC)
 #'
-#' Calcula el Cambio Porcentual Anual (APC) por segmento y su intervalo de confianza al 95%.
+#' Calculates the Annual Percent Change (APC) for each segment and its 95%
+#' confidence interval.
 #'
-#' @param mod Modelo de regresión joinpoint (objeto segmented).
-#' @param digits Número de decimales a mostrar (integer).
-#' @param time Variable de tiempo usada en el modelo (character).
+#' @param mod Joinpoint regression model (segmented object).
+#' @param digits Number of decimal places to display (integer).
+#' @param time Time variable used in the model (character).
 #'
-#' @return Vector de strings con APC e IC95% por segmento.
+#' @return A character vector with APC and 95% CI for each segment.
 #' @author Tamara Ricardo
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' get_apc(mod, digits = 1, time = "anio")
+#' \donttest{
+#' get_apc(mod, digits = 1, time = "anio", dec = ".")
 #' }
 get_apc <- function(mod, digits = 1, time = "anio") {
   fmt <- function(x, y, z) {
@@ -20,19 +21,19 @@ get_apc <- function(mod, digits = 1, time = "anio") {
       scales::number(
         x,
         accuracy = 10^-digits,
-        decimal.mark = ",",
+        decimal.mark = dec,
         suffix = "%"
       ),
       " (IC95%: ",
-      scales::number(y, accuracy = 10^-digits, decimal.mark = ","),
+      scales::number(y, accuracy = 10^-digits, decimal.mark = dec),
       ", ",
-      scales::number(z, accuracy = 10^-digits, decimal.mark = ","),
+      scales::number(z, accuracy = 10^-digits, decimal.mark = dec),
       ")"
     )
   }
 
   segmented::slope(mod, APC = TRUE)[[time]] |>
-    as.data.frame() |>
-    dplyr::as_tibble() |>
-    purrr::pmap_chr(~ fmt(..1, ..2, ..3))
+    # as.data.frame() |>
+    dplyr::as_tibble() #|>
+  # purrr::pmap_chr(~ fmt(..1, ..2, ..3))
 }
