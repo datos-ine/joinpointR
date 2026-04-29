@@ -61,6 +61,9 @@ summary_jp <- function(
               round(tail(breaks, -1)),
               sep = "-"
             ),
+            .before = APC
+          ) |>
+          dplyr::mutate(
             AAPC = ifelse(
               dplyr::row_number() == 1,
               get_aapc(mod, show_ci = FALSE, dec = dec),
