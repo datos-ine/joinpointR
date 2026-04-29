@@ -29,10 +29,10 @@ data("plant", package = "segmented")
 names(plant)
 
 # Fit the joinpoint models
-mods <- model_jp(data = plant, value = "y", time = "year", group = "group", k = 2, test = TRUE)
+mods <- model_jp(data = plant, value = "y", time = "time", group = "group", k = 2, test = TRUE)
 
 # Obtain APC (95\% CI)
-get_apc(mods$RKW, digits = 1, time = "year", dec = ".")
+get_apc(mods$RKW, digits = 1, time = "time", dec = ".")
 }
 \author{
 Tamara Ricardo

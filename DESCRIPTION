@@ -24,7 +24,7 @@ Imports:
     segmented,
     scales,
     flextable,
-    rlang,
+    rlang, 
     stringr,
     stats,
     officer

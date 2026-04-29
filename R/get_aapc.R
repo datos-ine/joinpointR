@@ -22,7 +22,7 @@
 #' names(plant)
 #'
 #' # Fit the joinpoint models
-#' mods <- model_jp(data = plant, value = "y", time = "year", group = "group", k = 2, test = TRUE)
+#' mods <- model_jp(data = plant, value = "y", time = "time", group = "group", k = 2, test = TRUE)
 #'
 #' # AAPC of the first model
 #' get_aapc(mods$RKW, digits = 1, show_ci = TRUE, dec = ".")

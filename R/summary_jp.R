@@ -21,7 +21,7 @@
 #' names(plant)
 #'
 #' # Fit the joinpoint models
-#' mods <- model_jp(data = plant, value = "y", time = "year", group = "group", k = 2, test = TRUE)
+#' mods <- model_jp(data = plant, value = "y", time = "time", group = "group", k = 2, test = TRUE)
 #'
 #' summary_jp(mods, digits = 1, var1 = "group", ft = FALSE, lan = "en")
 
