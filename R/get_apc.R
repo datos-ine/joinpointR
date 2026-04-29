@@ -24,49 +24,89 @@
 #' # Obtain APC (95% CI)
 #' get_apc(mods$RKW, digits = 1, time = "time", dec = ".")
 
-get_apc <- function(mod, digits = 1, time = "year", dec = ".") {
-  # ---- Validation ----
-  if (!inherits(mod, "segmented")) {
-    stop("`mod` must be an object of class 'segmented'")
-  }
-
-  segmented::slope(mod, APC = TRUE)[[time]] |>
-    tibble::as_tibble() |>
-    dplyr::rename(
-      APC = 1,
-      lci = 2,
-      uci = 3
-    ) |>
-
-    # ---- APC ----
-    dplyr::mutate(
-      APC = scales::number(
-        APC,
+get_apc <- function(mod, digits = 1, time = "time", dec = ".") {
+  fmt <- function(x, y, z) {
+    paste0(
+      scales::number(
+        x,
         accuracy = 10^-digits,
         decimal.mark = dec,
         suffix = "%"
-      )
-    ) |>
+      ),
+      " (",
+      scales::number(
+        y,
+        accuracy = 10^-digits,
+        decimal.mark = dec,
+        suffix = "%"
+      ),
+      ", ",
+      scales::number(
+        z,
+        accuracy = 10^-digits,
+        decimal.mark = dec,
+        suffix = "%"
+      ),
+      ")"
+    )
+  }
 
-    # ---- 95% CI ----
+  segmented::slope(mod, APC = TRUE)[[time]] |>
+    dplyr::as_tibble() |>
+    dplyr::rename(
+      est = 1,
+      lci = 2,
+      uci = 3
+    ) |>
     dplyr::mutate(
-      CI = paste0(
-        scales::number(
-          lci,
-          accuracy = 10^-digits,
-          decimal.mark = dec,
-          suffix = "%"
-        ),
-        "; ",
-        scales::number(
-          uci,
-          accuracy = 10^-digits,
-          decimal.mark = dec,
-          suffix = "%"
-        )
-      )
+      dplyr::across(c(est, lci, uci), ~.x)
     ) |>
-
-    # ---- Output ----
-    dplyr::select(APC, CI)
+    purrr::pmap_chr(~ fmt(..1, ..2, ..3))
 }
+
+# get_apc <- function(mod, digits = 1, time = "year", dec = ".") {
+#   # ---- Validation ----
+#   if (!inherits(mod, "segmented")) {
+#     stop("`mod` must be an object of class 'segmented'")
+#   }
+
+#   segmented::slope(mod, APC = TRUE)[[time]] |>
+#     tibble::as_tibble() |>
+#     dplyr::rename(
+#       APC = 1,
+#       lci = 2,
+#       uci = 3
+#     ) |>
+
+#     # ---- APC ----
+#     dplyr::mutate(
+#       APC = scales::number(
+#         APC,
+#         accuracy = 10^-digits,
+#         decimal.mark = dec,
+#         suffix = "%"
+#       )
+#     ) |>
+
+#     # ---- 95% CI ----
+#     dplyr::mutate(
+#       CI = paste0(
+#         scales::number(
+#           lci,
+#           accuracy = 10^-digits,
+#           decimal.mark = dec,
+#           suffix = "%"
+#         ),
+#         "; ",
+#         scales::number(
+#           uci,
+#           accuracy = 10^-digits,
+#           decimal.mark = dec,
+#           suffix = "%"
+#         )
+#       )
+#     ) |>
+
+#     # ---- Output ----
+#     dplyr::select(APC, CI)
+# }
