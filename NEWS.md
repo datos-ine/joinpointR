@@ -1,9 +1,19 @@
-# joinpointR 0.5.0
-
+# joinpointR 0.6.0
 
 ## Improvements
-- Added gg_jpoint()
-- Improved summary_jp language handling
+
+- Added the `step` argument to `model_jp()`.
+- Added support for multiple grouping variables in `model_jp()`. Internally,
+  the function creates a grouping variable based on their interaction.
 
 ## Bug fixes
-- Fixed get_apc() output issues
+
+- Fixed output issues in `get_apc()`.
+
+
+# joinpointR 0.5.0
+
+## Improvements
+
+- Added `gg_jpoint()`.
+- Improved language handling in `summary_jp()`.
