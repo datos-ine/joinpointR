@@ -34,7 +34,8 @@
 #' levels(df$group)
 #'
 #' # Fit models
-#' mods <- model_jp(data = df, value = "rate", time = "year", group = "group", k = 2, step = TRUE, test = TRUE)
+#' mods <- model_jp(data = df, value = "rate", time = "year", group = "group",
+#'  k = 2, step = TRUE, test = TRUE)
 #'
 #' # Show the output of the first model
 #' mods$cyl_6
@@ -81,7 +82,7 @@ model_jp <- function(
     ) |>
 
     # Group data
-    dplyr::group_by(.jp_group)
+    dplyr::group_by(.data$.jp_group)
 
   # ---- Formula ----
   formula <- stats::reformulate(
@@ -91,8 +92,8 @@ model_jp <- function(
 
   # ---- Group names ----
   groups <- data |>
-    dplyr::distinct(.jp_group) |>
-    dplyr::pull(.jp_group)
+    dplyr::distinct(.data$.jp_group) |>
+    dplyr::pull(.data$.jp_group)
 
   # ---- Model fit ----
   if (step) {

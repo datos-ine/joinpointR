@@ -48,7 +48,8 @@ select(year, group, rate)
 levels(df$group)
 
 # Fit models
-mods <- model_jp(data = df, value = "rate", time = "year", group = "group", k = 2, step = TRUE, test = TRUE)
+mods <- model_jp(data = df, value = "rate", time = "year", group = "group",
+ k = 2, step = TRUE, test = TRUE)
 
 # Show the output of the first model
 mods$cyl_6
