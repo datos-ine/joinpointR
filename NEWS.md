@@ -1,6 +1,5 @@
-# joinpointR 0.6.1
+# joinpointR 0.6.2
 
-# joinpointR 0.6.0
 
 ## Improvements
 
@@ -9,7 +8,7 @@
   the function creates a grouping variable based on their interaction.
 
 ## Bug fixes
-
+- Fixed issues when merging grouping variables.
 - Fixed output issues in `get_apc()`.
 
 

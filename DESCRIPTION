@@ -1,7 +1,7 @@
 Package: joinpointR
 Type: Package
 Title: Tidy Tools for Joinpoint Regression Models
-Version: 0.6.1
+Version: 0.6.2
 Authors@R: 
     person(
         "Tamara", "Ricardo", , 
@@ -28,7 +28,8 @@ Imports:
     rlang,
     stringr,
     stats,
-    officer
+    officer,
+    forcats
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/datos-ine/joinpointR
 BugReports: https://github.com/datos-ine/joinpointR/issues
