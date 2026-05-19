@@ -57,7 +57,8 @@ mods <- model_jp(
   data = df,
   value = "rate",
   time = "year",
-  group = "group"
+  group = "group",
+  step = TRUE
 )
 
 # APC (only works when class segmented lm)
@@ -127,6 +128,7 @@ The package uses / El paquete utiliza:
 ## Notes / Notas
 * The response variable is log-transformed / La variable respuesta se transforma logarítmicamente
 * Model selection is based on the Bayesian Information Criterion (BIC) / La selección de modelos se basa en el Criterio de Información Bayesiano (BIC)
+* When `step = FALSE` fits a joinpoint regression model with the number of joinpoints specified in `k`/ Cuando `step = FALSE` ajusta una regresión joinpoint para el número de joinpoints especificados en `k`.
 * Results are returned in tidy format / Los resultados se devuelven en formato tidy para facilitar su uso en análisis reproducibles
 * Formatted tables are optional / La creación de tablas formateadas es opcional `(ft = TRUE)`
 

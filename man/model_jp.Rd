@@ -4,29 +4,34 @@
 \alias{model_jp}
 \title{Joinpoint Regression Models by Groups}
 \usage{
-model_jp(data, value, time, group, k = 2, test = TRUE)
+model_jp(data, value, time, group, k = 2, step = TRUE, test = TRUE)
 }
 \arguments{
 \item{data}{Data frame containing age-standardized rates.}
 
-\item{value}{Response variable (character).}
+\item{value}{Name of the response variable (character).}
 
-\item{time}{Time variable (character).}
+\item{time}{Name of the time variable (character).}
 
-\item{group}{Grouping variable (character).}
+\item{group}{Name of one or more grouping variables (character vector).}
 
-\item{k}{Maximum number of joinpoints (integer).}
+\item{k}{Maximum number of joinpoints to be estimated (integer).}
 
-\item{test}{Test for differences in the t-values of the slope (logical).}
+\item{step}{Use stepwise procedure to select the number of joinpoints (logical).}
+
+\item{test}{whether to test for differences in slope t-values during the stepwise selection
+procedure. Only used when \code{step = TRUE}.}
 }
 \value{
 A list of models by group.
 }
 \description{
-Fits segmented linear regression models by groups for age-standardized rates,
-using a stepwise procedure based on the Bayesian Information Criterion (BIC).
-Internally calls \code{segmented::selgmented()} and applies a log transformation
-to the response variable.
+Fits segmented linear regression models by groups for age-standardized rates
+using joinpoint regression. Models can be fitted using either a stepwise
+selection procedure based on the Bayesian Information Criterion (BIC) or a
+fixed number of joinpoints. Internally calls
+\code{segmented::selgmented()} or \code{segmented::segmented()} and applies
+a log transformation to the response variable.
 }
 \examples{
 # Generate example data
@@ -43,7 +48,7 @@ select(year, group, rate)
 levels(df$group)
 
 # Fit models
-mods <- model_jp(data = df, value = "rate", time = "year", group = "group", k = 2, test = TRUE)
+mods <- model_jp(data = df, value = "rate", time = "year", group = "group", k = 2, step = TRUE, test = TRUE)
 
 # Show the output of the first model
 mods$cyl_6

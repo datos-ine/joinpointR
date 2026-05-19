@@ -1,17 +1,20 @@
 #' Joinpoint Regression Models by Groups
 #'
-#' Fits segmented linear regression models by groups for age-standardized rates,
-#' using a stepwise procedure based on the Bayesian Information Criterion (BIC).
-#' Internally calls \code{segmented::selgmented()} and applies a log transformation
-#' to the response variable.
+#' Fits segmented linear regression models by groups for age-standardized rates
+#' using joinpoint regression. Models can be fitted using either a stepwise
+#' selection procedure based on the Bayesian Information Criterion (BIC) or a
+#' fixed number of joinpoints. Internally calls
+#' \code{segmented::selgmented()} or \code{segmented::segmented()} and applies
+#' a log transformation to the response variable.
 #'
 #' @param data Data frame containing age-standardized rates.
-#' @param value Response variable (character).
-#' @param time Time variable (character).
-#' @param group Grouping variable (character).
-#' @param k Maximum number of joinpoints (integer).
-#' @param test Test for differences in the t-values of the slope (logical).
-#'
+#' @param value Name of the response variable (character).
+#' @param time Name of the time variable (character).
+#' @param group Name of one or more grouping variables (character vector).
+#' @param k Maximum number of joinpoints to be estimated (integer).
+#' @param step Use stepwise procedure to select the number of joinpoints (logical).
+#' @param test whether to test for differences in slope t-values during the stepwise selection
+#' procedure. Only used when \code{step = TRUE}.
 #' @return A list of models by group.
 #' @author Tamara Ricardo
 #' @export
@@ -31,39 +34,91 @@
 #' levels(df$group)
 #'
 #' # Fit models
-#' mods <- model_jp(data = df, value = "rate", time = "year", group = "group", k = 2, test = TRUE)
+#' mods <- model_jp(data = df, value = "rate", time = "year", group = "group", k = 2, step = TRUE, test = TRUE)
 #'
 #' # Show the output of the first model
 #' mods$cyl_6
 #' summary(mods$cyl_6)
 
-model_jp <- function(data, value, time, group, k = 2, test = TRUE) {
-  # ---- Validations ----
+model_jp <- function(
+  data,
+  value,
+  time,
+  group,
+  k = 2,
+  step = TRUE,
+  test = TRUE
+) {
+  # ---- Validate response variable ----
   if (any(data[[value]] <= 0, na.rm = TRUE)) {
     stop("The response variable must be > 0 to apply log() transformation")
   }
 
+  # ---- Validate grouping variable/s ----
+  if (!all(group %in% names(data))) {
+    stop("Some grouping variables are not present in data")
+  }
+
+  # ---- Validate test and step arguments ----
+  if (!step && test) {
+    warning("'test' is ignored when step = FALSE")
+  }
+
+  # ---- Prepare data ----
+  data <- data |>
+    # Transform the response variable
+    dplyr::mutate(
+      .jp_log_value = log(.data[[value]])
+    ) |>
+
+    # Create grouping variable
+    dplyr::mutate(
+      .jp_group = interaction(
+        !!!rlang::syms(group),
+        sep = "_",
+        drop = TRUE
+      )
+    ) |>
+
+    # Group data
+    dplyr::group_by(.jp_group)
+
   # ---- Formula ----
   formula <- stats::reformulate(
     termlabels = time,
-    response = paste0("log(", value, ")")
+    response = ".jp_log_value"
   )
 
-  # ---- Model fit ----
-  groups <- unique(data[[group]])
+  # ---- Group names ----
+  groups <- data |>
+    dplyr::distinct(.jp_group) |>
+    dplyr::pull(.jp_group)
 
-  mods <- data |>
-    dplyr::group_by(.data[[group]]) |>
-    dplyr::group_map(
-      ~ segmented::selgmented(
-        olm = stats::lm(formula, data = .x),
-        Kmax = k,
-        type = "bic",
-        th = 2,
-        stop.if = 4,
-        check.dslope = test
+  # ---- Model fit ----
+  if (step) {
+    mods <- data |>
+      dplyr::group_map(
+        ~ segmented::selgmented(
+          olm = stats::lm(formula, data = .x),
+          Kmax = k,
+          type = "bic",
+          th = 2,
+          stop.if = 4,
+          check.dslope = test
+        )
       )
-    )
+  } else {
+    mods <- data |>
+      dplyr::group_map(
+        ~ segmented::segmented(
+          obj = stats::lm(formula, data = .x),
+          seg.Z = stats::as.formula(
+            paste0("~", time)
+          ),
+          npsi = k
+        )
+      )
+  }
 
   # ---- Name models ----
   rlang::set_names(mods, groups)
