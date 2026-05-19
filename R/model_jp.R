@@ -74,10 +74,11 @@ model_jp <- function(
 
     # Create grouping variable
     dplyr::mutate(
-      .jp_group = interaction(
-        !!!rlang::syms(group),
-        sep = "_",
-        drop = TRUE
+      .jp_group = forcats::fct_drop(
+        forcats::fct_cross(
+          !!!rlang::syms(group),
+          sep = "_"
+        )
       )
     ) |>
 
