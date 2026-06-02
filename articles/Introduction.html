@@ -83,16 +83,9 @@ regression models with a log-response by levels of one or more
 categorical variable(s). For the examples, we are going to use a
 simulated dataset with the HIV rates by sex in five regions</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load required packages</span></span>
+<code class="sourceCode R"><span><span class="co"># id: example-data</span></span>
+<span><span class="co"># Load required packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/datos-ine/joinpointR" class="external-link">joinpointR</a></span><span class="op">)</span></span>
@@ -131,8 +124,7 @@ simulated dataset with the HIV rates by sex in five regions</p>
 <span>      <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">0.8</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">region</span>, <span class="va">sex</span>, <span class="va">hiv_rate</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Joining with `by = join_by(region)`</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">region</span>, <span class="va">sex</span>, <span class="va">hiv_rate</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="stepwise-joinpoint-regression-by-sex">Stepwise joinpoint regression by sex<a class="anchor" aria-label="anchor" href="#stepwise-joinpoint-regression-by-sex"></a>
 </h3>
@@ -340,48 +332,48 @@ global trend even when no significant joinpoints were detected.</p>
 <span><span class="va">mod2</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/summary_jp.html">summary_jp</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">1</span>, var1 <span class="op">=</span> <span class="st">"Sex"</span>, ft <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="tabwid">
-<style>.cl-ed475828{}.cl-ed390624{font-family:'Calibri';font-size:12pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ed390638{font-family:'Calibri';font-size:12pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ed3cb35a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ed3cebfe{width:0.897in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cebff{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec08{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec09{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec12{width:0.985in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec13{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec1c{width:0.897in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec1d{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec26{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec30{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec3a{width:0.985in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec3b{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec3c{width:0.897in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec44{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec45{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec46{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec4e{width:0.985in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec4f{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec50{width:0.897in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec58{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec59{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec62{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec63{width:0.985in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed3cec6c{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table data-quarto-disable-processing="true" class="table cl-ed475828">
+<style>.cl-822fed68{}.cl-82221a44{font-family:'Calibri';font-size:12pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-82221a58{font-family:'Calibri';font-size:12pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8225a614{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8225de5e{width:0.897in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de68{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de72{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de73{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de74{width:0.985in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de7c{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de7d{width:0.897in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de86{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de87{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de90{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de91{width:0.985in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de92{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de93{width:0.897in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de9a{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225de9b{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225dea4{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225dea5{width:0.985in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225dea6{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225dea7{width:0.897in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225deae{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225deaf{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225deb8{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225deb9{width:0.985in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8225dec2{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table data-quarto-disable-processing="true" class="table cl-822fed68">
 <thead><tr style="overflow-wrap:break-word;">
-<th class="cl-ed3cebfe"><p class="cl-ed3cb35a"><span class="cl-ed390624">Sex</span></p></th>
-<th class="cl-ed3cebff"><p class="cl-ed3cb35a"><span class="cl-ed390624">JP</span></p></th>
-<th class="cl-ed3cec08"><p class="cl-ed3cb35a"><span class="cl-ed390624">Period</span></p></th>
-<th class="cl-ed3cec09"><p class="cl-ed3cb35a"><span class="cl-ed390624">APC</span></p></th>
-<th class="cl-ed3cec12"><p class="cl-ed3cb35a"><span class="cl-ed390624">CI</span></p></th>
-<th class="cl-ed3cec13"><p class="cl-ed3cb35a"><span class="cl-ed390624">AAPC</span></p></th>
+<th class="cl-8225de5e"><p class="cl-8225a614"><span class="cl-82221a44">Sex</span></p></th>
+<th class="cl-8225de68"><p class="cl-8225a614"><span class="cl-82221a44">JP</span></p></th>
+<th class="cl-8225de72"><p class="cl-8225a614"><span class="cl-82221a44">Period</span></p></th>
+<th class="cl-8225de73"><p class="cl-8225a614"><span class="cl-82221a44">APC</span></p></th>
+<th class="cl-8225de74"><p class="cl-8225a614"><span class="cl-82221a44">CI</span></p></th>
+<th class="cl-8225de7c"><p class="cl-8225a614"><span class="cl-82221a44">AAPC</span></p></th>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-ed3cec1c"><p class="cl-ed3cb35a"><span class="cl-ed390638">Male</span></p></td>
-<td class="cl-ed3cec1d"><p class="cl-ed3cb35a"><span class="cl-ed390638">1</span></p></td>
-<td class="cl-ed3cec26"><p class="cl-ed3cb35a"><span class="cl-ed390638">2015-2019</span></p></td>
-<td class="cl-ed3cec30"><p class="cl-ed3cb35a"><span class="cl-ed390638">-3.1</span></p></td>
-<td class="cl-ed3cec3a"><p class="cl-ed3cb35a"><span class="cl-ed390638">-6.1; 0</span></p></td>
-<td class="cl-ed3cec3b"><p class="cl-ed3cb35a"><span class="cl-ed390638">-1.2% *</span></p></td>
+<td rowspan="2" class="cl-8225de7d"><p class="cl-8225a614"><span class="cl-82221a58">Male</span></p></td>
+<td class="cl-8225de86"><p class="cl-8225a614"><span class="cl-82221a58">1</span></p></td>
+<td class="cl-8225de87"><p class="cl-8225a614"><span class="cl-82221a58">2015-2019</span></p></td>
+<td class="cl-8225de90"><p class="cl-8225a614"><span class="cl-82221a58">-3.1</span></p></td>
+<td class="cl-8225de91"><p class="cl-8225a614"><span class="cl-82221a58">-6.1; 0</span></p></td>
+<td class="cl-8225de92"><p class="cl-8225a614"><span class="cl-82221a58">-1.2% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed3cec1d"><p class="cl-ed3cb35a"><span class="cl-ed390638"></span></p></td>
-<td class="cl-ed3cec26"><p class="cl-ed3cb35a"><span class="cl-ed390638">2019-2024</span></p></td>
-<td class="cl-ed3cec30"><p class="cl-ed3cb35a"><span class="cl-ed390638">0.3</span></p></td>
-<td class="cl-ed3cec3a"><p class="cl-ed3cb35a"><span class="cl-ed390638">-2.8; 3.6</span></p></td>
-<td class="cl-ed3cec3b"><p class="cl-ed3cb35a"><span class="cl-ed390638"></span></p></td>
+<td class="cl-8225de86"><p class="cl-8225a614"><span class="cl-82221a58"></span></p></td>
+<td class="cl-8225de87"><p class="cl-8225a614"><span class="cl-82221a58">2019-2024</span></p></td>
+<td class="cl-8225de90"><p class="cl-8225a614"><span class="cl-82221a58">0.3</span></p></td>
+<td class="cl-8225de91"><p class="cl-8225a614"><span class="cl-82221a58">-2.8; 3.6</span></p></td>
+<td class="cl-8225de92"><p class="cl-8225a614"><span class="cl-82221a58"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-ed3cec3c"><p class="cl-ed3cb35a"><span class="cl-ed390638">Female</span></p></td>
-<td class="cl-ed3cec1d"><p class="cl-ed3cb35a"><span class="cl-ed390638">1</span></p></td>
-<td class="cl-ed3cec26"><p class="cl-ed3cb35a"><span class="cl-ed390638">2015-2019</span></p></td>
-<td class="cl-ed3cec30"><p class="cl-ed3cb35a"><span class="cl-ed390638">-2.8</span></p></td>
-<td class="cl-ed3cec3a"><p class="cl-ed3cb35a"><span class="cl-ed390638">-5.4; 0</span></p></td>
-<td class="cl-ed3cec3b"><p class="cl-ed3cb35a"><span class="cl-ed390638">-1.1% *</span></p></td>
+<td rowspan="2" class="cl-8225de93"><p class="cl-8225a614"><span class="cl-82221a58">Female</span></p></td>
+<td class="cl-8225de86"><p class="cl-8225a614"><span class="cl-82221a58">1</span></p></td>
+<td class="cl-8225de87"><p class="cl-8225a614"><span class="cl-82221a58">2015-2019</span></p></td>
+<td class="cl-8225de90"><p class="cl-8225a614"><span class="cl-82221a58">-2.8</span></p></td>
+<td class="cl-8225de91"><p class="cl-8225a614"><span class="cl-82221a58">-5.4; 0</span></p></td>
+<td class="cl-8225de92"><p class="cl-8225a614"><span class="cl-82221a58">-1.1% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed3cec44"><p class="cl-ed3cb35a"><span class="cl-ed390638"></span></p></td>
-<td class="cl-ed3cec45"><p class="cl-ed3cb35a"><span class="cl-ed390638">2019-2024</span></p></td>
-<td class="cl-ed3cec46"><p class="cl-ed3cb35a"><span class="cl-ed390638">0.3</span></p></td>
-<td class="cl-ed3cec4e"><p class="cl-ed3cb35a"><span class="cl-ed390638">-2.5; 3.1</span></p></td>
-<td class="cl-ed3cec4f"><p class="cl-ed3cb35a"><span class="cl-ed390638"></span></p></td>
+<td class="cl-8225de9a"><p class="cl-8225a614"><span class="cl-82221a58"></span></p></td>
+<td class="cl-8225de9b"><p class="cl-8225a614"><span class="cl-82221a58">2019-2024</span></p></td>
+<td class="cl-8225dea4"><p class="cl-8225a614"><span class="cl-82221a58">0.3</span></p></td>
+<td class="cl-8225dea5"><p class="cl-8225a614"><span class="cl-82221a58">-2.5; 3.1</span></p></td>
+<td class="cl-8225dea6"><p class="cl-8225a614"><span class="cl-82221a58"></span></p></td>
 </tr>
-<tr style="overflow-wrap:break-word;"><td colspan="6" class="cl-ed3cec50"><p class="cl-ed3cb35a"><span class="cl-ed390638">* p &lt; 0.05</span><br><span class="cl-ed390638">JP: number of joinpoints; APC: annual percent change; CI: 95% confidence interval; AAPC: average annual percent change (95% CI).</span></p></td></tr>
+<tr style="overflow-wrap:break-word;"><td colspan="6" class="cl-8225dea7"><p class="cl-8225a614"><span class="cl-82221a58">* p &lt; 0.05</span><br><span class="cl-82221a58">JP: number of joinpoints; APC: annual percent change; CI: 95% confidence interval; AAPC: average annual percent change (95% CI).</span></p></td></tr>
 </tbody>
 </table>
 </div>
@@ -393,185 +385,185 @@ global trend even when no significant joinpoints were detected.</p>
 <code class="sourceCode R"><span><span class="va">mod3</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/summary_jp.html">summary_jp</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">1</span>, var1 <span class="op">=</span> <span class="st">"Region"</span>, var2 <span class="op">=</span> <span class="st">"Sex"</span>, ft <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="tabwid">
-<style>.cl-ed912a34{}.cl-ed87548c{font-family:'Calibri';font-size:12pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ed8754a0{font-family:'Calibri';font-size:12pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ed8bdbc4{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ed8c04be{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04c8{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04d2{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04d3{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04d4{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04dc{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04e6{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04e7{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04f0{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04f1{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04f2{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04fa{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c04fb{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0504{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0505{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c050e{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c050f{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0518{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0519{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0522{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0523{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c052c{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c052d{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c052e{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0536{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0537{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0538{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0539{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0540{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0541{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0542{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c054a{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0554{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0555{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed8c0556{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table data-quarto-disable-processing="true" class="table cl-ed912a34">
+<style>.cl-82766662{}.cl-826d3bdc{font-family:'Calibri';font-size:12pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-826d3bf0{font-family:'Calibri';font-size:12pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-82715118{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-82717922{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717936{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717937{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717938{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717940{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717941{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271794a{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271794b{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717954{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717955{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271795e{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271795f{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717960{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717968{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717969{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271796a{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271796b{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717972{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717973{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717974{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271797c{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271797d{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271797e{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717986{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717987{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717988{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717990{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717991{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82717992{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271799a{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271799b{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271799c{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8271799d{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-827179a4{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-827179a5{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table data-quarto-disable-processing="true" class="table cl-82766662">
 <thead><tr style="overflow-wrap:break-word;">
-<th class="cl-ed8c04be"><p class="cl-ed8bdbc4"><span class="cl-ed87548c">Region</span></p></th>
-<th class="cl-ed8c04c8"><p class="cl-ed8bdbc4"><span class="cl-ed87548c">Sex</span></p></th>
-<th class="cl-ed8c04d2"><p class="cl-ed8bdbc4"><span class="cl-ed87548c">JP</span></p></th>
-<th class="cl-ed8c04d3"><p class="cl-ed8bdbc4"><span class="cl-ed87548c">Period</span></p></th>
-<th class="cl-ed8c04d4"><p class="cl-ed8bdbc4"><span class="cl-ed87548c">APC</span></p></th>
-<th class="cl-ed8c04dc"><p class="cl-ed8bdbc4"><span class="cl-ed87548c">CI</span></p></th>
-<th class="cl-ed8c04e6"><p class="cl-ed8bdbc4"><span class="cl-ed87548c">AAPC</span></p></th>
+<th class="cl-82717922"><p class="cl-82715118"><span class="cl-826d3bdc">Region</span></p></th>
+<th class="cl-82717936"><p class="cl-82715118"><span class="cl-826d3bdc">Sex</span></p></th>
+<th class="cl-82717937"><p class="cl-82715118"><span class="cl-826d3bdc">JP</span></p></th>
+<th class="cl-82717938"><p class="cl-82715118"><span class="cl-826d3bdc">Period</span></p></th>
+<th class="cl-82717940"><p class="cl-82715118"><span class="cl-826d3bdc">APC</span></p></th>
+<th class="cl-82717941"><p class="cl-82715118"><span class="cl-826d3bdc">CI</span></p></th>
+<th class="cl-8271794a"><p class="cl-82715118"><span class="cl-826d3bdc">AAPC</span></p></th>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="11" class="cl-ed8c04e7"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">Male</span></p></td>
-<td rowspan="3" class="cl-ed8c04f0"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">North</span></p></td>
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2</span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2015-2018</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-5.0</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-6; -3.9</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-0.4% *</span></p></td>
+<td rowspan="11" class="cl-8271794b"><p class="cl-82715118"><span class="cl-826d3bf0">Male</span></p></td>
+<td rowspan="3" class="cl-82717954"><p class="cl-82715118"><span class="cl-826d3bf0">North</span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0">2</span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2015-2018</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">-5.0</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">-6; -3.9</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0">-0.4% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2018-2019</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-6.7</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-8.8; -4.7</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2018-2019</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">-6.7</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">-8.8; -4.7</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2019-2024</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">4.2</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">3.7; 4.7</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2019-2024</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">4.2</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">3.7; 4.7</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-ed8c04f0"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">Central</span></p></td>
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1</span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2015-2019</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-7.7</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-8.2; -7.2</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-2.2% *</span></p></td>
+<td rowspan="2" class="cl-82717954"><p class="cl-82715118"><span class="cl-826d3bf0">Central</span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0">1</span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2015-2019</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">-7.7</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">-8.2; -7.2</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0">-2.2% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2019-2024</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2.4</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1.9; 2.9</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2019-2024</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">2.4</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">1.9; 2.9</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-ed8c04f0"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">South</span></p></td>
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1</span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2015-2019</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-6.9</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-8.3; -5.5</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-0.6% *</span></p></td>
+<td rowspan="2" class="cl-82717954"><p class="cl-82715118"><span class="cl-826d3bf0">South</span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0">1</span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2015-2019</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">-6.9</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">-8.3; -5.5</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0">-0.6% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2019-2024</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">4.8</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">4; 5.6</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2019-2024</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">4.8</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">4; 5.6</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-ed8c04f0"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">East</span></p></td>
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1</span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2015-2019</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">3.2</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2.6; 3.7</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-0.7% *</span></p></td>
+<td rowspan="2" class="cl-82717954"><p class="cl-82715118"><span class="cl-826d3bf0">East</span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0">1</span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2015-2019</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">3.2</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">2.6; 3.7</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0">-0.7% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2019-2024</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-3.7</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-4.2; -3.2</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2019-2024</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">-3.7</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">-4.2; -3.2</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-ed8c04f0"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">West</span></p></td>
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1</span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2015-2019</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2.0</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1.2; 2.8</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-2.1% *</span></p></td>
+<td rowspan="2" class="cl-82717954"><p class="cl-82715118"><span class="cl-826d3bf0">West</span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0">1</span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2015-2019</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">2.0</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">1.2; 2.8</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0">-2.1% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2019-2024</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-5.5</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-6.3; -4.8</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2019-2024</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">-5.5</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">-6.3; -4.8</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="11" class="cl-ed8c0505"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">Female</span></p></td>
-<td rowspan="2" class="cl-ed8c050e"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">North</span></p></td>
-<td class="cl-ed8c050f"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1</span></p></td>
-<td class="cl-ed8c0518"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2015-2019</span></p></td>
-<td class="cl-ed8c0519"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-4.9</span></p></td>
-<td class="cl-ed8c0522"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-5.5; -4.4</span></p></td>
-<td class="cl-ed8c0523"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-0.5% *</span></p></td>
+<td rowspan="11" class="cl-82717969"><p class="cl-82715118"><span class="cl-826d3bf0">Female</span></p></td>
+<td rowspan="2" class="cl-8271796a"><p class="cl-82715118"><span class="cl-826d3bf0">North</span></p></td>
+<td class="cl-8271796b"><p class="cl-82715118"><span class="cl-826d3bf0">1</span></p></td>
+<td class="cl-82717972"><p class="cl-82715118"><span class="cl-826d3bf0">2015-2019</span></p></td>
+<td class="cl-82717973"><p class="cl-82715118"><span class="cl-826d3bf0">-4.9</span></p></td>
+<td class="cl-82717974"><p class="cl-82715118"><span class="cl-826d3bf0">-5.5; -4.4</span></p></td>
+<td class="cl-8271797c"><p class="cl-82715118"><span class="cl-826d3bf0">-0.5% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2019-2024</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">3.2</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2.7; 3.8</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2019-2024</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">3.2</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">2.7; 3.8</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="3" class="cl-ed8c04f0"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">Central</span></p></td>
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2</span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2015-2019</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-6.7</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-7.5; -5.9</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-2.0% *</span></p></td>
+<td rowspan="3" class="cl-82717954"><p class="cl-82715118"><span class="cl-826d3bf0">Central</span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0">2</span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2015-2019</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">-6.7</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">-7.5; -5.9</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0">-2.0% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2019-2021</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">0.9</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-0.4; 2.2</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2019-2021</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">0.9</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">-0.4; 2.2</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2021-2024</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2.5</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1.1; 3.8</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2021-2024</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">2.5</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">1.1; 3.8</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-ed8c04f0"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">South</span></p></td>
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1</span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2015-2019</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-6.0</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-6.6; -5.4</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-0.4% *</span></p></td>
+<td rowspan="2" class="cl-82717954"><p class="cl-82715118"><span class="cl-826d3bf0">South</span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0">1</span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2015-2019</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">-6.0</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">-6.6; -5.4</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0">-0.4% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2019-2024</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">4.3</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">3.7; 5</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2019-2024</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">4.3</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">3.7; 5</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-ed8c04f0"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">East</span></p></td>
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1</span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2015-2019</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2.3</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1.8; 2.7</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-0.9% *</span></p></td>
+<td rowspan="2" class="cl-82717954"><p class="cl-82715118"><span class="cl-826d3bf0">East</span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0">1</span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2015-2019</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">2.3</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">1.8; 2.7</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0">-0.9% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2019-2024</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-3.5</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-4; -3.1</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2019-2024</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">-3.5</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">-4; -3.1</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-ed8c052c"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">West</span></p></td>
-<td class="cl-ed8c04f1"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1</span></p></td>
-<td class="cl-ed8c04f2"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2015-2019</span></p></td>
-<td class="cl-ed8c04fa"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1.9</span></p></td>
-<td class="cl-ed8c04fb"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">1.4; 2.5</span></p></td>
-<td class="cl-ed8c0504"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-1.8% *</span></p></td>
+<td rowspan="2" class="cl-8271797d"><p class="cl-82715118"><span class="cl-826d3bf0">West</span></p></td>
+<td class="cl-82717955"><p class="cl-82715118"><span class="cl-826d3bf0">1</span></p></td>
+<td class="cl-8271795e"><p class="cl-82715118"><span class="cl-826d3bf0">2015-2019</span></p></td>
+<td class="cl-8271795f"><p class="cl-82715118"><span class="cl-826d3bf0">1.9</span></p></td>
+<td class="cl-82717960"><p class="cl-82715118"><span class="cl-826d3bf0">1.4; 2.5</span></p></td>
+<td class="cl-82717968"><p class="cl-82715118"><span class="cl-826d3bf0">-1.8% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-ed8c052e"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
-<td class="cl-ed8c0536"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">2019-2024</span></p></td>
-<td class="cl-ed8c0537"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-4.6</span></p></td>
-<td class="cl-ed8c0538"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">-4.9; -4.3</span></p></td>
-<td class="cl-ed8c0539"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0"></span></p></td>
+<td class="cl-82717986"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
+<td class="cl-82717987"><p class="cl-82715118"><span class="cl-826d3bf0">2019-2024</span></p></td>
+<td class="cl-82717988"><p class="cl-82715118"><span class="cl-826d3bf0">-4.6</span></p></td>
+<td class="cl-82717990"><p class="cl-82715118"><span class="cl-826d3bf0">-4.9; -4.3</span></p></td>
+<td class="cl-82717991"><p class="cl-82715118"><span class="cl-826d3bf0"></span></p></td>
 </tr>
-<tr style="overflow-wrap:break-word;"><td colspan="7" class="cl-ed8c0540"><p class="cl-ed8bdbc4"><span class="cl-ed8754a0">* p &lt; 0.05</span><br><span class="cl-ed8754a0">JP: number of joinpoints; APC: annual percent change; CI: 95% confidence interval; AAPC: average annual percent change (95% CI).</span></p></td></tr>
+<tr style="overflow-wrap:break-word;"><td colspan="7" class="cl-82717992"><p class="cl-82715118"><span class="cl-826d3bf0">* p &lt; 0.05</span><br><span class="cl-826d3bf0">JP: number of joinpoints; APC: annual percent change; CI: 95% confidence interval; AAPC: average annual percent change (95% CI).</span></p></td></tr>
 </tbody>
 </table>
 </div>
@@ -580,185 +572,185 @@ global trend even when no significant joinpoints were detected.</p>
 <code class="sourceCode R"><span><span class="va">mod3</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/summary_jp.html">summary_jp</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">1</span>, var1 <span class="op">=</span> <span class="st">"Región"</span>, var2 <span class="op">=</span> <span class="st">"Sexo"</span>, ft <span class="op">=</span> <span class="cn">TRUE</span>, lan <span class="op">=</span> <span class="st">"es"</span><span class="op">)</span></span></code></pre></div>
 <div class="tabwid">
-<style>.cl-edd7d7b8{}.cl-edcf3036{font-family:'Calibri';font-size:12pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-edcf3040{font-family:'Calibri';font-size:12pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-edd29366{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-edd2bb20{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb2a{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb34{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb35{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb36{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb3e{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb3f{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb48{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb49{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb4a{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb52{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb53{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb54{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb5c{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb5d{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb5e{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb66{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb67{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb70{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb71{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb72{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb7a{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb7b{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb84{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb85{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb8e{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb8f{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-edd2bb90{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table data-quarto-disable-processing="true" class="table cl-edd7d7b8">
+<style>.cl-82bd6dbe{}.cl-82b3a98c{font-family:'Calibri';font-size:12pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-82b3a996{font-family:'Calibri';font-size:12pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-82b721de{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-82b7498e{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b74998{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749a2{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749ac{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749ad{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749ae{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749b6{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749b7{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749c0{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749c1{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749c2{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749ca{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749cb{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749d4{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749d5{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749de{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749df{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749e8{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749e9{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749ea{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749f2{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749fc{width:0.936in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749fd{width:0.892in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b749fe{width:0.469in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b74a06{width:1.194in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b74a07{width:0.659in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b74a10{width:1.045in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82b74a11{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table data-quarto-disable-processing="true" class="table cl-82bd6dbe">
 <thead><tr style="overflow-wrap:break-word;">
-<th class="cl-edd2bb20"><p class="cl-edd29366"><span class="cl-edcf3036">Región</span></p></th>
-<th class="cl-edd2bb2a"><p class="cl-edd29366"><span class="cl-edcf3036">Sexo</span></p></th>
-<th class="cl-edd2bb34"><p class="cl-edd29366"><span class="cl-edcf3036">JP</span></p></th>
-<th class="cl-edd2bb35"><p class="cl-edd29366"><span class="cl-edcf3036">Periodo</span></p></th>
-<th class="cl-edd2bb36"><p class="cl-edd29366"><span class="cl-edcf3036">APC</span></p></th>
-<th class="cl-edd2bb3e"><p class="cl-edd29366"><span class="cl-edcf3036">IC</span></p></th>
-<th class="cl-edd2bb3f"><p class="cl-edd29366"><span class="cl-edcf3036">AAPC</span></p></th>
+<th class="cl-82b7498e"><p class="cl-82b721de"><span class="cl-82b3a98c">Región</span></p></th>
+<th class="cl-82b74998"><p class="cl-82b721de"><span class="cl-82b3a98c">Sexo</span></p></th>
+<th class="cl-82b749a2"><p class="cl-82b721de"><span class="cl-82b3a98c">JP</span></p></th>
+<th class="cl-82b749ac"><p class="cl-82b721de"><span class="cl-82b3a98c">Periodo</span></p></th>
+<th class="cl-82b749ad"><p class="cl-82b721de"><span class="cl-82b3a98c">APC</span></p></th>
+<th class="cl-82b749ae"><p class="cl-82b721de"><span class="cl-82b3a98c">IC</span></p></th>
+<th class="cl-82b749b6"><p class="cl-82b721de"><span class="cl-82b3a98c">AAPC</span></p></th>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="11" class="cl-edd2bb48"><p class="cl-edd29366"><span class="cl-edcf3040">Male</span></p></td>
-<td rowspan="3" class="cl-edd2bb49"><p class="cl-edd29366"><span class="cl-edcf3040">North</span></p></td>
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040">2</span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2015-2018</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">-5,0</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">-6; -3.9</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040">-0,4% *</span></p></td>
+<td rowspan="11" class="cl-82b749b7"><p class="cl-82b721de"><span class="cl-82b3a996">Male</span></p></td>
+<td rowspan="3" class="cl-82b749c0"><p class="cl-82b721de"><span class="cl-82b3a996">North</span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996">2</span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2015-2018</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">-5,0</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">-6; -3.9</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996">-0,4% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2018-2019</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">-6,7</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">-8.8; -4.7</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2018-2019</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">-6,7</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">-8.8; -4.7</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2019-2024</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">4,2</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">3.7; 4.7</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2019-2024</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">4,2</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">3.7; 4.7</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-edd2bb49"><p class="cl-edd29366"><span class="cl-edcf3040">Central</span></p></td>
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040">1</span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2015-2019</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">-7,7</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">-8.2; -7.2</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040">-2,2% *</span></p></td>
+<td rowspan="2" class="cl-82b749c0"><p class="cl-82b721de"><span class="cl-82b3a996">Central</span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996">1</span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2015-2019</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">-7,7</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">-8.2; -7.2</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996">-2,2% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2019-2024</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">2,4</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">1.9; 2.9</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2019-2024</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">2,4</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">1.9; 2.9</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-edd2bb49"><p class="cl-edd29366"><span class="cl-edcf3040">South</span></p></td>
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040">1</span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2015-2019</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">-6,9</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">-8.3; -5.5</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040">-0,6% *</span></p></td>
+<td rowspan="2" class="cl-82b749c0"><p class="cl-82b721de"><span class="cl-82b3a996">South</span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996">1</span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2015-2019</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">-6,9</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">-8.3; -5.5</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996">-0,6% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2019-2024</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">4,8</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">4; 5.6</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2019-2024</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">4,8</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">4; 5.6</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-edd2bb49"><p class="cl-edd29366"><span class="cl-edcf3040">East</span></p></td>
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040">1</span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2015-2019</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">3,2</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">2.6; 3.7</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040">-0,7% *</span></p></td>
+<td rowspan="2" class="cl-82b749c0"><p class="cl-82b721de"><span class="cl-82b3a996">East</span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996">1</span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2015-2019</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">3,2</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">2.6; 3.7</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996">-0,7% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2019-2024</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">-3,7</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">-4.2; -3.2</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2019-2024</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">-3,7</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">-4.2; -3.2</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-edd2bb49"><p class="cl-edd29366"><span class="cl-edcf3040">West</span></p></td>
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040">1</span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2015-2019</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">2,0</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">1.2; 2.8</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040">-2,1% *</span></p></td>
+<td rowspan="2" class="cl-82b749c0"><p class="cl-82b721de"><span class="cl-82b3a996">West</span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996">1</span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2015-2019</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">2,0</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">1.2; 2.8</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996">-2,1% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2019-2024</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">-5,5</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">-6.3; -4.8</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2019-2024</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">-5,5</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">-6.3; -4.8</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="11" class="cl-edd2bb5d"><p class="cl-edd29366"><span class="cl-edcf3040">Female</span></p></td>
-<td rowspan="2" class="cl-edd2bb49"><p class="cl-edd29366"><span class="cl-edcf3040">North</span></p></td>
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040">1</span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2015-2019</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">-4,9</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">-5.5; -4.4</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040">-0,5% *</span></p></td>
+<td rowspan="11" class="cl-82b749d5"><p class="cl-82b721de"><span class="cl-82b3a996">Female</span></p></td>
+<td rowspan="2" class="cl-82b749c0"><p class="cl-82b721de"><span class="cl-82b3a996">North</span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996">1</span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2015-2019</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">-4,9</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">-5.5; -4.4</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996">-0,5% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2019-2024</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">3,2</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">2.7; 3.8</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2019-2024</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">3,2</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">2.7; 3.8</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="3" class="cl-edd2bb49"><p class="cl-edd29366"><span class="cl-edcf3040">Central</span></p></td>
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040">2</span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2015-2019</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">-6,7</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">-7.5; -5.9</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040">-2,0% *</span></p></td>
+<td rowspan="3" class="cl-82b749c0"><p class="cl-82b721de"><span class="cl-82b3a996">Central</span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996">2</span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2015-2019</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">-6,7</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">-7.5; -5.9</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996">-2,0% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2019-2021</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">0,9</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">-0.4; 2.2</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2019-2021</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">0,9</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">-0.4; 2.2</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2021-2024</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">2,5</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">1.1; 3.8</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2021-2024</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">2,5</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">1.1; 3.8</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-edd2bb49"><p class="cl-edd29366"><span class="cl-edcf3040">South</span></p></td>
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040">1</span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2015-2019</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">-6,0</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">-6.6; -5.4</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040">-0,4% *</span></p></td>
+<td rowspan="2" class="cl-82b749c0"><p class="cl-82b721de"><span class="cl-82b3a996">South</span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996">1</span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2015-2019</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">-6,0</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">-6.6; -5.4</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996">-0,4% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2019-2024</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">4,3</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">3.7; 5</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2019-2024</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">4,3</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">3.7; 5</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-edd2bb49"><p class="cl-edd29366"><span class="cl-edcf3040">East</span></p></td>
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040">1</span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2015-2019</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">2,3</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">1.8; 2.7</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040">-0,9% *</span></p></td>
+<td rowspan="2" class="cl-82b749c0"><p class="cl-82b721de"><span class="cl-82b3a996">East</span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996">1</span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2015-2019</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">2,3</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">1.8; 2.7</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996">-0,9% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2019-2024</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">-3,5</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">-4; -3.1</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2019-2024</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">-3,5</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">-4; -3.1</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-edd2bb5e"><p class="cl-edd29366"><span class="cl-edcf3040">West</span></p></td>
-<td class="cl-edd2bb4a"><p class="cl-edd29366"><span class="cl-edcf3040">1</span></p></td>
-<td class="cl-edd2bb52"><p class="cl-edd29366"><span class="cl-edcf3040">2015-2019</span></p></td>
-<td class="cl-edd2bb53"><p class="cl-edd29366"><span class="cl-edcf3040">1,9</span></p></td>
-<td class="cl-edd2bb54"><p class="cl-edd29366"><span class="cl-edcf3040">1.4; 2.5</span></p></td>
-<td class="cl-edd2bb5c"><p class="cl-edd29366"><span class="cl-edcf3040">-1,8% *</span></p></td>
+<td rowspan="2" class="cl-82b749de"><p class="cl-82b721de"><span class="cl-82b3a996">West</span></p></td>
+<td class="cl-82b749c1"><p class="cl-82b721de"><span class="cl-82b3a996">1</span></p></td>
+<td class="cl-82b749c2"><p class="cl-82b721de"><span class="cl-82b3a996">2015-2019</span></p></td>
+<td class="cl-82b749ca"><p class="cl-82b721de"><span class="cl-82b3a996">1,9</span></p></td>
+<td class="cl-82b749cb"><p class="cl-82b721de"><span class="cl-82b3a996">1.4; 2.5</span></p></td>
+<td class="cl-82b749d4"><p class="cl-82b721de"><span class="cl-82b3a996">-1,8% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-edd2bb66"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
-<td class="cl-edd2bb67"><p class="cl-edd29366"><span class="cl-edcf3040">2019-2024</span></p></td>
-<td class="cl-edd2bb70"><p class="cl-edd29366"><span class="cl-edcf3040">-4,6</span></p></td>
-<td class="cl-edd2bb71"><p class="cl-edd29366"><span class="cl-edcf3040">-4.9; -4.3</span></p></td>
-<td class="cl-edd2bb72"><p class="cl-edd29366"><span class="cl-edcf3040"></span></p></td>
+<td class="cl-82b749df"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
+<td class="cl-82b749e8"><p class="cl-82b721de"><span class="cl-82b3a996">2019-2024</span></p></td>
+<td class="cl-82b749e9"><p class="cl-82b721de"><span class="cl-82b3a996">-4,6</span></p></td>
+<td class="cl-82b749ea"><p class="cl-82b721de"><span class="cl-82b3a996">-4.9; -4.3</span></p></td>
+<td class="cl-82b749f2"><p class="cl-82b721de"><span class="cl-82b3a996"></span></p></td>
 </tr>
-<tr style="overflow-wrap:break-word;"><td colspan="7" class="cl-edd2bb7a"><p class="cl-edd29366"><span class="cl-edcf3040">* p &lt; 0,05</span><br><span class="cl-edcf3040">JP: cantidad de joinpoints; APC: cambio porcentual anual; IC: intervalo de confianza al 95%; AAPC: cambio porcentual anual promedio (IC95%).</span></p></td></tr>
+<tr style="overflow-wrap:break-word;"><td colspan="7" class="cl-82b749fc"><p class="cl-82b721de"><span class="cl-82b3a996">* p &lt; 0,05</span><br><span class="cl-82b3a996">JP: cantidad de joinpoints; APC: cambio porcentual anual; IC: intervalo de confianza al 95%; AAPC: cambio porcentual anual promedio (IC95%).</span></p></td></tr>
 </tbody>
 </table>
 </div>

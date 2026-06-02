@@ -14,16 +14,9 @@ simulated dataset with the HIV rates by sex in five regions
 
 ``` r
 
+# id: example-data
 # Load required packages
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(tidyr)
 library(ggplot2)
 library(joinpointR)
@@ -63,7 +56,6 @@ data <- expand_grid(
   ) %>%
 
   select(year, region, sex, hiv_rate)
-#> Joining with `by = join_by(region)`
 ```
 
 ### Stepwise joinpoint regression by sex
