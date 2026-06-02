@@ -27,7 +27,9 @@ For the examples, we are going to use a simulated dataset with the HIV rates by 
 ```{r}
 #| id: example-data
 # Load required packages
-library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
 library(joinpointR)
 
 # Seed for reproducibility
