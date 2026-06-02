@@ -74,8 +74,8 @@ mod1 <- model_jp(
 #> No. of breakpoints: 2 .. 3 .. 
 #> 
 #> BIC to detect no. of breakpoints:
-#>         0         1         3         5 
-#> -68.07563 -62.94894 -47.33924 -46.33924 
+#>         0         1         2         3 
+#> -68.07563 -62.94894 -61.94894 -60.94894 
 #> 
 #> No. of selected breakpoints:  0  
 #> No. of breakpoints: 2 .. 3 .. 
@@ -163,7 +163,7 @@ mod3 <- model_jp(
 #> 
 #> BIC to detect no. of breakpoints:
 #>         0         1         2 
-#> -24.66720 -64.80490 -67.08959 
+#> -24.66720 -64.80490 -67.08958 
 #> 
 #> No. of selected breakpoints: 1  (1 breakpoint(s) removed due to small slope diff)
 #> No. of breakpoints: 2 ..
