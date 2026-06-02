@@ -1,0 +1,225 @@
+---
+title: "Introduction to JoinpointR"
+author: "Tamara Ricardo"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+#| include: false
+#| id: settings
+knitr::opts_chunk$set(
+  warning = FALSE,
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Joinpoint regression is commonly used in epidemiology to identify changes in temporal trends. The joinpointR package provides tools to fit joinpoint regression models, estimate annual percentage changes, and present results.
+
+## Joinpoint regression models by group
+The function `model_jp()`allows to fit joinpoint regression models with a log-response by levels of one or more categorical variable(s).
+For the examples, we are going to use a simulated dataset with the HIV rates by sex in five regions
+
+```{r}
+#| id: example-data
+# Load required packages
+library(tidyverse)
+library(joinpointR)
+
+# Seed for reproducibility
+set.seed(123)
+
+# Generate example data
+data <- expand_grid(
+  year = 2015:2024,
+  sex = c("Male", "Female"),
+  region = c("North", "Central", "South", "East", "West")
+) %>%
+
+  left_join(
+    tribble(
+      ~region   , ~slope1 , ~slope2 ,
+      "North"   ,      -6 ,       4 ,
+      "Central" ,      -5 ,       3 ,
+      "South"   ,       3 ,      -4 ,
+      "East"    ,      -7 ,       2 ,
+      "West"    ,       2 ,      -5
+    )
+  ) %>%
+
+  mutate(
+    trend = if_else(
+      year <= 2019,
+      slope1 * (year - 2015),
+      slope1 * 4 + slope2 * (year - 2019)
+    ),
+
+    hiv_rate = 100 +
+      trend +
+      if_else(sex == "Male", 10, 0) +
+      rnorm(n(), 0, 0.8)
+  ) %>%
+
+  select(year, region, sex, hiv_rate)
+```
+
+### Stepwise joinpoint regression by sex
+```{r}
+#| id: model-1
+mod1 <- model_jp(
+  data = data,
+  value = "hiv_rate",
+  time = "year",
+  group = "sex",
+  k = 3,
+  step = TRUE,
+  test = TRUE
+)
+```
+
+### Fixed number of joinpoints by sex
+```{r}
+#| id: model-2
+mod2 <- model_jp(
+  data = data,
+  value = "hiv_rate",
+  time = "year",
+  group = "sex",
+  k = 1,
+  step = FALSE,
+  test = FALSE
+)
+
+mod2
+```
+
+### Stepwise joinpoint regression models by sex and region
+```{r}
+#| id: model-3
+mod3 <- model_jp(
+  data = data,
+  value = "hiv_rate",
+  time = "year",
+  group = c("sex", "region"),
+  step = TRUE
+)
+```
+
+## Annual percentage change (APC)
+The function `get_apc()` provides the annual percentage change and its 95% confidence interval for models with significant joinpoints (`class: "segmented" "lm"`)
+
+```{r}
+#| id: APC-1
+get_apc(mod2$Female)
+```
+
+The function returns an error when no significant joinpoints are detected (`class = "lm"`).
+
+```{r}
+#| error: true
+#| id: APC-2
+get_apc(mod1$Female, digits = 1)
+```
+
+## Average annual percent change (AAPC)
+The function `get_aapc()` allows users to estimate the global trend even when no significant joinpoints were detected.
+
+```{r}
+#| id: AAPC-1
+get_aapc(mod1$Female, digits = 1, show_ci = TRUE)
+```
+
+You can choose to show significance stars instead of CI:
+```{r}
+#| id: AAPC-2
+get_aapc(mod1$Female, digits = 1, show_ci = FALSE)
+```
+
+## Summary tables
+### Results as a data frame
+```{r}
+# id: tab-1
+mod2 |>
+  summary_jp(digits = 1, var1 = "Sex", ft = FALSE)
+```
+
+### HTML Tables
+```{r}
+# id: tab-2
+mod2 |>
+  summary_jp(digits = 1, var1 = "Sex", ft = TRUE)
+```
+
+### HTML Tables by two grouping variables
+```{r}
+#| id: tab-3
+mod3 |>
+  summary_jp(digits = 1, var1 = "Region", var2 = "Sex", ft = TRUE)
+```
+
+Change the table language to Spanish
+```{r}
+#| id: tab-4
+mod3 |>
+  summary_jp(digits = 1, var1 = "Región", var2 = "Sexo", ft = TRUE, lan = "es")
+```
+
+## Regression plots
+
+```{r}
+#| id: plot-1
+mod1 |>
+  gg_jpoint()
+```
+
+Split by sex
+```{r}
+#| id: plot-2
+mod1 |>
+  gg_jpoint(facets = TRUE)
+```
+
+Split by region
+
+```{r}
+#| id: plot-3
+mod3 |>
+  gg_jpoint(facets = TRUE)
+```
+
+Hide data points
+```{r}
+#| id: plot-4
+mod3 |>
+  gg_jpoint(facets = TRUE, obs = FALSE)
+```
+
+Hide joinpoint(s) marker(s)
+```{r}
+#| id: plot-5
+mod3 |>
+  gg_jpoint(facets = TRUE, jp = FALSE)
+```
+
+Change colors and legend position using `ggplot2` functions
+```{r}
+#| id: plot-6
+mod3 %>%
+  gg_jpoint(facets = TRUE, jp = FALSE) +
+  scale_color_viridis_d(name = "Sex:Region") +
+  theme(legend.position = "bottom")
+```
+
+Change facet layout
+```{r}
+#| id: plot-7
+mod3 %>%
+  gg_jpoint(facets = TRUE) +
+  facet_wrap(~group, ncol = 5) +
+  scale_color_viridis_d(name = "Sex:Region") +
+  theme(legend.position = "bottom")
+```
