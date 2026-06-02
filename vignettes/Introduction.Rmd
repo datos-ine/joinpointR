@@ -25,7 +25,8 @@ The function `model_jp()`allows to fit joinpoint regression models with a log-re
 For the examples, we are going to use a simulated dataset with the HIV rates by sex in five regions
 
 ```{r}
-#| id: example-data
+#| message: false
+# id: example-data
 # Load required packages
 library(dplyr)
 library(tidyr)
