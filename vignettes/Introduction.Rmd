@@ -3,7 +3,7 @@ title: "Introduction to JoinpointR"
 author: "Tamara Ricardo"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction}
+  %\VignetteIndexEntry{Introduction to JoinpointR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
