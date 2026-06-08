@@ -106,7 +106,8 @@ model_jp <- function(
           type = "bic",
           th = 2,
           stop.if = 4,
-          check.dslope = test
+          check.dslope = test,
+          msg = FALSE # Hide default message
         )
       )
   } else {
@@ -123,5 +124,32 @@ model_jp <- function(
   }
 
   # ---- Name models ----
-  rlang::set_names(mods, groups)
+  mods <- rlang::set_names(mods, groups)
+
+  # ---- Messages ----
+  purrr::iwalk(
+    mods,
+    ~ {
+      jp <- tryCatch(
+        .x$psi[, 2],
+        error = function(e) numeric(0)
+      )
+
+      message(
+        "Model: ",
+        .y,
+        " | Joinpoint(s): ",
+        if (length(jp) == 0) {
+          "no significant joinpoints detected"
+        } else {
+          paste(
+            scales::number(jp, big.mark = ""),
+            collapse = "; "
+          )
+        }
+      )
+    }
+  )
+
+  mods
 }
