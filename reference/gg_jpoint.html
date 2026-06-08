@@ -112,30 +112,9 @@ and optional joinpoints.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Fit the joinpoint models</span></span></span>
 <span class="r-in"><span><span class="va">mods</span> <span class="op">&lt;-</span> <span class="fu"><a href="model_jp.html">model_jp</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">plant</span>, value <span class="op">=</span> <span class="st">"y"</span>, time <span class="op">=</span> <span class="st">"time"</span>, group <span class="op">=</span> <span class="st">"group"</span>, k <span class="op">=</span> <span class="fl">2</span>, test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of breakpoints: 2 .. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The best BIC value at the boundary. Increase 'Kmax'?</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BIC to detect no. of breakpoints:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          0          1          2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -10.65677  -86.81612 -107.18311 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of selected breakpoints: 2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of breakpoints: 2 .. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The best BIC value at the boundary. Increase 'Kmax'?</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BIC to detect no. of breakpoints:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         0         1         2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  30.10898 -57.99211 -73.23987 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of selected breakpoints: 2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of breakpoints: 2 .. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The best BIC value at the boundary. Increase 'Kmax'?</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BIC to detect no. of breakpoints:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          0          1          2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.713582 -66.784879 -73.378431 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of selected breakpoints: 2  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: RKW | Joinpoint(s): 280; 441</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: RWC | Joinpoint(s): 315; 571</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: RKV | Joinpoint(s): 321; 532</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot results</span></span></span>
 <span class="r-in"><span><span class="fu">gg_jpoint</span><span class="op">(</span><span class="va">mods</span>, obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span>, facets <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>

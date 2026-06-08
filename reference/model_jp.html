@@ -137,27 +137,9 @@ procedure. Only used when <code>step = TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="co"># Fit models</span></span></span>
 <span class="r-in"><span><span class="va">mods</span> <span class="op">&lt;-</span> <span class="fu">model_jp</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, value <span class="op">=</span> <span class="st">"rate"</span>, time <span class="op">=</span> <span class="st">"year"</span>, group <span class="op">=</span> <span class="st">"group"</span>,</span></span>
 <span class="r-in"><span> k <span class="op">=</span> <span class="fl">2</span>, step <span class="op">=</span> <span class="cn">TRUE</span>, test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of breakpoints: 2 .. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BIC to detect no. of breakpoints:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         0         1         2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -2.347654 -2.027073  2.417460 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of selected breakpoints:  0  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of breakpoints: 2 .. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BIC to detect no. of breakpoints:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         0         1         2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -12.44537 -15.72914 -14.72914 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of selected breakpoints: 0  (1 breakpoint(s) removed due to small slope diff)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of breakpoints: 2 .. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BIC to detect no. of breakpoints:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         0         1         2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -1.227750 -0.614267  3.606649 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No. of selected breakpoints:  0  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: cyl_6 | Joinpoint(s): no significant joinpoints detected</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: cyl_4 | Joinpoint(s): no significant joinpoints detected</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: cyl_8 | Joinpoint(s): no significant joinpoints detected</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Show the output of the first model</span></span></span>
 <span class="r-in"><span><span class="va">mods</span><span class="op">$</span><span class="va">cyl_6</span></span></span>
