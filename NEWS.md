@@ -1,4 +1,6 @@
-# joinpointR 0.6.3
+# joinpointR 1.0.0
+- Updated the functions to improve customization of the outputs.
+- Added vignettes
 
 # joinpointR 0.6.2
 
