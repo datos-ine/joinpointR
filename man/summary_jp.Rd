@@ -2,48 +2,40 @@
 % Please edit documentation in R/summary_jp.R
 \name{summary_jp}
 \alias{summary_jp}
-\title{Summary Table For Joinpoint Regression Models}
+\title{Summary Tables for Joinpoint Regression Models}
 \usage{
-summary_jp(
-  mods,
-  digits = 1,
-  var1 = "group",
-  var2 = "subgroup",
-  ft = FALSE,
-  lan = c("en", "es")
-)
+summary_jp(mods, digits = 1, dec = c(".", ","))
 }
 \arguments{
-\item{mods}{List of joinpoint regression models (model_jp() output).}
+\item{mods}{List of joinpoint regression models (output of model_jp()).}
 
 \item{digits}{Number of decimal places to display (integer).}
 
-\item{var1}{Character. Name of the grouping variable.}
-
-\item{var2}{Character. Name of the subgrouping variable (optional).}
-
-\item{ft}{Logical. If TRUE returns a flextable object, if FALSE returns a tibble.}
-
-\item{lan}{Language of output: "en" (English) or "es" (Spanish).}
+\item{dec}{Character used as decimal separator. Must be "." or ",".}
 }
 \value{
-A tibble or a flextable object.
+A tibble containing the grouping variables, number of joinpoints (JP),
+period, APC, 95\% confidence interval, and AAPC for each model.
 }
 \description{
-Generates a table displaying the number of joinpoints, time breaks, APC and its 95\% confidence
-interval, and AAPC and its statistical significance from a list of joinpoint models.
+Generates a summary table containing the number of joinpoints (JP),
+time periods, APC and its 95\% confidence interval, and AAPC with
+statistical significance for each joinpoint regression model.
 }
 \examples{
-library(dplyr)
 # Load example data
-data("plant", package = "segmented")
-
-names(plant)
+data("hiv_data")
 
 # Fit the joinpoint models
-mods <- model_jp(data = plant, value = "y", time = "time", group = "group", k = 2, test = TRUE)
+mods <- model_jp(
+  data = hiv_data,
+  value = "hiv_rate",
+  time = "year",
+  group = "region"
+)
 
-summary_jp(mods, digits = 1, var1 = "group", ft = FALSE, lan = "en")
+# Summarize models
+summary_jp(mods, digits = 1, dec = ".")
 }
 \author{
 Tamara Ricardo

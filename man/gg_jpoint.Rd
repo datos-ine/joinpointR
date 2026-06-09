@@ -4,37 +4,83 @@
 \alias{gg_jpoint}
 \title{Plot Joinpoint Regression Models}
 \usage{
-gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = FALSE)
+gg_jpoint(
+  mods,
+  obs = TRUE,
+  psize = 2.5,
+  ptr = 0.75,
+  jp = TRUE,
+  facets = c("wrap", "grid", "none"),
+  cb = TRUE,
+  cbpal = c("viridis", "managua", "plasma", "roma", "vanimo", "algae", "arches2",
+    "glasgow", "tokyo", "blue_fluoride")
+)
 }
 \arguments{
 \item{mods}{List of joinpoint regression models (output of model_jp()).}
 
-\item{obs}{Logical. If TRUE, displays observed data points.}
+\item{obs}{Displays observed data points (logical).}
 
-\item{jp}{Logical. If TRUE, displays joinpoints as vertical dashed lines.}
+\item{psize}{Desired size for the data points (numeric).}
 
-\item{facets}{Logical. If TRUE, displays one panel per group using facets.}
+\item{ptr}{Transparency of the data points (numeric).}
+
+\item{jp}{Displays joinpoints as vertical dashed lines (logical).}
+
+\item{facets}{Whether to show the plots stacked ("none"),
+facetted by group ("wrap") or by group and subgroup ("grid").}
+
+\item{cb}{Whether to use a colorblind-friendly palette (logical, defaults to TRUE)}
+
+\item{cbpal}{Name of a colorblind-friendly palette (character, defaults to "viridis"). See details.}
 }
 \value{
-A ggplot object.
+A ggplot object showing observed values, fitted joinpoint regression lines,
+and optional joinpoints.
 }
 \description{
 Creates a ggplot showing observed values, fitted joinpoint regression lines,
 and optional joinpoints.
 }
-\examples{
-library(dplyr)
-# Load example data
-data("plant", package = "segmented")
+\details{
+Available palettes are exported from cols4all:
 
-names(plant)
+Diverging:
+\itemize{
+\item "managua"
+\item "plasma"
+\item "roma"
+\item "vanimo"
+\item "viridis"
+}
+
+Sequential:
+\itemize{
+\item "algae"
+\item "arches2"
+\item "glasgow"
+\item "tokyo"
+\item "blue_fluoride"
+}
+}
+\examples{
+# Load example data
+data("hiv_data")
+
+names(hiv_data)
 
 # Fit the joinpoint models
-mods <- model_jp(data = plant, value = "y", time = "time", group = "group", k = 2, test = TRUE)
+mods <- model_jp(data = hiv_data, value = "hiv_rate", time = "year", group = c("region", "sex"), k = 2, test = TRUE)
 
 # Plot results
-gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = FALSE)
+gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = "wrap")
 
-# Facets by group
-gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = TRUE)
+# Facets by group and subgroup
+gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = "grid")
+
+# No facets and hidden joinpoints
+gg_jpoint(mods, jp = FALSE, facets = "none")
+
+# Change the color palette
+gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = "grid", cb = TRUE, cbpal = "managua")
 }

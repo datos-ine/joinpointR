@@ -4,35 +4,34 @@
 \alias{get_apc}
 \title{Annual Percent Change by Segment (APC)}
 \usage{
-get_apc(mod, digits = 1, time = "time", dec = ".")
+get_apc(mods, digits = 1, dec = ".")
 }
 \arguments{
-\item{mod}{Joinpoint regression model (segmented object).}
+\item{mods}{Joinpoint regression models (segmented objects).}
 
 \item{digits}{Number of decimal places to display (integer).}
-
-\item{time}{Time variable used in the model (character).}
 
 \item{dec}{Character. Decimal separator to use (e.g., "." or ",").}
 }
 \value{
-A character vector with APC and 95\% CI for each segment.
+A tibble with APCs and 95\% CI for each segment of each model.
 }
 \description{
-Calculates the Annual Percent Change (APC) for each segment and its 95\%
+Calculates the Annual Percent Change (APC) for each model segment and its 95\%
 confidence interval.
 }
 \examples{
 # Load example data
-data("plant", package = "segmented")
+data(hiv_data)
 
-names(plant)
+names(hiv_data)
 
 # Fit the joinpoint models
-mods <- model_jp(data = plant, value = "y", time = "time", group = "group", k = 2, test = TRUE)
+mods <- model_jp(data = hiv_data, value = "hiv_rate", time = "year", group = "region", k = 2, test = TRUE)
 
 # Obtain APC (95\% CI)
-get_apc(mods$RKW, digits = 1, time = "time", dec = ".")
+get_apc(mods, digits = 1, dec = ".")
+
 }
 \author{
 Tamara Ricardo

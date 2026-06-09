@@ -60,6 +60,13 @@ model_jp <- function(
     stop("Some grouping variables are not present in data")
   }
 
+  # ---- Validate number of joinpoints ----
+  if (!step && k > 1 && dplyr::n_distinct(data[[time]]) < 11) {
+    message(
+      "Note: fitting two or more joinpoints is not recommended for short time series."
+    )
+  }
+
   # ---- Validate test and step arguments ----
   if (!step && test) {
     warning("'test' is ignored when step = FALSE")
@@ -67,59 +74,87 @@ model_jp <- function(
 
   # ---- Prepare data ----
   data <- data |>
-    # Transform the response variable
     dplyr::mutate(
-      .jp_log_value = log(.data[[value]])
-    ) |>
-
-    # Create grouping variable
-    dplyr::mutate(
-      .jp_group = forcats::fct_drop(
-        forcats::fct_cross(
-          !!!rlang::syms(group),
-          sep = "_"
-        )
+      .jp_time = .data[[time]],
+      .jp_log_value = log(.data[[value]]),
+      .jp_group = forcats::fct_cross(
+        !!!rlang::syms(group),
+        sep = "_",
+        keep_empty = FALSE
       )
     ) |>
-
-    # Group data
     dplyr::group_by(.data$.jp_group)
 
-  # ---- Formula ----
-  formula <- stats::reformulate(
-    termlabels = time,
-    response = ".jp_log_value"
-  )
-
   # ---- Group names ----
-  groups <- data |>
-    dplyr::distinct(.data$.jp_group) |>
-    dplyr::pull(.data$.jp_group)
+  groups <- dplyr::group_keys(data)$.jp_group
 
-  # ---- Model fit ----
+  # ---- Fit the linear model ----
+  lm_fit <- function(.x) {
+    lm(
+      .jp_log_value ~ .jp_time,
+      data = .x
+    )
+  }
+
+  # ---- Fit joinpoint regression by groups ----
   if (step) {
     mods <- data |>
       dplyr::group_map(
-        ~ segmented::selgmented(
-          olm = stats::lm(formula, data = .x),
-          Kmax = k,
-          type = "bic",
-          th = 2,
-          stop.if = 4,
-          check.dslope = test,
-          msg = FALSE # Hide default message
-        )
+        ~ {
+          mod <- segmented::selgmented(
+            olm = lm_fit(.x),
+            Kmax = k,
+            type = "bic",
+            th = 2,
+            stop.if = 4,
+            check.dslope = test,
+            msg = FALSE
+          )
+
+          mod$call <- substitute(
+            segmented::selgmented(
+              olm = lm(
+                formula = log(Y) ~ X
+              ),
+              Kmax = K
+            ),
+            list(
+              Y = as.name(value),
+              X = as.name(time),
+              K = k
+            )
+          )
+
+          mod
+        }
       )
   } else {
     mods <- data |>
       dplyr::group_map(
-        ~ segmented::segmented(
-          obj = stats::lm(formula, data = .x),
-          seg.Z = stats::as.formula(
-            paste0("~", time)
-          ),
-          npsi = k
-        )
+        ~ {
+          mod <- segmented::segmented(
+            obj = lm_fit(.x),
+            seg.Z = ~.jp_time,
+            npsi = k
+          )
+
+          mod$call <- substitute(
+            segmented::segmented(
+              obj = lm(
+                formula = log(Y) ~ X
+              ),
+              seg.Z = ~X,
+              npsi = K
+            ),
+            list(
+              Y = as.name(value),
+              X = as.name(time),
+              K = k
+            )
+          )
+
+          mod
+        }
       )
   }
 
@@ -130,26 +165,18 @@ model_jp <- function(
   purrr::iwalk(
     mods,
     ~ {
-      jp <- tryCatch(
-        .x$psi[, 2],
-        error = function(e) numeric(0)
-      )
+      jp <- tryCatch(.x$psi[, 2], error = \(e) numeric())
 
       message(
         "Model: ",
         .y,
         " | Joinpoint(s): ",
-        if (length(jp) == 0) {
-          "no significant joinpoints detected"
-        } else {
-          paste(
-            scales::number(jp, big.mark = ""),
-            collapse = "; "
-          )
-        }
+        dplyr::if_else(
+          length(jp) == 0,
+          "no significant joinpoints detected",
+          paste(scales::number(jp, big.mark = ""), collapse = "; ")
+        )
       )
     }
   )
-
-  mods
 }

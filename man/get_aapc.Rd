@@ -4,21 +4,21 @@
 \alias{get_aapc}
 \title{Average Annual Percent Change (AAPC)}
 \usage{
-get_aapc(mod, digits = 1, show_ci = TRUE, dec = ".")
+get_aapc(mods, digits = 1, show_ci = TRUE, dec = ".")
 }
 \arguments{
-\item{mod}{Joinpoint regression model (segmented object) or linear regression model (lm object).}
-
 \item{digits}{Number of decimal places to display (integer).}
 
 \item{show_ci}{Logical; if TRUE, displays the 95\% confidence interval.
 If FALSE, displays significance stars.}
 
 \item{dec}{Character. Decimal separator to use (e.g., "." or ",").}
+
+\item{mod}{Joinpoint regression models (segmented objects) or linear regression models (lm objects).}
 }
 \value{
-A character string with the AAPC and either its 95\% confidence
-interval or significance stars.
+A tibble with the AAPC and either its 95\% confidence
+interval or significance stars for each model.
 }
 \description{
 Estimates the Average Annual Percent Change (AAPC) and its 95\% confidence
@@ -27,15 +27,15 @@ stars.
 }
 \examples{
 # Load example data
-data("plant", package = "segmented")
+data("hiv_data")
 
-names(plant)
+names(hiv_data)
 
 # Fit the joinpoint models
-mods <- model_jp(data = plant, value = "y", time = "time", group = "group", k = 2, test = TRUE)
+mods <- model_jp(data = hiv_data, value = "hiv_rate", time = "year", group = "region", k = 2, test = TRUE)
 
 # AAPC of the first model
-get_aapc(mods$RKW, digits = 1, show_ci = TRUE, dec = ".")
+get_aapc(mods, digits = 1, show_ci = TRUE, dec = ".")
 }
 \author{
 Tamara Ricardo
