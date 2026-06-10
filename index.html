@@ -116,6 +116,7 @@
 <li>Extract APC by segment / Extraer APC por segmento</li>
 <li>Compute AAPC / Calcular AAPC</li>
 <li>Generate summary tables / Generar tablas resumen</li>
+<li>Generate summary plots / Generar gráficos de resumen</li>
 </ul>
 </div>
 <div class="section level2">
@@ -123,13 +124,17 @@
 </h2>
 <ul>
 <li>
-<code><a href="reference/model_jp.html">model_jp()</a></code> → fit joinpoint models by group / ajusta modelos joinpoint por grupo</li>
+<code><a href="reference/model_jp.html">model_jp()</a></code> → fits joinpoint models by group / ajusta modelos joinpoint por grupo</li>
 <li>
-<code><a href="reference/get_apc.html">get_apc()</a></code> → extract APC by segment / extrae APC por segmento</li>
+<code><a href="reference/get_apc.html">get_apc()</a></code> → extracts APC by segment / extrae APC por segmento</li>
 <li>
-<code><a href="reference/get_aapc.html">get_aapc()</a></code> → compute AAPC / computa AAPC</li>
+<code><a href="reference/get_aapc.html">get_aapc()</a></code> → computes AAPC / computa AAPC</li>
 <li>
-<code><a href="reference/summary_jp.html">summary_jp()</a></code> → generate summary tables (tibble or flextable) / genera tablas resumen (tibble o flextable)</li>
+<code><a href="reference/summary_jp.html">summary_jp()</a></code> → generates summary tables (tibble) / genera tablas resumen (tibble)</li>
+<li>
+<code><a href="reference/jp_to_ft.html">jp_to_ft()</a></code> → transforms summary tables into flextable objects / transforma tablas de resumen a objetos flextable</li>
+<li>
+<code><a href="reference/gg_jpoint.html">gg_jpoint()</a></code>→ generates summary plots / genera gráficos de resumen</li>
 </ul>
 </div>
 <div class="section level2">
@@ -139,42 +144,45 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/datos-ine/joinpointR" class="external-link">joinpointR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span>  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">:</span><span class="fl">2010</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>  rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">5</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"hiv_data"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mods</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/model_jp.html">model_jp</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">df</span>,</span>
-<span>  value <span class="op">=</span> <span class="st">"rate"</span>,</span>
-<span>  time <span class="op">=</span> <span class="st">"year"</span>,</span>
-<span>  group <span class="op">=</span> <span class="st">"group"</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">hiv_data</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">hiv_rate</span>,</span>
+<span>  time <span class="op">=</span> <span class="va">year</span>,</span>
+<span>  group <span class="op">=</span> <span class="st">"region"</span>,</span>
 <span>  step <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># APC (only works when class segmented lm)</span></span>
-<span><span class="fu"><a href="reference/get_apc.html">get_apc</a></span><span class="op">(</span><span class="va">mods</span><span class="op">$</span><span class="va">Male</span>, digits <span class="op">=</span> <span class="fl">1</span>, time <span class="op">=</span> <span class="st">"year"</span>, dec <span class="op">=</span> <span class="st">"."</span><span class="op">)</span> <span class="co"># Will generate an error</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/get_apc.html">get_apc</a></span><span class="op">(</span><span class="va">mods</span><span class="op">$</span><span class="va">Female</span>, digits <span class="op">=</span> <span class="fl">1</span>, time <span class="op">=</span> <span class="st">"year"</span>, dec <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/get_apc.html">get_apc</a></span><span class="op">(</span><span class="va">mods</span><span class="op">$</span><span class="va">Central</span>, digits <span class="op">=</span> <span class="fl">1</span>, time <span class="op">=</span> <span class="st">"year"</span>, dec <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># AAPC with 95% CI</span></span>
-<span><span class="fu"><a href="reference/get_aapc.html">get_aapc</a></span><span class="op">(</span><span class="va">mods</span><span class="op">$</span><span class="va">Male</span>, show_ci <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/get_aapc.html">get_aapc</a></span><span class="op">(</span><span class="va">mods</span><span class="op">$</span><span class="va">Central</span>, show_ci <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># AAPC with significance stars</span></span>
-<span><span class="fu"><a href="reference/get_aapc.html">get_aapc</a></span><span class="op">(</span><span class="va">mods</span><span class="op">$</span><span class="va">Male</span>, show_ci <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/get_aapc.html">get_aapc</a></span><span class="op">(</span><span class="va">mods</span><span class="op">$</span><span class="va">Central</span>, show_ci <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Summary Table</span></span>
-<span><span class="fu"><a href="reference/summary_jp.html">summary_jp</a></span><span class="op">(</span><span class="va">mods</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/summary_jp.html">summary_jp</a></span><span class="op">(</span><span class="va">mods</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Transform to flextable</span></span>
+<span><span class="fu"><a href="reference/summary_jp.html">summary_jp</a></span><span class="op">(</span><span class="va">mods</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="reference/jp_to_ft.html">jp_to_ft</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Generate summary plot</span></span>
+<span><span class="fu"><a href="reference/gg_jpoint.html">gg_jpoint</a></span><span class="op">(</span><span class="va">mods</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="formatted-table--tabla-formateada">Formatted table / Tabla formateada<a class="anchor" aria-label="anchor" href="#formatted-table--tabla-formateada"></a>
 </h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># English (default)</span></span>
-<span><span class="fu"><a href="reference/summary_jp.html">summary_jp</a></span><span class="op">(</span><span class="va">mods</span>, ft <span class="op">=</span> <span class="cn">TRUE</span>, lan <span class="op">=</span> <span class="st">"en"</span>, var1 <span class="op">=</span> <span class="st">"Sex"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/summary_jp.html">summary_jp</a></span><span class="op">(</span><span class="va">mods</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="reference/jp_to_ft.html">jp_to_ft</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Spanish</span></span>
-<span><span class="fu"><a href="reference/summary_jp.html">summary_jp</a></span><span class="op">(</span><span class="va">mods</span>, ft <span class="op">=</span> <span class="cn">TRUE</span>, lan <span class="op">=</span> <span class="st">"es"</span>, var1 <span class="op">=</span> <span class="st">"Sexo"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/summary_jp.html">summary_jp</a></span><span class="op">(</span><span class="va">mods</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="reference/jp_to_ft.html">jp_to_ft</a></span><span class="op">(</span>lan <span class="op">=</span> <span class="st">"es"</span><span class="op">)</span></span></code></pre></div>
 <p>Returns a table ready for reporting (e.g., Word) using flextable. / Devuelve una tabla lista para exportar a Word o informes mediante <code>flextable</code>.</p>
 </div>
 <div class="section level3">
@@ -195,19 +203,19 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot results</span></span>
 <span><span class="va">mods</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">gg_joinpoint</span><span class="op">(</span>obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span>, facets <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="reference/gg_jpoint.html">gg_jpoint</a></span><span class="op">(</span>obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Facets by group</span></span>
+<span><span class="co"># Stack plots</span></span>
 <span><span class="va">mods</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/gg_jpoint.html">gg_jpoint</a></span><span class="op">(</span>obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span>, facets <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="reference/gg_jpoint.html">gg_jpoint</a></span><span class="op">(</span>obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span>, facets <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Hide observed</span></span>
 <span><span class="va">mods</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/gg_jpoint.html">gg_jpoint</a></span><span class="op">(</span>obs <span class="op">=</span> <span class="cn">FALSE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span>, facets <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="reference/gg_jpoint.html">gg_jpoint</a></span><span class="op">(</span>obs <span class="op">=</span> <span class="cn">FALSE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span>, facets <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Hide joinpoints</span></span>
 <span><span class="va">mods</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/gg_jpoint.html">gg_jpoint</a></span><span class="op">(</span>obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">FALSE</span>, facets <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="reference/gg_jpoint.html">gg_jpoint</a></span><span class="op">(</span>obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">FALSE</span>, facets <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -233,8 +241,6 @@
 <li>Model selection is based on the Bayesian Information Criterion (BIC) / La selección de modelos se basa en el Criterio de Información Bayesiano (BIC)</li>
 <li>When <code>step = FALSE</code> fits a joinpoint regression model with the number of joinpoints specified in <code>k</code>/ Cuando <code>step = FALSE</code> ajusta una regresión joinpoint para el número de joinpoints especificados en <code>k</code>.</li>
 <li>Results are returned in tidy format / Los resultados se devuelven en formato tidy para facilitar su uso en análisis reproducibles</li>
-<li>Formatted tables are optional / La creación de tablas formateadas es opcional <code>(ft = TRUE)</code>
-</li>
 </ul>
 </div>
 <div class="section level2">
