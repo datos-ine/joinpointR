@@ -31,54 +31,60 @@ The package provides a simple and reproducible workflow / El paquete propone un 
 * Extract APC by segment / Extraer APC por segmento
 * Compute AAPC / Calcular AAPC
 * Generate summary tables / Generar tablas resumen
+* Generate summary plots / Generar gráficos de resumen
 
 ## Main functions / Funciones principales
-* `model_jp()` → fit joinpoint models by group / ajusta modelos joinpoint por grupo
-* `get_apc()` → extract APC by segment / extrae APC por segmento
-* `get_aapc()` → compute AAPC / computa AAPC
-* `summary_jp()` → generate summary tables (tibble or flextable) / genera tablas resumen (tibble o flextable)
+* `model_jp()` → fits joinpoint models by group / ajusta modelos joinpoint por grupo
+* `get_apc()` → extracts APC by segment / extrae APC por segmento
+* `get_aapc()` → computes AAPC / computa AAPC
+* `summary_jp()` → generates summary tables (tibble) / genera tablas resumen (tibble)
+* `jp_to_ft()` → transforms summary tables into flextable objects / transforma tablas de resumen a objetos flextable
+* `gg_jpoint()`→ generates summary plots / genera gráficos de resumen
 
 ## Example / Ejemplo
 ```r
 library(joinpointR)
 library(dplyr)
 
-df <- tibble(
-  year = rep(2000:2010, 2),
-  rate = c(runif(11, 10, 20), runif(11, 5, 15)),
-  group = rep(c("Male", "Female"), each = 11)
-)
+data("hiv_data")
 
 mods <- model_jp(
-  data = df,
-  value = "rate",
-  time = "year",
-  group = "group",
+  data = hiv_data,
+  value = hiv_rate,
+  time = year,
+  group = "region",
   step = TRUE
 )
 
 # APC (only works when class segmented lm)
-get_apc(mods$Male, digits = 1, time = "year", dec = ".") # Will generate an error
-
-get_apc(mods$Female, digits = 1, time = "year", dec = ".")
+get_apc(mods$Central, digits = 1, time = "year", dec = ".")
 
 # AAPC with 95% CI
-get_aapc(mods$Male, show_ci = TRUE)
+get_aapc(mods$Central, show_ci = TRUE)
 
 # AAPC with significance stars
-get_aapc(mods$Male, show_ci = FALSE)
+get_aapc(mods$Central, show_ci = FALSE)
 
 # Summary Table
 summary_jp(mods)
+
+# Transform to flextable
+summary_jp(mods) |>
+jp_to_ft()
+
+# Generate summary plot
+gg_jpoint(mods)
 ```
 
 ### Formatted table / Tabla formateada
 ```r
 # English (default)
-summary_jp(mods, ft = TRUE, lan = "en", var1 = "Sex")
+summary_jp(mods) |>
+jp_to_ft()
 
 # Spanish
-summary_jp(mods, ft = TRUE, lan = "es", var1 = "Sexo")
+summary_jp(mods) |>
+jp_to_ft(lan = "es")
 
 ```
 
@@ -98,19 +104,19 @@ The generated table includes / La tabla generada incluye:
 ```r
 # Plot results
 mods |>
-  gg_joinpoint(obs = TRUE, jp = TRUE, facets = FALSE)
+  gg_jpoint(obs = TRUE, jp = TRUE)
 
-# Facets by group
+# Stack plots
 mods |>
-  gg_jpoint(obs = TRUE, jp = TRUE, facets = TRUE)
+  gg_jpoint(obs = TRUE, jp = TRUE, facets = "none")
 
 # Hide observed
 mods |>
-  gg_jpoint(obs = FALSE, jp = TRUE, facets = FALSE)
+  gg_jpoint(obs = FALSE, jp = TRUE, facets = "none")
 
 # Hide joinpoints
 mods |>
-  gg_jpoint(obs = TRUE, jp = FALSE, facets = FALSE)
+  gg_jpoint(obs = TRUE, jp = FALSE, facets = "none")
 ```
 
 ## Dependencies / Dependencias
@@ -126,7 +132,6 @@ The package uses / El paquete utiliza:
 * Model selection is based on the Bayesian Information Criterion (BIC) / La selección de modelos se basa en el Criterio de Información Bayesiano (BIC)
 * When `step = FALSE` fits a joinpoint regression model with the number of joinpoints specified in `k`/ Cuando `step = FALSE` ajusta una regresión joinpoint para el número de joinpoints especificados en `k`.
 * Results are returned in tidy format / Los resultados se devuelven en formato tidy para facilitar su uso en análisis reproducibles
-* Formatted tables are optional / La creación de tablas formateadas es opcional `(ft = TRUE)`
 
 ## Licence / Licencia
 MIT License
