@@ -18,7 +18,7 @@ and optional joinpoints."><meta property="og:image" content="/logo.png"><!-- mat
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">joinpointR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -65,7 +65,18 @@ and optional joinpoints.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gg_jpoint</span><span class="op">(</span><span class="va">mods</span>, obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span>, facets <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gg_jpoint</span><span class="op">(</span></span>
+<span>  <span class="va">mods</span>,</span>
+<span>  obs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  psize <span class="op">=</span> <span class="fl">2.5</span>,</span>
+<span>  ptr <span class="op">=</span> <span class="fl">0.75</span>,</span>
+<span>  jp <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  facets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wrap"</span>, <span class="st">"grid"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
+<span>  ncol <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  cb <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  cbpal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"viridis"</span>, <span class="st">"managua"</span>, <span class="st">"plasma"</span>, <span class="st">"roma"</span>, <span class="st">"vanimo"</span>, <span class="st">"algae"</span>, <span class="st">"arches2"</span>,</span>
+<span>    <span class="st">"glasgow"</span>, <span class="st">"tokyo"</span>, <span class="st">"blue_fluoride"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -73,56 +84,123 @@ and optional joinpoints.</p>
 
 
 <dl><dt id="arg-mods">mods<a class="anchor" aria-label="anchor" href="#arg-mods"></a></dt>
-<dd><p>List of joinpoint regression models (output of model_jp()).</p></dd>
+<dd><p>A list of joinpoint regression models returned by <code><a href="model_jp.html">model_jp()</a></code>.</p></dd>
 
 
 <dt id="arg-obs">obs<a class="anchor" aria-label="anchor" href="#arg-obs"></a></dt>
-<dd><p>Logical. If TRUE, displays observed data points.</p></dd>
+<dd><p>Logical. If <code>TRUE</code>, observed data points are displayed.</p></dd>
+
+
+<dt id="arg-psize">psize<a class="anchor" aria-label="anchor" href="#arg-psize"></a></dt>
+<dd><p>Numeric. Size of the observed data points.</p></dd>
+
+
+<dt id="arg-ptr">ptr<a class="anchor" aria-label="anchor" href="#arg-ptr"></a></dt>
+<dd><p>Numeric. Transparency level of the observed data points (0-1).</p></dd>
 
 
 <dt id="arg-jp">jp<a class="anchor" aria-label="anchor" href="#arg-jp"></a></dt>
-<dd><p>Logical. If TRUE, displays joinpoints as vertical dashed lines.</p></dd>
+<dd><p>Logical. If <code>TRUE</code>, joinpoints are displayed as vertical dashed lines.</p></dd>
 
 
 <dt id="arg-facets">facets<a class="anchor" aria-label="anchor" href="#arg-facets"></a></dt>
-<dd><p>Logical. If TRUE, displays one panel per group using facets.</p></dd>
+<dd><p>Character. Determines the facet layout: <code>"none"</code> for a single
+panel, <code>"wrap"</code> for faceting by group, or <code>"grid"</code> for faceting by group
+and subgroup.</p></dd>
+
+
+<dt id="arg-ncol">ncol<a class="anchor" aria-label="anchor" href="#arg-ncol"></a></dt>
+<dd><p>Numeric. Number of columns to display when <code>facets = "wrap"</code>.</p></dd>
+
+
+<dt id="arg-cb">cb<a class="anchor" aria-label="anchor" href="#arg-cb"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, a colorblind-friendly palette is used.</p></dd>
+
+
+<dt id="arg-cbpal">cbpal<a class="anchor" aria-label="anchor" href="#arg-cbpal"></a></dt>
+<dd><p>Character. Name of the colorblind-friendly palette to use.
+See Details.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A ggplot object.</p>
+    <p>A <code>ggplot</code> object showing observed values, fitted joinpoint regression
+lines, and optional joinpoints.</p>
     </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>Available colorblind-friendly palettes from the <code>cols4all</code> package include:</p>
+<p>Diverging palettes:</p><ul><li><p><code>"managua"</code></p></li>
+<li><p><code>"plasma"</code></p></li>
+<li><p><code>"roma"</code></p></li>
+<li><p><code>"vanimo"</code></p></li>
+<li><p><code>"viridis"</code></p></li>
+</ul><p>Sequential palettes:</p><ul><li><p><code>"algae"</code></p></li>
+<li><p><code>"arches2"</code></p></li>
+<li><p><code>"blue_fluoride"</code></p></li>
+<li><p><code>"glasgow"</code></p></li>
+<li><p><code>"tokyo"</code></p></li>
+</ul></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     filter, lag</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
-<span class="r-in"><span><span class="co"># Load example data</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"plant"</span>, package <span class="op">=</span> <span class="st">"segmented"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">plant</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "y"     "time"  "group"</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load example data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">hiv_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Fit the joinpoint models</span></span></span>
-<span class="r-in"><span><span class="va">mods</span> <span class="op">&lt;-</span> <span class="fu"><a href="model_jp.html">model_jp</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">plant</span>, value <span class="op">=</span> <span class="st">"y"</span>, time <span class="op">=</span> <span class="st">"time"</span>, group <span class="op">=</span> <span class="st">"group"</span>, k <span class="op">=</span> <span class="fl">2</span>, test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: RKW | Joinpoint(s): 280; 441</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: RWC | Joinpoint(s): 315; 571</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: RKV | Joinpoint(s): 321; 532</span>
+<span class="r-in"><span><span class="va">mods</span> <span class="op">&lt;-</span> <span class="fu"><a href="model_jp.html">model_jp</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">hiv_data</span>,</span></span>
+<span class="r-in"><span>  value <span class="op">=</span> <span class="va">hiv_rate</span>,</span></span>
+<span class="r-in"><span>  time <span class="op">=</span> <span class="va">year</span>,</span></span>
+<span class="r-in"><span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"region"</span>, <span class="st">"sex"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  k <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  test <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: Central_Female | Joinpoint(s): 2019</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: Central_Male | Joinpoint(s): 2013.7; 2019.0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: East_Female | Joinpoint(s): 2014.8; 2019.1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: East_Male | Joinpoint(s): 2014.4; 2019.0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: North_Female | Joinpoint(s): 2015.4; 2019.0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: North_Male | Joinpoint(s): 2014.9; 2019.1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: South_Female | Joinpoint(s): 2019</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: South_Male | Joinpoint(s): 2019</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: West_Female | Joinpoint(s): 2017.9; 2019.4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Model: West_Male | Joinpoint(s): 2019</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot results</span></span></span>
-<span class="r-in"><span><span class="fu">gg_jpoint</span><span class="op">(</span><span class="va">mods</span>, obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span>, facets <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">gg_jpoint</span><span class="op">(</span><span class="va">mods</span>, obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span>, facets <span class="op">=</span> <span class="st">"wrap"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="gg_jpoint-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Facets by group</span></span></span>
-<span class="r-in"><span><span class="fu">gg_jpoint</span><span class="op">(</span><span class="va">mods</span>, obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span>, facets <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Facet by group and subgroup</span></span></span>
+<span class="r-in"><span><span class="fu">gg_jpoint</span><span class="op">(</span><span class="va">mods</span>, obs <span class="op">=</span> <span class="cn">TRUE</span>, jp <span class="op">=</span> <span class="cn">TRUE</span>, facets <span class="op">=</span> <span class="st">"grid"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of columns will be ignored when facets 'none' or 'grid'.</span>
 <span class="r-plt img"><img src="gg_jpoint-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Single panel without joinpoints</span></span></span>
+<span class="r-in"><span><span class="fu">gg_jpoint</span><span class="op">(</span><span class="va">mods</span>, jp <span class="op">=</span> <span class="cn">FALSE</span>, facets <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of columns will be ignored when facets 'none' or 'grid'.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joinpoint(s) position(s) will not be displayed.</span>
+<span class="r-plt img"><img src="gg_jpoint-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use a different colorblind-friendly palette</span></span></span>
+<span class="r-in"><span><span class="fu">gg_jpoint</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">mods</span>,</span></span>
+<span class="r-in"><span>  obs <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  jp <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  facets <span class="op">=</span> <span class="st">"grid"</span>,</span></span>
+<span class="r-in"><span>  cb <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  cbpal <span class="op">=</span> <span class="st">"managua"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of columns will be ignored when facets 'none' or 'grid'.</span>
+<span class="r-plt img"><img src="gg_jpoint-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use default ggplot2 palette (can be changed using `scale_color_`)</span></span></span>
+<span class="r-in"><span><span class="fu">gg_jpoint</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">mods</span>,</span></span>
+<span class="r-in"><span>cb <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Colorblind-friendly palettes disabled, use `scale_color_`functions to set line and point colors.</span>
+<span class="r-plt img"><img src="gg_jpoint-5.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </div>
