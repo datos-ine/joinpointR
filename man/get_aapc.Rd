@@ -7,35 +7,50 @@
 get_aapc(mods, digits = 1, show_ci = TRUE, dec = ".")
 }
 \arguments{
-\item{digits}{Number of decimal places to display (integer).}
+\item{mods}{A joinpoint regression model, a list of joinpoint regression
+models returned by \code{model_jp()}, or linear regression models (\code{lm}
+objects).}
 
-\item{show_ci}{Logical; if TRUE, displays the 95\% confidence interval.
-If FALSE, displays significance stars.}
+\item{digits}{Integer. Number of decimal places used to display the results.}
 
-\item{dec}{Character. Decimal separator to use (e.g., "." or ",").}
+\item{show_ci}{Logical. If \code{TRUE}, displays the 95\% confidence interval.
+If \code{FALSE}, displays significance stars.}
 
-\item{mod}{Joinpoint regression models (segmented objects) or linear regression models (lm objects).}
+\item{dec}{Character. Decimal separator to use (\code{"."} or \code{","}).}
 }
 \value{
-A tibble with the AAPC and either its 95\% confidence
-interval or significance stars for each model.
+A tibble with one row per model containing the estimated AAPC and either
+its 95\% confidence interval or significance stars.
 }
 \description{
-Estimates the Average Annual Percent Change (AAPC) and its 95\% confidence
-interval. Optionally displays statistical significance using significance
-stars.
+Estimates the Average Annual Percent Change (AAPC) and its corresponding
+95\% confidence interval for one or more regression models. Optionally,
+statistical significance can be displayed using significance stars instead
+of confidence intervals.
 }
 \examples{
 # Load example data
-data("hiv_data")
+data(hiv_data)
 
-names(hiv_data)
+# Fit joinpoint models
+mods <- model_jp(
+  data = hiv_data,
+  value = "hiv_rate",
+  time = "year",
+  group = "region",
+  k = 2,
+  test = TRUE
+)
 
-# Fit the joinpoint models
-mods <- model_jp(data = hiv_data, value = "hiv_rate", time = "year", group = "region", k = 2, test = TRUE)
-
-# AAPC of the first model
+# AAPC with 95\% confidence intervals
 get_aapc(mods, digits = 1, show_ci = TRUE, dec = ".")
+
+# AAPC with significance stars
+get_aapc(mods, show_ci = FALSE)
+
+# AAPC for a single model
+get_aapc(mods$Central)
+
 }
 \author{
 Tamara Ricardo

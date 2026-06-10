@@ -29,7 +29,8 @@ Imports:
     stringr,
     stats,
     officer,
-    forcats
+    forcats,
+    cols4all
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/datos-ine/joinpointR
 BugReports: https://github.com/datos-ine/joinpointR/issues

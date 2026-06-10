@@ -41,8 +41,8 @@ data(hiv_data)
 #| id: model-1
 mod1 <- model_jp(
   data = hiv_data,
-  value = "hiv_rate",
-  time = "year",
+  value = hiv_rate,
+  time = year,
   group = "sex",
   k = 3,
   step = TRUE,
@@ -58,8 +58,8 @@ mod1
 #| id: model-2
 mod2 <- model_jp(
   data = hiv_data,
-  value = "hiv_rate",
-  time = "year",
+  value = hiv_rate,
+  time = year,
   group = "sex",
   k = 1,
   step = FALSE,
@@ -75,8 +75,8 @@ mod2
 #| id: model-3
 mod3 <- model_jp(
   data = hiv_data,
-  value = "hiv_rate",
-  time = "year",
+  value = hiv_rate,
+  time = year,
   group = c("region", "sex"),
   step = TRUE
 )
@@ -115,7 +115,7 @@ get_aapc(mod1, digits = 1, show_ci = FALSE)
 ## Summary tables
 ### Results as a data frame
 ```{r}
-# id: tab-1
+#| id: tab-1
 summary_jp(mod1)
 ```
 
@@ -123,91 +123,84 @@ summary_jp(mod1)
 ```{r}
 # id: tab-2
 mod2 |>
-  summary_jp(digits = 1, var1 = "Sex", ft = TRUE)
+  summary_jp(digits = 1) |>
+  jp_to_ft()
 ```
 
 ### HTML Tables by two grouping variables
 ```{r}
 #| id: tab-3
 mod3 |>
-  summary_jp(digits = 1, var1 = "Region", var2 = "Sex", ft = TRUE)
+  summary_jp(digits = 1) |>
+  jp_to_ft()
 ```
 
 Change the table language to Spanish
 ```{r}
 #| id: tab-4
 mod3 |>
-  summary_jp(digits = 1, var1 = "Región", var2 = "Sexo", ft = TRUE, lan = "es")
+  summary_jp(digits = 1) |>
+  jp_to_ft(lan = "es")
 ```
 
 ## Regression plots
 Default plot
 ```{r}
 #| id: plot-1
-mod1 |>
-  gg_jpoint()
+gg_jpoint(mod1)
 ```
 
 Stack plots
 ```{r}
 #| id: plot-2
-mod1 |>
-  gg_jpoint(facets = "none")
+gg_jpoint(mod1, facets = "none")
 ```
 
 Two grouping variables
 
 ```{r}
 #| id: plot-3
-mod3 |>
-  gg_jpoint()
+gg_jpoint(mod3)
 ```
 
 Split by region and sex
 ```{r}
 #| id: plot-4
-mod3 |>
-  gg_jpoint(facets = "grid")
+gg_jpoint(mod3, facets = "grid")
 ```
 
 Modify the size of data points
 ```{r}
 #| id: plot-5
-mod3 |>
-  gg_jpoint(facets = "grid", psize = 5)
+gg_jpoint(mod3, facets = "grid", psize = 5)
 ```
 
 Modify the transparency of data points
 ```{r}
 #| id: plot-6
-mod3 |>
-  gg_jpoint(facets = "grid", ptr = 1)
+gg_jpoint(mod3, facets = "grid", ptr = 1)
 ```
 
 Hide data points
 ```{r}
 #| id: plot-7
-mod3 |>
-  gg_jpoint(facets = "grid", obs = FALSE)
+gg_jpoint(mod3, facets = "grid", obs = FALSE)
 ```
 
 Hide joinpoint(s) marker(s)
 ```{r}
 #| id: plot-8
-mod3 |>
-  gg_jpoint(facets = "grid", jp = FALSE)
+gg_jpoint(mod3, facets = "grid", jp = FALSE)
 ```
 
 Change the default colorblind-friendly palette
 ```{r}
 #| id: plot-9
-mod3 %>%
-  gg_jpoint(facets = "grid", jp = FALSE, cbpal = "blue_fluoride")
+gg_jpoint(mod3, facets = "grid", jp = FALSE, cbpal = "blue_fluoride")
 ```
 
 Disable colorblind-friendly palettes
 ```{r}
 #| id: plot- 10
-mod3 %>%
-  gg_jpoint(facets = "grid", cb = FALSE)
+gg_jpoint(mod3, facets = "grid", cb = FALSE)
 ```

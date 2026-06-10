@@ -2,35 +2,46 @@
 % Please edit documentation in R/get_apc.R
 \name{get_apc}
 \alias{get_apc}
-\title{Annual Percent Change by Segment (APC)}
+\title{Annual Percent Change by Segment}
 \usage{
 get_apc(mods, digits = 1, dec = ".")
 }
 \arguments{
-\item{mods}{Joinpoint regression models (segmented objects).}
+\item{mods}{A joinpoint regression model or a list of joinpoint regression
+models returned by \code{model_jp()}.}
 
-\item{digits}{Number of decimal places to display (integer).}
+\item{digits}{Integer. Number of decimal places used to display the results.}
 
-\item{dec}{Character. Decimal separator to use (e.g., "." or ",").}
+\item{dec}{Character. Decimal separator to use (e.g. \code{"."} or \code{","}).}
 }
 \value{
-A tibble with APCs and 95\% CI for each segment of each model.
+A tibble with one row per segment and the variables
+\code{group}, \code{segment}, \code{apc}, \code{lower}, and \code{upper}, where \code{lower}
+and \code{upper} correspond to the limits of the 95\\% confidence interval.
 }
 \description{
-Calculates the Annual Percent Change (APC) for each model segment and its 95\%
-confidence interval.
+Calculates the Annual Percent Change (APC) and corresponding 95\% confidence
+intervals for each segment of one or more joinpoint regression models.
 }
 \examples{
 # Load example data
 data(hiv_data)
 
-names(hiv_data)
+# Fit joinpoint models
+mods <- model_jp(
+  data = hiv_data,
+  value = "hiv_rate",
+  time = "year",
+  group = "region",
+  k = 2,
+  test = TRUE
+)
 
-# Fit the joinpoint models
-mods <- model_jp(data = hiv_data, value = "hiv_rate", time = "year", group = "region", k = 2, test = TRUE)
-
-# Obtain APC (95\% CI)
+# APC and 95\% confidence intervals for all models
 get_apc(mods, digits = 1, dec = ".")
+
+# APC and 95\% confidence intervals for a single model
+get_apc(mods$Central)
 
 }
 \author{

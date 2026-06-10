@@ -7,35 +7,38 @@
 summary_jp(mods, digits = 1, dec = c(".", ","))
 }
 \arguments{
-\item{mods}{List of joinpoint regression models (output of model_jp()).}
+\item{mods}{A list of models returned by \code{model_jp()}.}
 
-\item{digits}{Number of decimal places to display (integer).}
+\item{digits}{Integer. Number of decimal places used to display the results.}
 
-\item{dec}{Character used as decimal separator. Must be "." or ",".}
+\item{dec}{Character. Decimal separator to use (e.g. \code{"."} or \code{","}).}
 }
 \value{
-A tibble containing the grouping variables, number of joinpoints (JP),
-period, APC, 95\% confidence interval, and AAPC for each model.
+A tibble with one row per segment containing the grouping variable(s),
+number of joinpoints (JP), time period(s), APC and its 95\% confidence
+interval, and AAPC with significance stars.
 }
 \description{
-Generates a summary table containing the number of joinpoints (JP),
-time periods, APC and its 95\% confidence interval, and AAPC with
-statistical significance for each joinpoint regression model.
+Generates summary tables for one or more joinpoint regression models,
+including the number of joinpoints (JP), time periods, Annual Percent
+Change (APC) with 95\% confidence intervals, and Average Annual Percent
+Change (AAPC) with statistical significance.
 }
 \examples{
 # Load example data
-data("hiv_data")
+data(hiv_data)
 
-# Fit the joinpoint models
+# Fit joinpoint models
 mods <- model_jp(
   data = hiv_data,
-  value = "hiv_rate",
-  time = "year",
+  value = hiv_rate,
+  time = year,
   group = "region"
 )
 
 # Summarize models
 summary_jp(mods, digits = 1, dec = ".")
+
 }
 \author{
 Tamara Ricardo

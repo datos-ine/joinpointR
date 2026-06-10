@@ -1,34 +1,37 @@
 #' Summary Tables for Joinpoint Regression Models
 #'
-#' Generates a summary table containing the number of joinpoints (JP),
-#' time periods, APC and its 95% confidence interval, and AAPC with
-#' statistical significance for each joinpoint regression model.
+#' Generates summary tables for one or more joinpoint regression models,
+#' including the number of joinpoints (JP), time periods, Annual Percent
+#' Change (APC) with 95% confidence intervals, and Average Annual Percent
+#' Change (AAPC) with statistical significance.
 #'
-#' @param mods List of joinpoint regression models (output of model_jp()).
-#' @param digits Number of decimal places to display (integer).
-#' @param dec Character used as decimal separator. Must be "." or ",".
+#' @param mods A list of models returned by \code{model_jp()}.
+#' @param digits Integer. Number of decimal places used to display the results.
+#' @param dec Character. Decimal separator to use (e.g. `"."` or `","`).
 #'
 #' @return
-#' A tibble containing the grouping variables, number of joinpoints (JP),
-#' period, APC, 95% confidence interval, and AAPC for each model.
+#' A tibble with one row per segment containing the grouping variable(s),
+#' number of joinpoints (JP), time period(s), APC and its 95% confidence
+#' interval, and AAPC with significance stars.
 #'
 #' @author Tamara Ricardo
-#' @export
 #'
 #' @examples
 #' # Load example data
-#' data("hiv_data")
+#' data(hiv_data)
 #'
-#' # Fit the joinpoint models
+#' # Fit joinpoint models
 #' mods <- model_jp(
 #'   data = hiv_data,
-#'   value = "hiv_rate",
-#'   time = "year",
+#'   value = hiv_rate,
+#'   time = year,
 #'   group = "region"
 #' )
 #'
 #' # Summarize models
 #' summary_jp(mods, digits = 1, dec = ".")
+#'
+#' @export
 
 summary_jp <- function(
   mods,
@@ -56,12 +59,19 @@ summary_jp <- function(
 
         # Joinpoints
         jp = nrow(mod$psi)
-      } else {
-        # Breaks
-        breaks <- NA_character_
 
+        # Period
+        period <- paste(
+          round(head(breaks, -1)),
+          round(tail(breaks, -1)),
+          sep = "-"
+        )
+      } else {
         # Joinpoints
         jp <- 0
+
+        # Period
+        period <- NA_character_
       }
 
       # ---- Generate table ----
@@ -78,15 +88,7 @@ summary_jp <- function(
         dplyr::mutate(
           group = group,
           jp = jp,
-          period = dplyr::if_else(
-            jp != 0,
-            paste(
-              round(head(breaks, -1)),
-              round(tail(breaks, -1)),
-              sep = "-"
-            ),
-            NA_character_
-          ),
+          period = period,
           .before = 1
         ) |>
 

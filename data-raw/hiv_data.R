@@ -13,7 +13,7 @@ hiv_data <- expand_grid(
     slope1 = c(-6, -5, 3, -7, 2),
     slope2 = c(4, 3, -4, 2, -5)
   )
-) %>%
+) |>
   mutate(
     trend = if_else(
       year <= 2019,
@@ -24,7 +24,9 @@ hiv_data <- expand_grid(
       trend +
       if_else(sex == "Male", 10, 0) +
       rnorm(n(), 0, 0.8)
-  ) %>%
+  ) |>
+
+  mutate(across(.cols = where(is.character), .fns = ~ factor(.x))) |>
 
   select(year, region, sex, hiv_rate)
 

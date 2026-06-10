@@ -3,43 +3,62 @@
 #' Fits segmented linear regression models by groups for age-standardized rates
 #' using joinpoint regression. Models can be fitted using either a stepwise
 #' selection procedure based on the Bayesian Information Criterion (BIC) or a
-#' fixed number of joinpoints. Internally calls
+#' fixed number of joinpoints. Internally, the function calls
 #' \code{segmented::selgmented()} or \code{segmented::segmented()} and applies
 #' a log transformation to the response variable.
 #'
-#' @param data Data frame containing age-standardized rates.
-#' @param value Name of the response variable (character).
-#' @param time Name of the time variable (character).
-#' @param group Name of one or more grouping variables (character vector).
-#' @param k Maximum number of joinpoints to be estimated (integer).
-#' @param step Use stepwise procedure to select the number of joinpoints (logical).
-#' @param test whether to test for differences in slope t-values during the stepwise selection
-#' procedure. Only used when \code{step = TRUE}.
-#' @return A list of models by group.
+#' @param data A data frame containing age-standardized rates.
+#' @param value Response variable.
+#' @param time Time variable.
+#' @param group Names of one or more grouping variables.
+#' @param k Maximum number of joinpoints to estimate.
+#' @param step Logical. If \code{TRUE}, uses a stepwise procedure to select the
+#' number of joinpoints based on BIC. If \code{FALSE}, fits a model with a
+#' fixed number of joinpoints specified by \code{k}.
+#' @param test Logical. If \code{TRUE}, tests differences in slope t-values
+#' during the stepwise selection procedure. Only used when
+#' \code{step = TRUE}.
+#' @return A named list of joinpoint regression models by group.
 #' @author Tamara Ricardo
-#' @export
+#' @details
+#' The National Cancer Institute (NCI) recommends the following maximum number
+#' of joinpoints according to the length of the time series (Kim et al., 2000):
+#'
+#' \itemize{
+#' \item 0--6 time points: 0 joinpoints.
+#' \item 7--11 time points: 1 joinpoint.
+#' \item 12--16 time points: 2 joinpoints.
+#' \item 17--21 time points: 3 joinpoints.
+#' \item 22--26 time points: 4 joinpoints.
+#' \item 27--31 time points: 5 joinpoints.
+#' \item 32--36 time points: 6 joinpoints.
+#' \item 37 or more time points: 7 joinpoints.
+#' }
+#'
+#' #' @references
+#' Kim HJ, Fay MP, Feuer EJ, Midthune DN (2000).
+#' "Permutation Tests for Joinpoint Regression with Applications to Cancer Rates."
+#' \emph{Statistics in Medicine}, 19(3), 335--351.
+#' doi:10.1002/(sici)1097-0258(20000215)19:3<335::aid-sim336>3.0.co;2-z.
 #'
 #' @examples
-#' # Generate example data
-#' library(dplyr)
-#' df <- mtcars |>
-#' mutate(
-#'   year = seq(2000, length.out = n(), by = 1),
-#'   group = factor(paste("cyl", cyl, sep = "_")),
-#'   rate = mpg
-#' ) |>
-#' select(year, group, rate)
+#' # Load example data
+#' data("hiv_data")
 #'
 #' # Check group levels
-#' levels(df$group)
+#' levels(hiv_data$region)
 #'
 #' # Fit models
-#' mods <- model_jp(data = df, value = "rate", time = "year", group = "group",
+#' mods <- model_jp(data = hiv_data, value = hiv_rate, time = year, group = c("region", "sex"),
 #'  k = 2, step = TRUE, test = TRUE)
 #'
-#' # Show the output of the first model
-#' mods$cyl_6
-#' summary(mods$cyl_6)
+#' # Show the output of the first model by calling its index
+#' mods[[1]]
+#'
+#' # Same output will be obtained when calling model name
+#' mods$Central
+#'
+#' @export
 
 model_jp <- function(
   data,
@@ -50,6 +69,13 @@ model_jp <- function(
   step = TRUE,
   test = TRUE
 ) {
+  # ---- Define variables ----
+  value <- rlang::ensym(value)
+  time <- rlang::ensym(time)
+
+  value_name <- rlang::as_string(value)
+  time_name <- rlang::as_string(time)
+
   # ---- Validate response variable ----
   if (any(data[[value]] <= 0, na.rm = TRUE)) {
     stop("The response variable must be > 0 to apply log() transformation")
@@ -57,26 +83,26 @@ model_jp <- function(
 
   # ---- Validate grouping variable/s ----
   if (!all(group %in% names(data))) {
-    stop("Some grouping variables are not present in data")
+    stop("Some grouping variable names are not present in data")
   }
 
   # ---- Validate number of joinpoints ----
   if (!step && k > 1 && dplyr::n_distinct(data[[time]]) < 11) {
     message(
-      "Note: fitting two or more joinpoints is not recommended for short time series."
+      "Note: fitting two or more joinpoints is not recommended for short time series (see Details)."
     )
   }
 
   # ---- Validate test and step arguments ----
   if (!step && test) {
-    warning("'test' is ignored when step = FALSE")
+    message("'test' is ignored when step = FALSE")
   }
 
   # ---- Prepare data ----
   data <- data |>
     dplyr::mutate(
-      .jp_time = .data[[time]],
-      .jp_log_value = log(.data[[value]]),
+      .jp_time = !!time,
+      .jp_log_value = log(!!value),
       .jp_group = forcats::fct_cross(
         !!!rlang::syms(group),
         sep = "_",
@@ -90,7 +116,7 @@ model_jp <- function(
 
   # ---- Fit the linear model ----
   lm_fit <- function(.x) {
-    lm(
+    stats::lm(
       .jp_log_value ~ .jp_time,
       data = .x
     )
@@ -113,14 +139,14 @@ model_jp <- function(
 
           mod$call <- substitute(
             segmented::selgmented(
-              olm = lm(
+              olm = stats::lm(
                 formula = log(Y) ~ X
               ),
               Kmax = K
             ),
             list(
-              Y = as.name(value),
-              X = as.name(time),
+              Y = value,
+              X = time,
               K = k
             )
           )
@@ -140,15 +166,15 @@ model_jp <- function(
 
           mod$call <- substitute(
             segmented::segmented(
-              obj = lm(
+              obj = stats::lm(
                 formula = log(Y) ~ X
               ),
               seg.Z = ~X,
               npsi = K
             ),
             list(
-              Y = as.name(value),
-              X = as.name(time),
+              Y = value,
+              X = time,
               K = k
             )
           )

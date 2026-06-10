@@ -1,6 +1,12 @@
 # joinpointR 1.0.0
-- Updated the functions to improve customization of the outputs.
-- Added vignettes
+
+## Improvements
+- Added package vignettes.
+- Added the example dataset `vih_data`.
+- `model_jp()` now accepts unquoted response and time variables. Messages and outputs have also been simplified.
+- `get_apc()` and `get_aapc()` now accept either a list of models or an individual model.
+- `summary_jp()` now returns a tibble; the flextable format has been moved to `as_ft_jp()`.
+- `gg_jpoint()` now supports faceting by one or two grouping variables, or no faceting at all. It also includes several colorblind-friendly palettes.
 
 # joinpointR 0.6.2
 

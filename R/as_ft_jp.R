@@ -1,31 +1,41 @@
-#' Summary Flextable For Joinpoint Regression Models
+#' Summary Flextable for Joinpoint Regression Models
 #'
-#' Generates a flextable object displaying the number of joinpoints, time breaks, APC and its 95% confidence
-#' interval, and AAPC and its statistical significance from a summary_jp() object.
+#' Creates a flextable object from the output of \code{summary_jp()}, displaying
+#' the number of joinpoints, time periods, Annual Percent Change (APC) with
+#' 95% confidence intervals, and Average Annual Percent Change (AAPC) with
+#' statistical significance.
 #'
-#' @param tab A tibble generated with summary_jp().
-#' @param digits Number of decimal places to display (integer).
-#' @param lan Language of output: "en" (English) or "es" (Spanish).
-#' @return A flextable object with summary statistics.
+#' @param tab A tibble returned by \code{summary_jp()}.
+#' @param digits Integer. Number of decimal places used to display the results.
+#' @param lan Character. Output language: "en" (English) or "es" (Spanish).
+#'
+#' @return
+#' A `flextable` object containing summary statistics for the joinpoint
+#' regression models.
+#'
 #' @author Tamara Ricardo
-#' @export
-#' @examples
-#' library(dplyr)
-#' # Load example data
-#' data("hiv_data")
 #'
-#' names(hiv_data)
+#' @examples
+#' # Load example data
+#' data(hiv_data)
 #'
 #' # Fit the joinpoint models
-#' mods <- model_jp(data = hiv_data, value = "hiv_rate", time = "year", group = c("region","sex"))
+#' mods <- model_jp(
+#'   data = hiv_data,
+#'   value = hiv_rate,
+#'   time = year,
+#'   group = c("region", "sex")
+#' )
 #'
-#' # Generate summary tables
+#' # Generate a flextable summary
 #' tab <- summary_jp(mods, digits = 1)
+#' jp_to_ft(tab)
 #'
-#' # Format tables
-#' as_ft_jp(tab)
+#' # Change table language
+#' jp_to_ft(tab, lan = "es")
+#' @export
 
-as_ft_jp <- function(
+jp_to_ft <- function(
   tab,
   digits = 1,
   lan = c("en", "es")

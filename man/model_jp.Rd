@@ -7,53 +7,73 @@
 model_jp(data, value, time, group, k = 2, step = TRUE, test = TRUE)
 }
 \arguments{
-\item{data}{Data frame containing age-standardized rates.}
+\item{data}{A data frame containing age-standardized rates.}
 
-\item{value}{Name of the response variable (character).}
+\item{value}{Response variable.}
 
-\item{time}{Name of the time variable (character).}
+\item{time}{Time variable.}
 
-\item{group}{Name of one or more grouping variables (character vector).}
+\item{group}{Names of one or more grouping variables.}
 
-\item{k}{Maximum number of joinpoints to be estimated (integer).}
+\item{k}{Maximum number of joinpoints to estimate.}
 
-\item{step}{Use stepwise procedure to select the number of joinpoints (logical).}
+\item{step}{Logical. If \code{TRUE}, uses a stepwise procedure to select the
+number of joinpoints based on BIC. If \code{FALSE}, fits a model with a
+fixed number of joinpoints specified by \code{k}.}
 
-\item{test}{whether to test for differences in slope t-values during the stepwise selection
-procedure. Only used when \code{step = TRUE}.}
+\item{test}{Logical. If \code{TRUE}, tests differences in slope t-values
+during the stepwise selection procedure. Only used when
+\code{step = TRUE}.}
 }
 \value{
-A list of models by group.
+A named list of joinpoint regression models by group.
 }
 \description{
 Fits segmented linear regression models by groups for age-standardized rates
 using joinpoint regression. Models can be fitted using either a stepwise
 selection procedure based on the Bayesian Information Criterion (BIC) or a
-fixed number of joinpoints. Internally calls
+fixed number of joinpoints. Internally, the function calls
 \code{segmented::selgmented()} or \code{segmented::segmented()} and applies
 a log transformation to the response variable.
 }
+\details{
+The National Cancer Institute (NCI) recommends the following maximum number
+of joinpoints according to the length of the time series (Kim et al., 2000):
+
+\itemize{
+\item 0--6 time points: 0 joinpoints.
+\item 7--11 time points: 1 joinpoint.
+\item 12--16 time points: 2 joinpoints.
+\item 17--21 time points: 3 joinpoints.
+\item 22--26 time points: 4 joinpoints.
+\item 27--31 time points: 5 joinpoints.
+\item 32--36 time points: 6 joinpoints.
+\item 37 or more time points: 7 joinpoints.
+}
+
+#' @references
+Kim HJ, Fay MP, Feuer EJ, Midthune DN (2000).
+"Permutation Tests for Joinpoint Regression with Applications to Cancer Rates."
+\emph{Statistics in Medicine}, 19(3), 335--351.
+doi:10.1002/(sici)1097-0258(20000215)19:3<335::aid-sim336>3.0.co;2-z.
+}
 \examples{
-# Generate example data
-library(dplyr)
-df <- mtcars |>
-mutate(
-  year = seq(2000, length.out = n(), by = 1),
-  group = factor(paste("cyl", cyl, sep = "_")),
-  rate = mpg
-) |>
-select(year, group, rate)
+# Load example data
+data("hiv_data")
 
 # Check group levels
-levels(df$group)
+levels(hiv_data$region)
 
 # Fit models
-mods <- model_jp(data = df, value = "rate", time = "year", group = "group",
+mods <- model_jp(data = hiv_data, value = hiv_rate, time = year, group = c("region", "sex"),
  k = 2, step = TRUE, test = TRUE)
 
-# Show the output of the first model
-mods$cyl_6
-summary(mods$cyl_6)
+# Show the output of the first model by calling its index
+mods[[1]]
+
+# Same output will be obtained when calling model name
+mods$Central
+
 }
 \author{
 Tamara Ricardo
