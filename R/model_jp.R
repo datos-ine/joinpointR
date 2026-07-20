@@ -12,7 +12,7 @@
 #' @param time Time variable.
 #' @param group Names of one or more grouping variables.
 #' @param k Maximum number of joinpoints to estimate.
-#' @param min_dist Integer. Minimum number of observations required per segment.
+#' @param min_dist Minimum number of observations required per segment.
 #' Defaults to 3 to prevent joinpoints from being too close.
 #' @param step Logical. If \code{TRUE}, uses a stepwise procedure to select the
 #' number of joinpoints based on BIC. If \code{FALSE}, fits a model with a
@@ -37,11 +37,19 @@
 #' \item 37 or more time points: 7 joinpoints.
 #' }
 #'
-#' #' @references
+#' @references
 #' Kim HJ, Fay MP, Feuer EJ, Midthune DN (2000).
 #' "Permutation Tests for Joinpoint Regression with Applications to Cancer Rates."
 #' \emph{Statistics in Medicine}, 19(3), 335--351.
 #' doi:10.1002/(sici)1097-0258(20000215)19:3<335::aid-sim336>3.0.co;2-z.
+#'
+#' Muggeo, V.M.R., Adelfio, G. (2011).
+#' Efficient change point detection in genomic sequences of continuous
+#' measurements. \emph{Bioinformatics}, 27, 161–166.
+#'
+#' Muggeo, Vito. (2020).
+#' Selecting number of breakpoints in segmented regression:
+#' implementation in the R package segmented. 10.13140/RG.2.2.12891.39201.
 #'
 #' @examples
 #' # Load example data
