@@ -12,6 +12,8 @@
 #' @param time Time variable.
 #' @param group Names of one or more grouping variables.
 #' @param k Maximum number of joinpoints to estimate.
+#' @param min_dist Integer. Minimum number of observations required per segment.
+#' Defaults to 3 to prevent joinpoints from being too close.
 #' @param step Logical. If \code{TRUE}, uses a stepwise procedure to select the
 #' number of joinpoints based on BIC. If \code{FALSE}, fits a model with a
 #' fixed number of joinpoints specified by \code{k}.
@@ -50,7 +52,7 @@
 #'
 #' # Fit models
 #' mods <- model_jp(data = hiv_data, value = hiv_rate, time = year, group = c("region", "sex"),
-#'  k = 2, step = TRUE, test = TRUE)
+#'  k = 2, min_dist = 3, step = TRUE, test = TRUE)
 #'
 #' # Show the output of the first model by calling its index
 #' mods[[1]]
@@ -66,6 +68,7 @@ model_jp <- function(
   time,
   group,
   k = 2,
+  min_dist = 3,
   step = TRUE,
   test = TRUE
 ) {
@@ -122,6 +125,12 @@ model_jp <- function(
     )
   }
 
+  # ---- Create control structure ----
+  seg_ctrl <- segmented::seg.control(
+    fix.npsi = FALSE,
+    min.nj = min_dist
+  )
+
   # ---- Fit joinpoint regression by groups ----
   if (step) {
     mods <- data |>
@@ -134,10 +143,7 @@ model_jp <- function(
             th = 2,
             stop.if = 4,
             check.dslope = test,
-            control = segmented::seg.control(
-              fix.npsi = FALSE,
-              min.nj = 3
-            ),
+            control = seg_ctrl,
             msg = FALSE
           )
 
@@ -165,7 +171,8 @@ model_jp <- function(
           mod <- segmented::segmented(
             obj = lm_fit(.x),
             seg.Z = ~.jp_time,
-            npsi = k
+            npsi = k,
+            control = seg_ctrl
           )
 
           mod$call <- substitute(

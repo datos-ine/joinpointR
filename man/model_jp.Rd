@@ -4,7 +4,16 @@
 \alias{model_jp}
 \title{Joinpoint Regression Models by Groups}
 \usage{
-model_jp(data, value, time, group, k = 2, step = TRUE, test = TRUE)
+model_jp(
+  data,
+  value,
+  time,
+  group,
+  k = 2,
+  min_dist = 3,
+  step = TRUE,
+  test = TRUE
+)
 }
 \arguments{
 \item{data}{A data frame containing age-standardized rates.}
@@ -16,6 +25,9 @@ model_jp(data, value, time, group, k = 2, step = TRUE, test = TRUE)
 \item{group}{Names of one or more grouping variables.}
 
 \item{k}{Maximum number of joinpoints to estimate.}
+
+\item{min_dist}{Integer. Minimum number of observations required per segment.
+Defaults to 3 to prevent joinpoints from being too close.}
 
 \item{step}{Logical. If \code{TRUE}, uses a stepwise procedure to select the
 number of joinpoints based on BIC. If \code{FALSE}, fits a model with a
@@ -66,7 +78,7 @@ levels(hiv_data$region)
 
 # Fit models
 mods <- model_jp(data = hiv_data, value = hiv_rate, time = year, group = c("region", "sex"),
- k = 2, step = TRUE, test = TRUE)
+ k = 2, min_dist = 3, step = TRUE, test = TRUE)
 
 # Show the output of the first model by calling its index
 mods[[1]]
