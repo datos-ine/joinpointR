@@ -1,3 +1,5 @@
+# joinpointR 1.1.0
+
 # joinpointR 1.0.0
 
 ## Improvements
