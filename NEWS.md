@@ -1,5 +1,10 @@
 # joinpointR 1.1.0
 
+## Improvements
+- `model_jp()` now allows to set a minimun distance between joinpoint estimates using the `min_dist` argument (defaults to `min_dist = 3`).
+- `as_ft_jp()' now shows a blank cell for confidence intervals with NA values.
+
+
 # joinpointR 1.0.0
 
 ## Improvements
