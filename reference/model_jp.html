@@ -22,7 +22,7 @@ a log transformation to the response variable."><meta property="og:image" conten
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">joinpointR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -110,7 +110,7 @@ a log transformation to the response variable.</p>
 
 
 <dt id="arg-min-dist">min_dist<a class="anchor" aria-label="anchor" href="#arg-min-dist"></a></dt>
-<dd><p>Integer. Minimum number of observations required per segment.
+<dd><p>Minimum number of observations required per segment.
 Defaults to 3 to prevent joinpoints from being too close.</p></dd>
 
 
@@ -142,11 +142,19 @@ of joinpoints according to the length of the time series (Kim et al., 2000):</p>
 <li><p>27–31 time points: 5 joinpoints.</p></li>
 <li><p>32–36 time points: 6 joinpoints.</p></li>
 <li><p>37 or more time points: 7 joinpoints.</p></li>
-</ul><p>#' @references
-Kim HJ, Fay MP, Feuer EJ, Midthune DN (2000).
+</ul></div>
+    <div id="references">
+    <h2>References</h2>
+    <p>Kim HJ, Fay MP, Feuer EJ, Midthune DN (2000).
 "Permutation Tests for Joinpoint Regression with Applications to Cancer Rates."
 <em>Statistics in Medicine</em>, 19(3), 335–351.
 doi:10.1002/(sici)1097-0258(20000215)19:3&lt;335::aid-sim336&gt;3.0.co;2-z.</p>
+<p>Muggeo, V.M.R., Adelfio, G. (2011).
+Efficient change point detection in genomic sequences of continuous
+measurements. <em>Bioinformatics</em>, 27, 161–166.</p>
+<p>Muggeo, Vito. (2020).
+Selecting number of breakpoints in segmented regression:
+implementation in the R package segmented. 10.13140/RG.2.2.12891.39201.</p>
     </div>
     <div id="author">
     <h2>Author</h2>

@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">joinpointR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -123,6 +123,7 @@ simulated dataset with the HIV rates by sex in five regions</p>
 <span>  time <span class="op">=</span> <span class="va">year</span>,</span>
 <span>  group <span class="op">=</span> <span class="st">"sex"</span>,</span>
 <span>  k <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  min_dist <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  step <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  test <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
@@ -162,6 +163,7 @@ simulated dataset with the HIV rates by sex in five regions</p>
 <span>  time <span class="op">=</span> <span class="va">year</span>,</span>
 <span>  group <span class="op">=</span> <span class="st">"sex"</span>,</span>
 <span>  k <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  min_dist <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  step <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  test <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -284,48 +286,48 @@ global trend even when no significant joinpoints were detected.</p>
 <span>  <span class="fu"><a href="../reference/summary_jp.html">summary_jp</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/jp_to_ft.html">jp_to_ft</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="tabwid">
-<style>.cl-2ad22a12{}.cl-2ac9a810{font-family:'DejaVu Sans';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2ac9a81a{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2acd3610{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2acd361a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2acd6f9a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2acd6fa4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2acd6fa5{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2acd6fae{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2acd6faf{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2acd6fb0{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table data-quarto-disable-processing="true" class="table cl-2ad22a12">
+<style>.cl-db78d7e4{}.cl-db706c4e{font-family:'DejaVu Sans';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-db706c58{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-db73f756{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-db73f760{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-db743450{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-db74345a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-db74345b{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-db743464{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-db743465{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-db743466{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table data-quarto-disable-processing="true" class="table cl-db78d7e4">
 <thead><tr style="overflow-wrap:break-word;">
-<th class="cl-2acd6f9a"><p class="cl-2acd3610"><span class="cl-2ac9a810">Group</span></p></th>
-<th class="cl-2acd6fa4"><p class="cl-2acd361a"><span class="cl-2ac9a810">JP</span></p></th>
-<th class="cl-2acd6f9a"><p class="cl-2acd3610"><span class="cl-2ac9a810">Period</span></p></th>
-<th class="cl-2acd6f9a"><p class="cl-2acd3610"><span class="cl-2ac9a810">APC</span></p></th>
-<th class="cl-2acd6f9a"><p class="cl-2acd3610"><span class="cl-2ac9a810">CI</span></p></th>
-<th class="cl-2acd6f9a"><p class="cl-2acd3610"><span class="cl-2ac9a810">AAPC</span></p></th>
+<th class="cl-db743450"><p class="cl-db73f756"><span class="cl-db706c4e">Group</span></p></th>
+<th class="cl-db74345a"><p class="cl-db73f760"><span class="cl-db706c4e">JP</span></p></th>
+<th class="cl-db743450"><p class="cl-db73f756"><span class="cl-db706c4e">Period</span></p></th>
+<th class="cl-db743450"><p class="cl-db73f756"><span class="cl-db706c4e">APC</span></p></th>
+<th class="cl-db743450"><p class="cl-db73f756"><span class="cl-db706c4e">CI</span></p></th>
+<th class="cl-db743450"><p class="cl-db73f756"><span class="cl-db706c4e">AAPC</span></p></th>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">Female</span></p></td>
-<td class="cl-2acd6fae"><p class="cl-2acd361a"><span class="cl-2ac9a81a">1</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">2010-2020</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">-2.5%</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">-3.6%; -1.3%</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">-1.5% *</span></p></td>
+<td rowspan="2" class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">Female</span></p></td>
+<td class="cl-db743464"><p class="cl-db73f760"><span class="cl-db706c58">1</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">2010-2020</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">-2.5%</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">-3.6%; -1.3%</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">-1.5% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2acd6fae"><p class="cl-2acd361a"><span class="cl-2ac9a81a">1</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">2020-2025</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">0.2%</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">-2.3%; 2.8%</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a"></span></p></td>
+<td class="cl-db743464"><p class="cl-db73f760"><span class="cl-db706c58">1</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">2020-2025</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">0.2%</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">-2.3%; 2.8%</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-2acd6faf"><p class="cl-2acd3610"><span class="cl-2ac9a81a">Male</span></p></td>
-<td class="cl-2acd6fae"><p class="cl-2acd361a"><span class="cl-2ac9a81a">1</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">2010-2019</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">-2.3%</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">-3.3%; -1.3%</span></p></td>
-<td class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">-1.4% *</span></p></td>
+<td rowspan="2" class="cl-db743465"><p class="cl-db73f756"><span class="cl-db706c58">Male</span></p></td>
+<td class="cl-db743464"><p class="cl-db73f760"><span class="cl-db706c58">1</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">2010-2019</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">-2.3%</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">-3.3%; -1.3%</span></p></td>
+<td class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">-1.4% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2acd6fb0"><p class="cl-2acd361a"><span class="cl-2ac9a81a">1</span></p></td>
-<td class="cl-2acd6faf"><p class="cl-2acd3610"><span class="cl-2ac9a81a">2019-2025</span></p></td>
-<td class="cl-2acd6faf"><p class="cl-2acd3610"><span class="cl-2ac9a81a">0.1%</span></p></td>
-<td class="cl-2acd6faf"><p class="cl-2acd3610"><span class="cl-2ac9a81a">-2.1%; 2.4%</span></p></td>
-<td class="cl-2acd6faf"><p class="cl-2acd3610"><span class="cl-2ac9a81a"></span></p></td>
+<td class="cl-db743466"><p class="cl-db73f760"><span class="cl-db706c58">1</span></p></td>
+<td class="cl-db743465"><p class="cl-db73f756"><span class="cl-db706c58">2019-2025</span></p></td>
+<td class="cl-db743465"><p class="cl-db73f756"><span class="cl-db706c58">0.1%</span></p></td>
+<td class="cl-db743465"><p class="cl-db73f756"><span class="cl-db706c58">-2.1%; 2.4%</span></p></td>
+<td class="cl-db743465"><p class="cl-db73f756"><span class="cl-db706c58"></span></p></td>
 </tr>
-<tr style="overflow-wrap:break-word;"><td colspan="6" class="cl-2acd6fa5"><p class="cl-2acd3610"><span class="cl-2ac9a81a">* p &lt; 0.05</span><br><span class="cl-2ac9a81a">JP: number of joinpoints; APC: annual percent change; CI: 95% confidence interval; AAPC: average annual percent change (95% CI).</span></p></td></tr>
+<tr style="overflow-wrap:break-word;"><td colspan="6" class="cl-db74345b"><p class="cl-db73f756"><span class="cl-db706c58">* p &lt; 0.05</span><br><span class="cl-db706c58">JP: number of joinpoints; APC: annual percent change; CI: 95% confidence interval; AAPC: average annual percent change (95% CI).</span></p></td></tr>
 </tbody>
 </table>
 </div>
@@ -338,232 +340,232 @@ global trend even when no significant joinpoints were detected.</p>
 <span>  <span class="fu"><a href="../reference/summary_jp.html">summary_jp</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/jp_to_ft.html">jp_to_ft</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="tabwid">
-<style>.cl-2b1c68c0{}.cl-2b13f6e0{font-family:'DejaVu Sans';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2b13f6f4{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2b175646{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2b175650{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2b17880a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b17881e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b17881f{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b178828{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b178829{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b178832{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table data-quarto-disable-processing="true" class="table cl-2b1c68c0">
+<style>.cl-dbc20748{}.cl-dbb9a526{font-family:'DejaVu Sans';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-dbb9a53a{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-dbbd04be{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dbbd04c8{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dbbd3524{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dbbd352e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dbbd3538{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dbbd3539{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dbbd3542{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dbbd3543{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table data-quarto-disable-processing="true" class="table cl-dbc20748">
 <thead><tr style="overflow-wrap:break-word;">
-<th class="cl-2b17880a"><p class="cl-2b175646"><span class="cl-2b13f6e0">Group</span></p></th>
-<th class="cl-2b17880a"><p class="cl-2b175646"><span class="cl-2b13f6e0">Subgroup</span></p></th>
-<th class="cl-2b17881e"><p class="cl-2b175650"><span class="cl-2b13f6e0">JP</span></p></th>
-<th class="cl-2b17880a"><p class="cl-2b175646"><span class="cl-2b13f6e0">Period</span></p></th>
-<th class="cl-2b17880a"><p class="cl-2b175646"><span class="cl-2b13f6e0">APC</span></p></th>
-<th class="cl-2b17880a"><p class="cl-2b175646"><span class="cl-2b13f6e0">CI</span></p></th>
-<th class="cl-2b17880a"><p class="cl-2b175646"><span class="cl-2b13f6e0">AAPC</span></p></th>
+<th class="cl-dbbd3524"><p class="cl-dbbd04be"><span class="cl-dbb9a526">Group</span></p></th>
+<th class="cl-dbbd3524"><p class="cl-dbbd04be"><span class="cl-dbb9a526">Subgroup</span></p></th>
+<th class="cl-dbbd352e"><p class="cl-dbbd04c8"><span class="cl-dbb9a526">JP</span></p></th>
+<th class="cl-dbbd3524"><p class="cl-dbbd04be"><span class="cl-dbb9a526">Period</span></p></th>
+<th class="cl-dbbd3524"><p class="cl-dbbd04be"><span class="cl-dbb9a526">APC</span></p></th>
+<th class="cl-dbbd3524"><p class="cl-dbbd04be"><span class="cl-dbb9a526">CI</span></p></th>
+<th class="cl-dbbd3524"><p class="cl-dbbd04be"><span class="cl-dbb9a526">AAPC</span></p></th>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="5" class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Central</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">1</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2010-2019</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-4.7%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-4.9%; -4.6%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-1.7% *</span></p></td>
+<td rowspan="5" class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Central</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">1</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2010-2019</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-4.7%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-4.9%; -4.6%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-1.7% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">1</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2019-2025</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">3.4%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">3.0%; 3.8%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">1</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2019-2025</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">3.4%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">3.0%; 3.8%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2010-2014</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-3.9%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-4.5%; -3.3%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-1.5% *</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2010-2014</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-3.9%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-4.5%; -3.3%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-1.5% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2014-2019</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-4.7%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-5.1%; -4.4%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2014-2019</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-4.7%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-5.1%; -4.4%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2019-2025</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">3.1%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2.8%; 3.3%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2019-2025</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">3.1%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2.8%; 3.3%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="6" class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">East</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2010-2015</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-5.5%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-6.1%; -4.9%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-3.0% *</span></p></td>
+<td rowspan="6" class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">East</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2010-2015</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-5.5%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-6.1%; -4.9%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-3.0% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2015-2019</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-8.0%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-8.6%; -7.4%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2015-2019</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-8.0%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-8.6%; -7.4%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2019-2025</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">3.1%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2.6%; 3.6%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2019-2025</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">3.1%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2.6%; 3.6%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2010-2014</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-4.9%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-5.3%; -4.5%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-2.9% *</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2010-2014</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-4.9%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-5.3%; -4.5%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-2.9% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2014-2019</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-7.2%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-7.6%; -6.9%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2014-2019</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-7.2%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-7.6%; -6.9%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2019-2025</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2.1%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">1.8%; 2.4%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2019-2025</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2.1%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">1.8%; 2.4%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="6" class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">North</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2010-2015</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-5.2%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-5.6%; -4.7%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-1.8% *</span></p></td>
+<td rowspan="6" class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">North</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2010-2015</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-5.2%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-5.6%; -4.7%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-1.8% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2015-2019</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-6.8%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-8.2%; -5.5%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2015-2019</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-6.8%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-8.2%; -5.5%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2019-2025</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">4.7%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">4.2%; 5.1%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2019-2025</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">4.7%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">4.2%; 5.1%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2010-2015</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-4.7%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-5.1%; -4.3%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-1.5% *</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2010-2015</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-4.7%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-5.1%; -4.3%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-1.5% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2015-2019</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-5.9%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-6.2%; -5.5%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2015-2019</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-5.9%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-6.2%; -5.5%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2019-2025</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">4.4%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">4.1%; 4.7%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2019-2025</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">4.4%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">4.1%; 4.7%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="4" class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">South</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">1</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2010-2019</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">3.3%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">3.1%; 3.6%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">0.3% *</span></p></td>
+<td rowspan="4" class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">South</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">1</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2010-2019</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">3.3%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">3.1%; 3.6%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">0.3% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">1</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2019-2025</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-3.9%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-4.3%; -3.6%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">1</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2019-2025</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-3.9%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-4.3%; -3.6%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">1</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2010-2019</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2.8%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2.6%; 3.0%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">0.2% *</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">1</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2010-2019</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2.8%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2.6%; 3.0%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">0.2% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">1</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2019-2025</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-3.6%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-3.9%; -3.4%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">1</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2019-2025</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-3.6%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-3.9%; -3.4%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="5" class="cl-2b178829"><p class="cl-2b175646"><span class="cl-2b13f6f4">West</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2010-2018</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2.2%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2.0%; 2.4%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-1.0% *</span></p></td>
+<td rowspan="5" class="cl-dbbd3542"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">West</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2010-2018</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2.2%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2.0%; 2.4%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-1.0% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2018-2019</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">0.2%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-1.9%; 2.4%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2018-2019</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">0.2%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-1.9%; 2.4%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Female</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">2</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2019-2025</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-5.6%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-6.0%; -5.3%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Female</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">2</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2019-2025</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-5.6%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-6.0%; -5.3%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178828"><p class="cl-2b175650"><span class="cl-2b13f6f4">1</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">2010-2019</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">1.9%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">1.7%; 2.1%</span></p></td>
-<td class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">-0.9% *</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3539"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">1</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2010-2019</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">1.9%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">1.7%; 2.1%</span></p></td>
+<td class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-0.9% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b178829"><p class="cl-2b175646"><span class="cl-2b13f6f4">Male</span></p></td>
-<td class="cl-2b178832"><p class="cl-2b175650"><span class="cl-2b13f6f4">1</span></p></td>
-<td class="cl-2b178829"><p class="cl-2b175646"><span class="cl-2b13f6f4">2019-2025</span></p></td>
-<td class="cl-2b178829"><p class="cl-2b175646"><span class="cl-2b13f6f4">-5.0%</span></p></td>
-<td class="cl-2b178829"><p class="cl-2b175646"><span class="cl-2b13f6f4">-5.5%; -4.6%</span></p></td>
-<td class="cl-2b178829"><p class="cl-2b175646"><span class="cl-2b13f6f4"></span></p></td>
+<td class="cl-dbbd3542"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">Male</span></p></td>
+<td class="cl-dbbd3543"><p class="cl-dbbd04c8"><span class="cl-dbb9a53a">1</span></p></td>
+<td class="cl-dbbd3542"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">2019-2025</span></p></td>
+<td class="cl-dbbd3542"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-5.0%</span></p></td>
+<td class="cl-dbbd3542"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">-5.5%; -4.6%</span></p></td>
+<td class="cl-dbbd3542"><p class="cl-dbbd04be"><span class="cl-dbb9a53a"></span></p></td>
 </tr>
-<tr style="overflow-wrap:break-word;"><td colspan="7" class="cl-2b17881f"><p class="cl-2b175646"><span class="cl-2b13f6f4">* p &lt; 0.05</span><br><span class="cl-2b13f6f4">JP: number of joinpoints; APC: annual percent change; CI: 95% confidence interval; AAPC: average annual percent change (95% CI).</span></p></td></tr>
+<tr style="overflow-wrap:break-word;"><td colspan="7" class="cl-dbbd3538"><p class="cl-dbbd04be"><span class="cl-dbb9a53a">* p &lt; 0.05</span><br><span class="cl-dbb9a53a">JP: number of joinpoints; APC: annual percent change; CI: 95% confidence interval; AAPC: average annual percent change (95% CI).</span></p></td></tr>
 </tbody>
 </table>
 </div>
@@ -573,232 +575,232 @@ global trend even when no significant joinpoints were detected.</p>
 <span>  <span class="fu"><a href="../reference/summary_jp.html">summary_jp</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/jp_to_ft.html">jp_to_ft</a></span><span class="op">(</span>lan <span class="op">=</span> <span class="st">"es"</span><span class="op">)</span></span></code></pre></div>
 <div class="tabwid">
-<style>.cl-2b618234{}.cl-2b595172{font-family:'DejaVu Sans';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2b595186{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2b5ca570{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2b5ca57a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2b5ccba4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b5ccba5{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b5ccbae{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b5ccbb8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b5ccbb9{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b5ccbba{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table data-quarto-disable-processing="true" class="table cl-2b618234">
+<style>.cl-dc061a0a{}.cl-dbfdf5b4{font-family:'DejaVu Sans';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-dbfdf5c8{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-dc0158d0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dc0158da{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dc017e1e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dc017e28{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dc017e32{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dc017e3c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dc017e3d{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dc017e46{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table data-quarto-disable-processing="true" class="table cl-dc061a0a">
 <thead><tr style="overflow-wrap:break-word;">
-<th class="cl-2b5ccba4"><p class="cl-2b5ca570"><span class="cl-2b595172">Grupo</span></p></th>
-<th class="cl-2b5ccba4"><p class="cl-2b5ca570"><span class="cl-2b595172">Subgrupo</span></p></th>
-<th class="cl-2b5ccba5"><p class="cl-2b5ca57a"><span class="cl-2b595172">JP</span></p></th>
-<th class="cl-2b5ccba4"><p class="cl-2b5ca570"><span class="cl-2b595172">Periodo</span></p></th>
-<th class="cl-2b5ccba4"><p class="cl-2b5ca570"><span class="cl-2b595172">APC</span></p></th>
-<th class="cl-2b5ccba4"><p class="cl-2b5ca570"><span class="cl-2b595172">IC</span></p></th>
-<th class="cl-2b5ccba4"><p class="cl-2b5ca570"><span class="cl-2b595172">AAPC</span></p></th>
+<th class="cl-dc017e1e"><p class="cl-dc0158d0"><span class="cl-dbfdf5b4">Grupo</span></p></th>
+<th class="cl-dc017e1e"><p class="cl-dc0158d0"><span class="cl-dbfdf5b4">Subgrupo</span></p></th>
+<th class="cl-dc017e28"><p class="cl-dc0158da"><span class="cl-dbfdf5b4">JP</span></p></th>
+<th class="cl-dc017e1e"><p class="cl-dc0158d0"><span class="cl-dbfdf5b4">Periodo</span></p></th>
+<th class="cl-dc017e1e"><p class="cl-dc0158d0"><span class="cl-dbfdf5b4">APC</span></p></th>
+<th class="cl-dc017e1e"><p class="cl-dc0158d0"><span class="cl-dbfdf5b4">IC</span></p></th>
+<th class="cl-dc017e1e"><p class="cl-dc0158d0"><span class="cl-dbfdf5b4">AAPC</span></p></th>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="5" class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Central</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">1</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2010-2019</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-4,7%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-4,9%; -4,6%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-1,7% *</span></p></td>
+<td rowspan="5" class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Central</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">1</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2010-2019</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-4,7%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-4,9%; -4,6%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-1,7% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">1</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2019-2025</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">3,4%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">3,0%; 3,8%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">1</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2019-2025</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">3,4%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">3,0%; 3,8%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2010-2014</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-3,9%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-4,5%; -3,3%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-1,5% *</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2010-2014</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-3,9%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-4,5%; -3,3%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-1,5% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2014-2019</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-4,7%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-5,1%; -4,4%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2014-2019</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-4,7%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-5,1%; -4,4%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2019-2025</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">3,1%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2,8%; 3,3%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2019-2025</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">3,1%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2,8%; 3,3%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="6" class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">East</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2010-2015</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-5,5%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-6,1%; -4,9%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-3,0% *</span></p></td>
+<td rowspan="6" class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">East</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2010-2015</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-5,5%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-6,1%; -4,9%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-3,0% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2015-2019</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-8,0%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-8,6%; -7,4%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2015-2019</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-8,0%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-8,6%; -7,4%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2019-2025</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">3,1%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2,6%; 3,6%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2019-2025</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">3,1%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2,6%; 3,6%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2010-2014</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-4,9%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-5,3%; -4,5%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-2,9% *</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2010-2014</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-4,9%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-5,3%; -4,5%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-2,9% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2014-2019</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-7,2%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-7,6%; -6,9%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2014-2019</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-7,2%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-7,6%; -6,9%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2019-2025</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2,1%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">1,8%; 2,4%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2019-2025</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2,1%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">1,8%; 2,4%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="6" class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">North</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2010-2015</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-5,2%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-5,6%; -4,7%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-1,8% *</span></p></td>
+<td rowspan="6" class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">North</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2010-2015</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-5,2%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-5,6%; -4,7%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-1,8% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2015-2019</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-6,8%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-8,2%; -5,5%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2015-2019</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-6,8%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-8,2%; -5,5%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2019-2025</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">4,7%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">4,2%; 5,1%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2019-2025</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">4,7%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">4,2%; 5,1%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2010-2015</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-4,7%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-5,1%; -4,3%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-1,5% *</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2010-2015</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-4,7%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-5,1%; -4,3%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-1,5% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2015-2019</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-5,9%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-6,2%; -5,5%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2015-2019</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-5,9%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-6,2%; -5,5%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2019-2025</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">4,4%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">4,1%; 4,7%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2019-2025</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">4,4%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">4,1%; 4,7%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="4" class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">South</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">1</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2010-2019</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">3,3%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">3,1%; 3,6%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">0,3% *</span></p></td>
+<td rowspan="4" class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">South</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">1</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2010-2019</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">3,3%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">3,1%; 3,6%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">0,3% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">1</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2019-2025</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-3,9%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-4,3%; -3,6%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">1</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2019-2025</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-3,9%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-4,3%; -3,6%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">1</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2010-2019</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2,8%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2,6%; 3,0%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">0,2% *</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">1</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2010-2019</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2,8%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2,6%; 3,0%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">0,2% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">1</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2019-2025</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-3,6%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-3,9%; -3,4%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">1</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2019-2025</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-3,6%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-3,9%; -3,4%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="5" class="cl-2b5ccbb9"><p class="cl-2b5ca570"><span class="cl-2b595186">West</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2010-2018</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2,2%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2,0%; 2,4%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-1,0% *</span></p></td>
+<td rowspan="5" class="cl-dc017e3d"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">West</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2010-2018</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2,2%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2,0%; 2,4%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-1,0% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2018-2019</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">0,2%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-1,9%; 2,4%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2018-2019</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">0,2%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-1,9%; 2,4%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Female</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">2</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2019-2025</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-5,6%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-6,0%; -5,3%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Female</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">2</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2019-2025</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-5,6%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-6,0%; -5,3%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbb8"><p class="cl-2b5ca57a"><span class="cl-2b595186">1</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">2010-2019</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">1,9%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">1,7%; 2,1%</span></p></td>
-<td class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">-0,9% *</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e3c"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">1</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2010-2019</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">1,9%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">1,7%; 2,1%</span></p></td>
+<td class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-0,9% *</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-2b5ccbb9"><p class="cl-2b5ca570"><span class="cl-2b595186">Male</span></p></td>
-<td class="cl-2b5ccbba"><p class="cl-2b5ca57a"><span class="cl-2b595186">1</span></p></td>
-<td class="cl-2b5ccbb9"><p class="cl-2b5ca570"><span class="cl-2b595186">2019-2025</span></p></td>
-<td class="cl-2b5ccbb9"><p class="cl-2b5ca570"><span class="cl-2b595186">-5,0%</span></p></td>
-<td class="cl-2b5ccbb9"><p class="cl-2b5ca570"><span class="cl-2b595186">-5,5%; -4,6%</span></p></td>
-<td class="cl-2b5ccbb9"><p class="cl-2b5ca570"><span class="cl-2b595186"></span></p></td>
+<td class="cl-dc017e3d"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">Male</span></p></td>
+<td class="cl-dc017e46"><p class="cl-dc0158da"><span class="cl-dbfdf5c8">1</span></p></td>
+<td class="cl-dc017e3d"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">2019-2025</span></p></td>
+<td class="cl-dc017e3d"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-5,0%</span></p></td>
+<td class="cl-dc017e3d"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">-5,5%; -4,6%</span></p></td>
+<td class="cl-dc017e3d"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8"></span></p></td>
 </tr>
-<tr style="overflow-wrap:break-word;"><td colspan="7" class="cl-2b5ccbae"><p class="cl-2b5ca570"><span class="cl-2b595186">* p &lt; 0,05</span><br><span class="cl-2b595186">JP: cantidad de joinpoints; APC: cambio porcentual anual; IC: intervalo de confianza al 95%; AAPC: cambio porcentual anual promedio (IC 95%).</span></p></td></tr>
+<tr style="overflow-wrap:break-word;"><td colspan="7" class="cl-dc017e32"><p class="cl-dc0158d0"><span class="cl-dbfdf5c8">* p &lt; 0,05</span><br><span class="cl-dbfdf5c8">JP: cantidad de joinpoints; APC: cambio porcentual anual; IC: intervalo de confianza al 95%; AAPC: cambio porcentual anual promedio (IC 95%).</span></p></td></tr>
 </tbody>
 </table>
 </div>
