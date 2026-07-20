@@ -134,6 +134,10 @@ model_jp <- function(
             th = 2,
             stop.if = 4,
             check.dslope = test,
+            control = segmented::seg.control(
+              fix.npsi = FALSE,
+              min.nj = 3
+            ),
             msg = FALSE
           )
 
