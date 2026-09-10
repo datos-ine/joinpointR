@@ -135,7 +135,6 @@ model_jp <- function(
 
   # ---- Create control structure ----
   seg_ctrl <- segmented::seg.control(
-    fix.npsi = FALSE,
     min.nj = min_dist
   )
 
