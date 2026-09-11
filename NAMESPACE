@@ -5,6 +5,7 @@ export(get_apc)
 export(gg_jpoint)
 export(jp_to_ft)
 export(model_jp)
+export(summary_jp)
 importFrom(dplyr,where)
 importFrom(rlang,
   ":=",
