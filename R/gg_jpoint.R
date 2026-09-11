@@ -51,8 +51,7 @@
 #'   value = hiv_rate,
 #'   time = year,
 #'   group = c("region", "sex"),
-#'   k = 2,
-#'   test = TRUE
+#'   k = 2
 #' )
 #'
 #' # Plot results
@@ -106,6 +105,7 @@ gg_jpoint <- function(
   )
 ) {
   # ---- Default values ----
+
   if (cb) {
     cbpal <- match.arg(cbpal)
   }
@@ -113,28 +113,35 @@ gg_jpoint <- function(
   facets <- match.arg(facets)
 
   # ---- Validate ncol ----
+
   if (facets != "wrap") {
-    message("Number of columns will be ignored when facets 'none' or 'grid'.")
+    message(
+      "Number of columns will be ignored when facets 'none' or 'grid'."
+    )
   }
 
   # ---- Validate hide data points ----
+
   if (!obs) {
     message("Data points will not be displayed.")
   }
 
   # ---- Validate hide joinpoints ----
+
   if (!jp) {
     message("Joinpoint(s) position(s) will not be displayed.")
   }
 
   # ---- Validate disable colorblind-friendly palette ----
+
   if (!cb) {
     message(
-      "Colorblind-friendly palettes disabled, use `scale_color_`functions to set line and point colors."
+      "Colorblind-friendly palettes disabled, use `scale_color_` functions to set line and point colors."
     )
   }
 
   # ---- Generate subgroups ----
+
   get_sg <- function(.x) {
     .x |>
       tidyr::separate_wider_delim(
@@ -144,31 +151,41 @@ gg_jpoint <- function(
         cols_remove = FALSE,
         too_few = "align_start"
       ) |>
-
-      # Modify group labels
-      dplyr::mutate(group_var = stringr::str_replace(group_var, "_", ": "))
+      dplyr::mutate(
+        group_var = stringr::str_replace(
+          group_var,
+          "_",
+          ": "
+        )
+      )
   }
 
   # ---- Generate dataset for base plot ----
-  data <- purrr::map_df(
+
+  data <- purrr::map_dfr(
     mods,
-    ~ tibble::tibble(
-      time = .x$model$.jp_time,
-      obs = .x$model$.jp_log_value,
-      fit = stats::predict(.x)
-    ),
+    \(x) {
+      mod <- x$model
+
+      tibble::tibble(
+        time = mod$model$time,
+        obs = mod$model$y,
+        fit = mod$fitted.values
+      )
+    },
     .id = "group_var"
   ) |>
     get_sg()
 
   # ---- Generate dataset for joinpoint positions ----
+
   jp_data <- purrr::imap_dfr(
     mods,
     \(mod, group) {
-      if (inherits(mod, "segmented") && !is.null(mod$psi)) {
+      if (length(mod$joinpoints) > 0) {
         tibble::tibble(
           group_var = group,
-          jp = mod$psi[, "Est."]
+          jp = mod$joinpoints
         )
       } else {
         tibble::tibble(
@@ -181,17 +198,25 @@ gg_jpoint <- function(
     get_sg()
 
   # ---- Generate base plot layout ----
+
   if (facets != "none") {
     g <- data |>
       ggplot2::ggplot(
-        ggplot2::aes(x = time, y = obs, color = group)
+        ggplot2::aes(
+          x = time,
+          y = obs,
+          color = group
+        )
       ) +
       ggplot2::geom_line(
         ggplot2::aes(y = fit),
         linewidth = 1
       ) +
-
-      ggplot2::labs(y = "log(rate)", x = NULL, color = NULL) +
+      ggplot2::labs(
+        y = "log(rate)",
+        x = NULL,
+        color = NULL
+      ) +
       ggplot2::theme_minimal() +
       ggplot2::theme(
         legend.position = "bottom",
@@ -200,19 +225,30 @@ gg_jpoint <- function(
   } else {
     g <- data |>
       ggplot2::ggplot(
-        ggplot2::aes(x = time, y = obs, group = group_var, color = group_var)
+        ggplot2::aes(
+          x = time,
+          y = obs,
+          group = group_var,
+          color = group_var
+        )
       ) +
       ggplot2::geom_line(
         ggplot2::aes(y = fit),
         linewidth = 1
       ) +
-
-      ggplot2::labs(y = "log(rate)", x = NULL, color = NULL) +
+      ggplot2::labs(
+        y = "log(rate)",
+        x = NULL,
+        color = NULL
+      ) +
       ggplot2::theme_minimal() +
-      ggplot2::theme(legend.position = "bottom")
+      ggplot2::theme(
+        legend.position = "bottom"
+      )
   }
 
-  ## ---- Add facets ----
+  # ---- Add facets ----
+
   g <- switch(
     facets,
     grid = g + ggplot2::facet_grid(group ~ subgroup),
@@ -221,25 +257,31 @@ gg_jpoint <- function(
   )
 
   # ---- Add data points ----
+
   if (obs) {
     g <- g +
-      ggplot2::geom_point(size = psize, alpha = ptr)
+      ggplot2::geom_point(
+        size = psize,
+        alpha = ptr
+      )
   }
 
   # ---- Add joinpoints ----
-  if (jp & nrow(jp_data) > 0) {
+
+  if (jp && nrow(jp_data) > 0) {
     g <- g +
       ggplot2::geom_vline(
         data = jp_data,
         ggplot2::aes(xintercept = jp),
         color = "darkgrey",
-        lwd = 2,
+        linewidth = 2,
         alpha = 0.4
       )
   }
 
   # ---- Show plot ----
-  if (cb & facets != "none") {
+
+  if (cb && facets != "none") {
     g +
       ggplot2::scale_color_manual(
         values = cols4all::c4a(
@@ -247,7 +289,7 @@ gg_jpoint <- function(
           n = dplyr::n_distinct(data$group)
         )
       )
-  } else if (cb & facets == "none") {
+  } else if (cb && facets == "none") {
     g +
       ggplot2::scale_color_manual(
         values = cols4all::c4a(

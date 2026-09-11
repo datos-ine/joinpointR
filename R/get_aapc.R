@@ -6,8 +6,7 @@
 #' of confidence intervals.
 #'
 #' @param mods A joinpoint regression model, a list of joinpoint regression
-#'   models returned by \code{model_jp()}, or linear regression models (`lm`
-#'   objects).
+#'   models returned by \code{model_jp()}.
 #' @param digits Integer. Number of decimal places used to display the results.
 #' @param show_ci Logical. If `TRUE`, displays the 95% confidence interval.
 #'   If `FALSE`, displays significance stars.
@@ -39,9 +38,6 @@
 #' # AAPC with significance stars
 #' get_aapc(mods, show_ci = FALSE)
 #'
-#' # AAPC for a single model
-#' get_aapc(mods$Central)
-#'
 #' @export
 
 get_aapc <- function(
@@ -50,60 +46,165 @@ get_aapc <- function(
   show_ci = TRUE,
   dec = "."
 ) {
-  # ---- Allow a single model or a list of models ----
-  if (inherits(mods, c("lm", "segmented"))) {
-    mods <- list(mods)
+  # ---- Validate input ----
+
+  if (!is.list(mods)) {
+    stop("`mods` must be a list returned by `model_jp_grid()`.")
   }
 
-  # ---- Format of 95% CI ----
+  # ---- Format 95% CI ----
+
   fmt_ci <- function(x, y, z) {
     paste0(
-      scales::percent(x, accuracy = 10^-digits, decimal.mark = dec),
+      scales::percent(
+        x,
+        accuracy = 10^-digits,
+        decimal.mark = dec
+      ),
       " (",
-      scales::percent(y, accuracy = 10^-digits, decimal.mark = dec),
+      scales::percent(
+        y,
+        accuracy = 10^-digits,
+        decimal.mark = dec
+      ),
       "; ",
-      scales::percent(z, accuracy = 10^-digits, decimal.mark = dec),
+      scales::percent(
+        z,
+        accuracy = 10^-digits,
+        decimal.mark = dec
+      ),
       ")"
     )
   }
 
-  # ---- Format of significance stars ----
+  # ---- Format significance stars ----
+
   fmt_stars <- function(x, stars) {
     paste0(
-      scales::percent(x, accuracy = 10^-digits, decimal.mark = dec),
+      scales::percent(
+        x,
+        accuracy = 10^-digits,
+        decimal.mark = dec
+      ),
       ifelse(stars != "", paste0(" ", stars), "")
     )
   }
 
-  # ---- Estimate AAPC for each model in the list ----
+  # ---- Estimate AAPC for each model ----
+
   purrr::map_dfr(
     mods,
-    \(mod) {
-      ## ---- Segmented objects ----
-      if (inherits(mod, "segmented")) {
-        aapc_obj <- segmented::aapc(mod)
+    function(x) {
+      mod <- x$model
+      joinpoints <- x$joinpoints
 
-        AAPC <- unname(aapc_obj[grep("Est", names(aapc_obj))])
-        CI_low <- unname(aapc_obj[grep("\\.l", names(aapc_obj))])
-        CI_upp <- unname(aapc_obj[grep("\\.u", names(aapc_obj))])
-      } else {
-        ## ---- Linear models ----
-        beta <- stats::coef(mod)[2]
-        AAPC <- exp(beta) - 1
+      # ---- Time range ----
 
-        CI <- stats::confint(mod)[2, ]
-        CI_low <- exp(CI[1]) - 1
-        CI_upp <- exp(CI[2]) - 1
+      time <- mod$model$time
+
+      t_min <- min(time, na.rm = TRUE)
+      t_max <- max(time, na.rm = TRUE)
+
+      # ---- Segment slopes ----
+
+      b <- stats::coef(mod)
+
+      n_segments <- length(joinpoints) + 1
+
+      slopes <- numeric(n_segments)
+
+      for (i in seq_len(n_segments)) {
+        terms <- c(
+          "time",
+          if (i > 1) {
+            paste0("U", seq_len(i - 1), ".time")
+          }
+        )
+
+        slopes[i] <- sum(b[terms])
       }
 
-      stars <- ifelse(CI_low > 0 | CI_upp < 0, "*", "")
+      # ---- Segment lengths ----
+
+      breaks <- c(
+        t_min,
+        joinpoints,
+        t_max
+      )
+
+      lengths <- diff(breaks)
+
+      # ---- Weighted average slope ----
+
+      beta_aapc <- sum(
+        slopes * lengths
+      ) /
+        sum(lengths)
+
+      # ---- AAPC ----
+
+      AAPC <- exp(beta_aapc) - 1
+
+      # ---- Variance of weighted slope ----
+
+      L <- numeric(length(b))
+      names(L) <- names(b)
+
+      for (i in seq_len(n_segments)) {
+        terms <- c(
+          "time",
+          if (i > 1) {
+            paste0("U", seq_len(i - 1), ".time")
+          }
+        )
+
+        L[terms] <- L[terms] +
+          lengths[i] / sum(lengths)
+      }
+
+      var_beta <- as.numeric(
+        t(L) %*% stats::vcov(mod) %*% L
+      )
+
+      se_beta <- sqrt(var_beta)
+
+      # ---- 95% CI ----
+
+      df <- stats::df.residual(mod)
+
+      t_crit <- stats::qt(
+        0.975,
+        df = df
+      )
+
+      beta_low <- beta_aapc - t_crit * se_beta
+      beta_upp <- beta_aapc + t_crit * se_beta
+
+      CI_low <- exp(beta_low) - 1
+      CI_upp <- exp(beta_upp) - 1
+
+      # ---- Significance ----
+
+      stars <- ifelse(
+        CI_low > 0 | CI_upp < 0,
+        "*",
+        ""
+      )
 
       # ---- Return object ----
+
       tibble::tibble(
         AAPC = if (show_ci) {
-          fmt_ci(AAPC, CI_low, CI_upp)
+          fmt_ci(
+            AAPC,
+            CI_low,
+            CI_upp
+          )
         } else {
-          fmt_stars(AAPC, stars)
+          fmt_stars(
+            AAPC,
+            stars
+          )
         }
       )
     },

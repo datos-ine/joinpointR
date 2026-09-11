@@ -16,7 +16,7 @@ models returned by \code{model_jp()}.}
 }
 \value{
 A tibble with one row per segment and the variables
-\code{group}, \code{segment}, \code{apc}, \code{lower}, and \code{upper}, where \code{lower}
+\code{model}, \code{segment}, \code{apc}, \code{lower}, and \code{upper}, where \code{lower}
 and \code{upper} correspond to the limits of the 95\\% confidence interval.
 }
 \description{
@@ -33,15 +33,11 @@ mods <- model_jp(
   value = "hiv_rate",
   time = "year",
   group = "region",
-  k = 2,
-  test = TRUE
+  k = 2
 )
 
 # APC and 95\% confidence intervals for all models
 get_apc(mods, digits = 1, dec = ".")
-
-# APC and 95\% confidence intervals for a single model
-get_apc(mods$Central)
 
 }
 \author{

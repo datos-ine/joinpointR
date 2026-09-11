@@ -16,6 +16,35 @@
 #' @return A named list of joinpoint regression models by group.
 #' @author Tamara Ricardo
 #'
+#' @details
+#' The National Cancer Institute (NCI) recommends the following maximum number
+#' of joinpoints according to the length of the time series (Kim et al., 2000):
+#'
+#' \itemize{
+#' \item 0--6 time points: 0 joinpoints.
+#' \item 7--11 time points: 1 joinpoint.
+#' \item 12--16 time points: 2 joinpoints.
+#' \item 17--21 time points: 3 joinpoints.
+#' \item 22--26 time points: 4 joinpoints.
+#' \item 27--31 time points: 5 joinpoints.
+#' \item 32--36 time points: 6 joinpoints.
+#' \item 37 or more time points: 7 joinpoints.
+#' }
+#'
+#' @references
+#' Kim HJ, Fay MP, Feuer EJ, Midthune DN (2000).
+#' "Permutation Tests for Joinpoint Regression with Applications to Cancer Rates."
+#' \emph{Statistics in Medicine}, 19(3), 335--351.
+#' doi:10.1002/(sici)1097-0258(20000215)19:3<335::aid-sim336>3.0.co;2-z.
+#'
+#' Muggeo, V.M.R., Adelfio, G. (2011).
+#' Efficient change point detection in genomic sequences of continuous
+#' measurements. \emph{Bioinformatics}, 27, 161–166.
+#'
+#' Muggeo, Vito. (2020).
+#' Selecting number of breakpoints in segmented regression:
+#' implementation in the R package segmented. 10.13140/RG.2.2.12891.39201.
+#'
 #' @examples
 #' # Load example data
 #' data("hiv_data")
@@ -69,15 +98,17 @@ model_jp <- function(
 
   # ---- Validate optimal number of joinpoints ----
   if (
-    k > 0 &
-      length(time) < 7 |
-      k > 1 & length(time) < 12 |
-      k > 2 & length(time) < 17 |
-      k > 3 & length(time) < 22 |
-      k > 4 & length(time) < 27
+    k >
+      max(
+        0,
+        min(
+          5,
+          floor((nrow(data) - 2) / 5)
+        )
+      )
   ) {
     warning(
-      "The selected number of joinpoints is too high for your time series (check Details)"
+      "The selected number of joinpoints may be too high for your time series (check Details)."
     )
   }
 
@@ -489,8 +520,10 @@ model_jp <- function(
     list(
       model = model,
       joinpoints = joinpoints,
-      BIC = best$BIC,
-      results = results
+      time = data$.jp_time,
+      log_rate = data$.jp_log_value,
+      BIC = best$BIC
+      # results = results
     )
   }
 

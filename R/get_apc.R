@@ -10,7 +10,7 @@
 #'
 #' @return
 #' A tibble with one row per segment and the variables
-#' `group`, `segment`, `apc`, `lower`, and `upper`, where `lower`
+#' `model`, `segment`, `apc`, `lower`, and `upper`, where `lower`
 #' and `upper` correspond to the limits of the 95\% confidence interval.
 #'
 #' @author Tamara Ricardo
@@ -25,15 +25,11 @@
 #'   value = "hiv_rate",
 #'   time = "year",
 #'   group = "region",
-#'   k = 2,
-#'   test = TRUE
+#'   k = 2
 #' )
 #'
 #' # APC and 95% confidence intervals for all models
 #' get_apc(mods, digits = 1, dec = ".")
-#'
-#' # APC and 95% confidence intervals for a single model
-#' get_apc(mods$Central)
 #'
 #' @export
 
@@ -42,52 +38,92 @@ get_apc <- function(
   digits = 1,
   dec = "."
 ) {
-  # ---- Allow a single model or a list of models ----
-  if (inherits(mods, c("lm", "segmented"))) {
-    mods <- list(mods)
+  # ---- Validate input ----
+  if (!is.list(mods)) {
+    stop("`mods` must be a list returned by `model_jp()`.")
   }
 
-  # ---- Estimate APC ----
+  # ---- Estimate APC for each model ----
   purrr::map_dfr(
     mods,
-    \(mod) {
-      # ---- Linear models ----
-      if (!inherits(mod, "segmented")) {
-        return(
-          tibble::tibble(
-            segment = NA_character_,
-            APC = NA_character_,
-            CI_low = NA_character_,
-            CI_upp = NA_character_
-          )
+    function(x) {
+      mod <- x$model
+      joinpoints <- x$joinpoints
+
+      b <- stats::coef(mod)
+      V <- stats::vcov(mod)
+
+      # ---- Number of segments ----
+      n_segments <- length(joinpoints) + 1
+
+      # ---- Segment slopes ----
+      slopes <- numeric(n_segments)
+      slope_vars <- numeric(n_segments)
+
+      for (i in seq_len(n_segments)) {
+        # Coefficients contributing to the slope
+        terms <- c(
+          "time",
+          if (i > 1) paste0("U", seq_len(i - 1), ".time")
+        )
+
+        # Linear combination: beta_time + beta_U1 + ...
+        L <- numeric(length(b))
+        names(L) <- names(b)
+        L[terms] <- 1
+
+        # Slope
+        slopes[i] <- sum(L * b)
+
+        # Variance of slope
+        slope_vars[i] <- as.numeric(
+          t(L) %*% V %*% L
         )
       }
 
-      # ---- Segmented models ----
-      apc <- segmented::slope(mod, APC = TRUE)[[1]] |>
-        # Transform to dataframe
-        data.frame() |>
-        # Extract the number of segments
-        tibble::rownames_to_column("segment") |>
-        # Rename variables
-        dplyr::rename(
-          APC = 2,
-          CI_low = 3,
-          CI_upp = 4
-        ) |>
-        # Modify variable levels
-        dplyr::mutate(segment = stringr::str_remove(segment, "slope")) |>
-        dplyr::mutate(
-          dplyr::across(
-            c(APC, CI_low, CI_upp),
-            ~ scales::number(
-              .x,
-              accuracy = 10^-digits,
-              decimal.mark = dec,
-              suffix = "%"
-            )
-          )
+      # ---- Standard errors ----
+      slope_se <- sqrt(slope_vars)
+
+      # ---- 95% confidence intervals on the log scale ----
+      df <- stats::df.residual(mod)
+
+      t_crit <- stats::qt(
+        0.975,
+        df = df
+      )
+
+      slope_low <- slopes - t_crit * slope_se
+      slope_upp <- slopes + t_crit * slope_se
+
+      # ---- Transform slope to APC ----
+      apc <- 100 * (exp(slopes) - 1)
+
+      ci_low <- 100 * (exp(slope_low) - 1)
+
+      ci_upp <- 100 * (exp(slope_upp) - 1)
+
+      # ---- Format output ----
+      tibble::tibble(
+        segment = as.character(seq_len(n_segments)),
+        apc = scales::number(
+          apc,
+          accuracy = 10^-digits,
+          decimal.mark = dec,
+          suffix = "%"
+        ),
+        lower = scales::number(
+          ci_low,
+          accuracy = 10^-digits,
+          decimal.mark = dec,
+          suffix = "%"
+        ),
+        upper = scales::number(
+          ci_upp,
+          accuracy = 10^-digits,
+          decimal.mark = dec,
+          suffix = "%"
         )
+      )
     },
     .id = "model"
   )

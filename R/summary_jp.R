@@ -46,42 +46,33 @@ summary_jp <- function(
     mods,
     \(mod, group) {
       # ---- Calculate periods ----
-      if (inherits(mod, "segmented")) {
-        # Time
-        time <- names(mod$model)[2]
+      # Time
+      time <- mod$time
 
-        # Breaks
-        breaks <- sort(c(
-          min(mod$model[[time]]),
-          mod$psi[, "Est."],
-          max(mod$model[[time]])
-        ))
+      # Joinpoints
+      jp <- length(mod$joinpoints)
 
-        # Joinpoints
-        jp = nrow(mod$psi)
+      # Breaks
+      breaks <- sort(c(
+        min(time, na.rm = TRUE),
+        mod$joinpoints,
+        max(time, na.rm = TRUE)
+      ))
 
-        # Period
-        period <- paste(
-          round(head(breaks, -1)),
-          round(tail(breaks, -1)),
-          sep = "-"
-        )
-      } else {
-        # Joinpoints
-        jp <- 0
+      # Period
+      period <- paste(
+        round(head(breaks, -1)),
+        round(tail(breaks, -1)),
+        sep = "-"
+      )
 
-        # Period
-        period <- NA_character_
-      }
+      # ---- APC ----
 
-      # ---- Generate table ----
       tab <- get_apc(
-        mod,
+        list(mod),
         digits = digits,
         dec = dec
       ) |>
-
-        # Transform to tibble
         dplyr::as_tibble() |>
 
         # Add columns
@@ -92,12 +83,13 @@ summary_jp <- function(
           .before = 1
         ) |>
 
-        # Add AAPC
+        # ---- Add AAPC ----
+
         dplyr::mutate(
           AAPC = dplyr::if_else(
             dplyr::row_number() == 1,
             get_aapc(
-              mod,
+              list(mod),
               digits = digits,
               show_ci = FALSE,
               dec = dec
@@ -106,7 +98,8 @@ summary_jp <- function(
           )
         ) |>
 
-        # Separate grouping variables
+        # ---- Separate grouping variables ----
+
         tidyr::separate_wider_delim(
           cols = group,
           names = c("group", "subgroup"),
@@ -115,10 +108,14 @@ summary_jp <- function(
           too_few = "align_start"
         )
 
+      # ---- Remove unnecessary columns ----
+
       if (all(is.na(tab$subgroup))) {
-        tab <- tab |> dplyr::select(-subgroup, -model, -segment)
+        tab |>
+          dplyr::select(-subgroup, -model, -segment)
       } else {
-        tab <- tab |> dplyr::select(-model, -segment)
+        tab |>
+          dplyr::select(-model, -segment)
       }
     }
   )

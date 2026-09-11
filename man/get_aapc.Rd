@@ -8,8 +8,7 @@ get_aapc(mods, digits = 1, show_ci = TRUE, dec = ".")
 }
 \arguments{
 \item{mods}{A joinpoint regression model, a list of joinpoint regression
-models returned by \code{model_jp()}, or linear regression models (\code{lm}
-objects).}
+models returned by \code{model_jp()}.}
 
 \item{digits}{Integer. Number of decimal places used to display the results.}
 
@@ -47,9 +46,6 @@ get_aapc(mods, digits = 1, show_ci = TRUE, dec = ".")
 
 # AAPC with significance stars
 get_aapc(mods, show_ci = FALSE)
-
-# AAPC for a single model
-get_aapc(mods$Central)
 
 }
 \author{

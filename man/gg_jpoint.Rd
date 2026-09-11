@@ -78,8 +78,7 @@ mods <- model_jp(
   value = hiv_rate,
   time = year,
   group = c("region", "sex"),
-  k = 2,
-  test = TRUE
+  k = 2
 )
 
 # Plot results
