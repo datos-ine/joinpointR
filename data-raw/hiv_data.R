@@ -1,34 +1,38 @@
 # Load packages ----------------------------------------------------------
 library(dplyr)
 library(tidyr)
+library(readr)
 
-# Generate data ----------------------------------------------------------
-set.seed(123)
 
-hiv_data <- expand_grid(
-  year = 2010:2025,
-  sex = c("Male", "Female"),
-  tibble(
-    region = c("North", "Central", "South", "East", "West"),
-    slope1 = c(-6, -5, 3, -7, 2),
-    slope2 = c(4, 3, -4, 2, -5)
-  )
-) |>
-  mutate(
-    trend = if_else(
-      year <= 2019,
-      slope1 * (year - 2015),
-      slope1 * 4 + slope2 * (year - 2019)
-    ),
-    hiv_rate = 100 +
-      trend +
-      if_else(sex == "Male", 10, 0) +
-      rnorm(n(), 0, 0.8)
-  ) |>
+# Load raw data ----------------------------------------------------------
+data_raw <- read_csv("data-raw/tasa_vih.csv", locale = locale(decimal_mark = ",")) 
 
-  mutate(across(.cols = where(is.character), .fns = ~ factor(.x))) |>
+# Clean data -------------------------------------------------------------
+hiv_data <- data_raw |>
+  # Select columns
+ select( 
+  admin = jurisdiccion,
+  year = anio,
+  sex = sexo,
+  hiv_rate = jurisdiccion_tasa_vih
+ ) |> 
 
-  select(year, region, sex, hiv_rate)
+  # Change factor labels
+  mutate(admin = case_when(
+    admin == "Crdoba" ~ "Córdoba",
+    admin == "Entre Ros" ~ "Entre Ríos",
+    admin == "Neuqn" ~ "Neuquén",
+    admin == "Ro Negro" ~ "Río Negro",
+    admin == "Tucumn" ~ "Tucumán",
+    .default = admin
+  )) |>   
+  mutate(sex = case_when(
+    sex == "ambos_sexos" ~ "Both",
+    sex == "mujeres" ~ "Female",
+    .default = "Male"
+  )) |> 
+
+  mutate(across(.cols = c(admin, sex), .fns = ~factor(.x)))
 
 
 usethis::use_data(hiv_data, overwrite = TRUE)

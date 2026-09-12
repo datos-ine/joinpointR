@@ -21,15 +21,17 @@
 #' @examples
 #' # Load example data
 #' data(hiv_data)
+#' 
+#' # Filter data
+#' hiv_data <- hiv_data |>
+#' dplyr::filter(sex == "Both" & admin == "ARG") 
 #'
 #' # Fit joinpoint models
 #' mods <- model_jp(
 #'   data = hiv_data,
 #'   value = "hiv_rate",
 #'   time = "year",
-#'   group = "region",
-#'   k = 2,
-#'   test = TRUE
+#'   k = 2
 #' )
 #'
 #' # AAPC with 95% confidence intervals

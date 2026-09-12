@@ -6,9 +6,9 @@
 #' @param mods A list of joinpoint regression models returned by \code{model_jp()}.
 #' @param obs Logical. If `TRUE`, observed data points are displayed.
 #' @param jp Logical. If `TRUE`, joinpoints are displayed as vertical dashed lines.
-#' @param facets Character. Determines the facet layout: `"none"` for a single
-#'   panel, `"wrap"` for faceting by group, or `"grid"` for faceting by group
-#'   and subgroup.
+#' @param facets Character. Determines the facet layout: `"wrap"` for faceting by group,
+#'  `"grid"` for faceting by group and subgroup, or `"grid2"` for faceting by subgroup 
+#' and group. When grouping variables are absent shows a single panel plot.
 #' @param ncol Numeric. Number of columns to display when `facets = "wrap"`.
 #' @param psize Numeric. Size of the observed data points.
 #' @param ptr Numeric. Transparency level of the observed data points (0-1).
@@ -44,13 +44,17 @@
 #' @examples
 #' # Load example data
 #' data(hiv_data)
+#' 
+#' # Filter data
+#' hiv_data <- hiv_data |> 
+#' dplyr::filter(admin %in% c("CABA", "Catamarca", "Chaco", "Chubut"))
 #'
 #' # Fit the joinpoint models
 #' mods <- model_jp(
 #'   data = hiv_data,
 #'   value = hiv_rate,
 #'   time = year,
-#'   group = c("region", "sex"),
+#'   group = c("admin", "sex"),
 #'   k = 2
 #' )
 #'
@@ -61,7 +65,7 @@
 #' gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = "grid")
 #'
 #' # Single panel without joinpoints
-#' gg_jpoint(mods, jp = FALSE, facets = "none")
+#' gg_jpoint(mods, jp = FALSE, facets = "grid2")
 #'
 #' # Use a different colorblind-friendly palette
 #' gg_jpoint(
@@ -86,7 +90,7 @@ gg_jpoint <- function(
   psize = 2.5,
   ptr = 0.75,
   jp = TRUE,
-  facets = c("wrap", "grid", "none"),
+  facets = c(NULL,"wrap", "grid", "grid2"),
   ncol = 4,
   cb = TRUE,
   cbpal = c(
@@ -105,7 +109,6 @@ gg_jpoint <- function(
   )
 ) {
   # ---- Default values ----
-
   if (cb) {
     cbpal <- match.arg(cbpal)
   }
@@ -113,7 +116,6 @@ gg_jpoint <- function(
   facets <- match.arg(facets)
 
   # ---- Validate ncol ----
-
   if (facets != "wrap") {
     message(
       "Number of columns will be ignored when facets 'none' or 'grid'."
@@ -121,27 +123,29 @@ gg_jpoint <- function(
   }
 
   # ---- Validate hide data points ----
-
   if (!obs) {
     message("Data points will not be displayed.")
   }
 
   # ---- Validate hide joinpoints ----
-
   if (!jp) {
     message("Joinpoint(s) position(s) will not be displayed.")
   }
 
   # ---- Validate disable colorblind-friendly palette ----
-
   if (!cb) {
     message(
       "Colorblind-friendly palettes disabled, use `scale_color_` functions to set line and point colors."
     )
   }
 
-  # ---- Generate subgroups ----
+  # ---- Validate facets ----
+  if (length(mods) <=1){
+    if (facets != "none"){
+    stop("Facetting is only available when the model contains any grouping variables")
+  }}
 
+  # ---- Generate subgroups ----
   get_sg <- function(.x) {
     .x |>
       tidyr::separate_wider_delim(
@@ -161,7 +165,6 @@ gg_jpoint <- function(
   }
 
   # ---- Generate dataset for base plot ----
-
   data <- purrr::map_dfr(
     mods,
     \(x) {
@@ -178,7 +181,6 @@ gg_jpoint <- function(
     get_sg()
 
   # ---- Generate dataset for joinpoint positions ----
-
   jp_data <- purrr::imap_dfr(
     mods,
     \(mod, group) {
@@ -198,7 +200,6 @@ gg_jpoint <- function(
     get_sg()
 
   # ---- Generate base plot layout ----
-
   if (facets != "none") {
     g <- data |>
       ggplot2::ggplot(
@@ -248,10 +249,10 @@ gg_jpoint <- function(
   }
 
   # ---- Add facets ----
-
   g <- switch(
     facets,
     grid = g + ggplot2::facet_grid(group ~ subgroup),
+    grid2 = g + ggplot2::facet_grid(subgroup ~ group),
     wrap = g + ggplot2::facet_wrap(~group_var, ncol = ncol),
     none = g
   )

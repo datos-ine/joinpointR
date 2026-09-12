@@ -1,72 +1,84 @@
 #' Joinpoint Regression Models by Groups
 #'
-#' Fits segmented linear regression models for rates using joinpoint
-#' regression with an exhaustive Grid Search and the Bayesian Information
-#' Criterion (BIC) to select the optimal model with up to five joinpoints.
-#' Internally, the function applies a log transformation to the response
-#' variable.
+#' Fits segmented linear regression models for standardized or crude rates
+#' using joinpoint regression with grid search. It selects the optimal model
+#' (containing up to five joinpoints) based on the Bayesian Information
+#' Criterion (BIC), applying an internal log transformation to the response
+#' variable to ensure appropriate variance stabilization.
 #'
-#' @param data A data frame containing crude or age standardized rates.
-#' @param value Response variable.
-#' @param time Time variable.
-#' @param group Names of the grouping variable(s). Defaults to NULL.
-#' @param k Maximum number of joinpoints to estimate.
-#' @param min_dist Minimum number of observations required per segment.
+#' @param data A data frame or tibble containing crude or age-standardized rates.
+#' @param value Column name for the response variable.
+#' @param time Column name for the time variable.
+#' @param group Column name(s) of the grouping variable(s). Defaults to \code{NULL}.
+#' @param k Maximum number of joinpoints to estimate. Defaults to 2.
+#' @param min_dist Minimum number of observations required per segment. Defaults to 2.
 #'
-#' @return A named list of joinpoint regression models by group.
+#' @return A named list of joinpoint regression models fit by group, where each 
+#' element contains the following components:
+#' \itemize{
+#'   \item \code{model}: Coefficients and parameters of the best-fitting model.
+#'   \item \code{joinpoints}: Positions of the joinpoint(s) detected by the model.
+#'   \item \code{time}: Vector of original time values.
+#'   \item \code{log_rate}: Vector of log-transformed rates.
+#'   \item \code{BIC}: Bayesian Information Criterion of the selected model.
+#' }
+#'
 #' @author Tamara Ricardo
 #'
 #' @details
-#' The National Cancer Institute (NCI) recommends the following maximum number
-#' of joinpoints according to the length of the time series (Kim et al., 2000):
+#' The National Cancer Institute (NCI) recommends setting the maximum number
+#' of joinpoints based on the length of the time series (Kim et al., 2000):
 #'
 #' \itemize{
-#' \item 0--6 time points: 0 joinpoints.
-#' \item 7--11 time points: 1 joinpoint.
-#' \item 12--16 time points: 2 joinpoints.
-#' \item 17--21 time points: 3 joinpoints.
-#' \item 22--26 time points: 4 joinpoints.
-#' \item 27--31 time points: 5 joinpoints.
-#' \item 32--36 time points: 6 joinpoints.
-#' \item 37 or more time points: 7 joinpoints.
+#'   \item 0--6 time points: 0 joinpoints.
+#'   \item 7--11 time points: 1 joinpoint.
+#'   \item 12--16 time points: 2 joinpoints.
+#'   \item 17--21 time points: 3 joinpoints.
+#'   \item 22--26 time points: 4 joinpoints.
+#'   \item 27+ time points: 5 joinpoints.
 #' }
 #'
 #' @references
 #' Kim HJ, Fay MP, Feuer EJ, Midthune DN (2000).
 #' "Permutation Tests for Joinpoint Regression with Applications to Cancer Rates."
 #' \emph{Statistics in Medicine}, 19(3), 335--351.
-#' doi:10.1002/(sici)1097-0258(20000215)19:3<335::aid-sim336>3.0.co;2-z.
+#' \doi{10.1002/(SICI)1097-0258(20000215)19:3<335::AID-SIM336>3.0.CO;2-Z}
 #'
-#' Muggeo, V.M.R., Adelfio, G. (2011).
-#' Efficient change point detection in genomic sequences of continuous
-#' measurements. \emph{Bioinformatics}, 27, 161–166.
+#' Muggeo VMR, Adelfio G (2011).
+#' "Efficient change point detection in genomic sequences of continuous measurements."
+#' \emph{Bioinformatics}, 27(2), 161--166.
+#' \doi{10.1093/bioinformatics/btq647}
 #'
-#' Muggeo, Vito. (2020).
-#' Selecting number of breakpoints in segmented regression:
-#' implementation in the R package segmented. 10.13140/RG.2.2.12891.39201.
+#' Muggeo VMR (2020).
+#' "Selecting number of breakpoints in segmented regression: implementation in the R package segmented."
+#' \doi{10.13140/RG.2.2.12891.39201}
 #'
 #' @examples
 #' # Load example data
 #' data("hiv_data")
 #'
+#' # Filter data
+#' hiv_data <- hiv_data |> 
+#' dplyr::filter(sex == "Both" & admin != "ARG")
+#' 
 #' # Check group levels
-#' levels(hiv_data$region)
+#' levels(hiv_data$admin)
 #'
 #' # Fit models
 #' mods <- model_jp(
 #' data = hiv_data,
-#'  value = hiv_rate,
+#' value = hiv_rate,
 #' time = year,
-#' group = c("region", "sex"),
+#' group = "admin",
 #' k = 2,
-#' min_dist = 3
+#' min_dist = 2
 #' )
 #'
 #' # Show the output of the first model by calling its index
-#' mods[[1]]
+#' mods[[2]]
 #'
 #' # Same output will be obtained when calling model name
-#' mods$Central_Female
+#' mods$CABA
 #'
 #' @export
 #'
@@ -97,18 +109,27 @@ model_jp <- function(
   }
 
   # ---- Validate optimal number of joinpoints ----
-  if (
-    k >
-      max(
-        0,
-        min(
-          5,
-          floor((nrow(data) - 2) / 5)
-        )
-      )
-  ) {
+  t <- dplyr::n_distinct(data[[time]])
+
+  max_jp <- max(
+    0,
+    min(
+      5,
+      floor((t - 2) / 5)
+    )
+  )
+
+  if (k > max_jp) {
     warning(
-      "The selected number of joinpoints may be too high for your time series (check Details)."
+      "The selected number of joinpoints (",
+      k,
+      ") may be too high for your ",
+      "time series with ",
+      t,
+      " time points. The recommended maximum number of ",
+      "joinpoints is ",
+      max_jp,
+      " (check Details)."
     )
   }
 
@@ -126,23 +147,23 @@ model_jp <- function(
   if (!is.null(group)) {
     data <- data |>
       dplyr::mutate(
-        .jp_time = !!time,
-        .jp_log_value = log(!!value),
+        .time = !!time,
+        .log_value = log(!!value),
         .jp_group = forcats::fct_cross(
           !!!rlang::syms(group),
           sep = "_",
           keep_empty = FALSE
         )
       ) |>
-      dplyr::arrange(.jp_group, .jp_time)
+      dplyr::arrange(.jp_group, .time)
   } else {
     data <- data |>
       dplyr::mutate(
-        .jp_time = !!time,
-        .jp_log_value = log(!!value),
+        .time = !!time,
+        .log_value = log(!!value),
         .jp_group = NA_character_
       ) |>
-      dplyr::arrange(.jp_time)
+      dplyr::arrange(.time)
   }
 
   # ---- Define groups ----
@@ -160,10 +181,10 @@ model_jp <- function(
     # --------------------------------------------------------
 
     fit_jp <- function(jp) {
-      x <- data$.jp_time
+      x <- data$.time
 
       X <- data.frame(
-        y = data$.jp_log_value,
+        y = data$.log_value,
         time = x
       )
 
@@ -230,7 +251,7 @@ model_jp <- function(
     valid_jp <- function(jp) {
       idx <- match(
         jp,
-        data$.jp_time
+        data$.time
       )
 
       left <- idx[1] - 1
@@ -276,7 +297,7 @@ model_jp <- function(
     # 1 joinpoint
     # --------------------------------------------------------
     if (k >= 1) {
-      for (jp1 in data$.jp_time) {
+      for (jp1 in data$.time) {
         jp <- c(jp1)
 
         if (!valid_jp(jp)) {
@@ -302,8 +323,8 @@ model_jp <- function(
     # 2 joinpoints
     # --------------------------------------------------------
     if (k >= 2) {
-      for (jp1 in data$.jp_time) {
-        for (jp2 in data$.jp_time) {
+      for (jp1 in data$.time) {
+        for (jp2 in data$.time) {
           if (jp2 <= jp1) {
             next
           }
@@ -334,13 +355,13 @@ model_jp <- function(
     # 3 joinpoints
     # --------------------------------------------------------
     if (k >= 3) {
-      for (jp1 in data$.jp_time) {
-        for (jp2 in data$.jp_time) {
+      for (jp1 in data$.time) {
+        for (jp2 in data$.time) {
           if (jp2 <= jp1) {
             next
           }
 
-          for (jp3 in data$.jp_time) {
+          for (jp3 in data$.time) {
             if (jp3 <= jp2) {
               next
             }
@@ -376,18 +397,18 @@ model_jp <- function(
     # 4 joinpoints
     # --------------------------------------------------------
     if (k >= 4) {
-      for (jp1 in data$.jp_time) {
-        for (jp2 in data$.jp_time) {
+      for (jp1 in data$.time) {
+        for (jp2 in data$.time) {
           if (jp2 <= jp1) {
             next
           }
 
-          for (jp3 in data$.jp_time) {
+          for (jp3 in data$.time) {
             if (jp3 <= jp2) {
               next
             }
 
-            for (jp4 in data$.jp_time) {
+            for (jp4 in data$.time) {
               if (jp4 <= jp3) {
                 next
               }
@@ -425,23 +446,23 @@ model_jp <- function(
     # 5 joinpoints
     # --------------------------------------------------------
     if (k >= 5) {
-      for (jp1 in data$.jp_time) {
-        for (jp2 in data$.jp_time) {
+      for (jp1 in data$.time) {
+        for (jp2 in data$.time) {
           if (jp2 <= jp1) {
             next
           }
 
-          for (jp3 in data$.jp_time) {
+          for (jp3 in data$.time) {
             if (jp3 <= jp2) {
               next
             }
 
-            for (jp4 in data$.jp_time) {
+            for (jp4 in data$.time) {
               if (jp4 <= jp3) {
                 next
               }
 
-              for (jp5 in data$.jp_time) {
+              for (jp5 in data$.time) {
                 if (jp5 <= jp4) {
                   next
                 }
@@ -520,8 +541,8 @@ model_jp <- function(
     list(
       model = model,
       joinpoints = joinpoints,
-      time = data$.jp_time,
-      log_rate = data$.jp_log_value,
+      time = data$.time,
+      log_rate = data$.log_value,
       BIC = best$BIC
       # results = results
     )

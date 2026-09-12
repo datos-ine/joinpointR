@@ -27,12 +27,16 @@ intervals for each segment of one or more joinpoint regression models.
 # Load example data
 data(hiv_data)
 
+# Filter dataset
+hiv_data <- hiv_data |> 
+dplyr::filter_out(sex == "Both" | admin != "ARG")
+
 # Fit joinpoint models
 mods <- model_jp(
   data = hiv_data,
-  value = "hiv_rate",
-  time = "year",
-  group = "region",
+  value = hiv_rate,
+  time = year,
+  group = "sex",
   k = 2
 )
 

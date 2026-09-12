@@ -10,7 +10,7 @@ gg_jpoint(
   psize = 2.5,
   ptr = 0.75,
   jp = TRUE,
-  facets = c("wrap", "grid", "none"),
+  facets = c(NULL, "wrap", "grid", "grid2"),
   ncol = 4,
   cb = TRUE,
   cbpal = c("viridis", "managua", "plasma", "roma", "vanimo", "algae", "arches2",
@@ -28,9 +28,9 @@ gg_jpoint(
 
 \item{jp}{Logical. If \code{TRUE}, joinpoints are displayed as vertical dashed lines.}
 
-\item{facets}{Character. Determines the facet layout: \code{"none"} for a single
-panel, \code{"wrap"} for faceting by group, or \code{"grid"} for faceting by group
-and subgroup.}
+\item{facets}{Character. Determines the facet layout: \code{"wrap"} for faceting by group,
+\code{"grid"} for faceting by group and subgroup, or \code{"grid2"} for faceting by subgroup
+and group. When grouping variables are absent shows a single panel plot.}
 
 \item{ncol}{Numeric. Number of columns to display when \code{facets = "wrap"}.}
 
@@ -72,12 +72,16 @@ Sequential palettes:
 # Load example data
 data(hiv_data)
 
+# Filter data
+hiv_data <- hiv_data |> 
+dplyr::filter(admin \%in\% c("CABA", "Catamarca", "Chaco", "Chubut"))
+
 # Fit the joinpoint models
 mods <- model_jp(
   data = hiv_data,
   value = hiv_rate,
   time = year,
-  group = c("region", "sex"),
+  group = c("admin", "sex"),
   k = 2
 )
 
@@ -88,7 +92,7 @@ gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = "wrap")
 gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = "grid")
 
 # Single panel without joinpoints
-gg_jpoint(mods, jp = FALSE, facets = "none")
+gg_jpoint(mods, jp = FALSE, facets = "grid2")
 
 # Use a different colorblind-friendly palette
 gg_jpoint(

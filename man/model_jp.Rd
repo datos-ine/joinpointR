@@ -7,31 +7,39 @@
 model_jp(data, value, time, group = NULL, k = 2, min_dist = 2)
 }
 \arguments{
-\item{data}{A data frame containing crude or age standardized rates.}
+\item{data}{A data frame or tibble containing crude or age-standardized rates.}
 
-\item{value}{Response variable.}
+\item{value}{Column name for the response variable.}
 
-\item{time}{Time variable.}
+\item{time}{Column name for the time variable.}
 
-\item{group}{Names of the grouping variable(s). Defaults to NULL.}
+\item{group}{Column name(s) of the grouping variable(s). Defaults to \code{NULL}.}
 
-\item{k}{Maximum number of joinpoints to estimate.}
+\item{k}{Maximum number of joinpoints to estimate. Defaults to 2.}
 
-\item{min_dist}{Minimum number of observations required per segment.}
+\item{min_dist}{Minimum number of observations required per segment. Defaults to 2.}
 }
 \value{
-A named list of joinpoint regression models by group.
+A named list of joinpoint regression models fit by group, where each
+element contains the following components:
+\itemize{
+\item \code{model}: Coefficients and parameters of the best-fitting model.
+\item \code{joinpoints}: Positions of the joinpoint(s) detected by the model.
+\item \code{time}: Vector of original time values.
+\item \code{log_rate}: Vector of log-transformed rates.
+\item \code{BIC}: Bayesian Information Criterion of the selected model.
+}
 }
 \description{
-Fits segmented linear regression models for rates using joinpoint
-regression with an exhaustive Grid Search and the Bayesian Information
-Criterion (BIC) to select the optimal model with up to five joinpoints.
-Internally, the function applies a log transformation to the response
-variable.
+Fits segmented linear regression models for standardized or crude rates
+using joinpoint regression with grid search. It selects the optimal model
+(containing up to five joinpoints) based on the Bayesian Information
+Criterion (BIC), applying an internal log transformation to the response
+variable to ensure appropriate variance stabilization.
 }
 \details{
-The National Cancer Institute (NCI) recommends the following maximum number
-of joinpoints according to the length of the time series (Kim et al., 2000):
+The National Cancer Institute (NCI) recommends setting the maximum number
+of joinpoints based on the length of the time series (Kim et al., 2000):
 
 \itemize{
 \item 0--6 time points: 0 joinpoints.
@@ -39,48 +47,51 @@ of joinpoints according to the length of the time series (Kim et al., 2000):
 \item 12--16 time points: 2 joinpoints.
 \item 17--21 time points: 3 joinpoints.
 \item 22--26 time points: 4 joinpoints.
-\item 27--31 time points: 5 joinpoints.
-\item 32--36 time points: 6 joinpoints.
-\item 37 or more time points: 7 joinpoints.
+\item 27+ time points: 5 joinpoints.
 }
 }
 \examples{
 # Load example data
 data("hiv_data")
 
+# Filter data
+hiv_data <- hiv_data |> 
+dplyr::filter(sex == "Both" & admin != "ARG")
+
 # Check group levels
-levels(hiv_data$region)
+levels(hiv_data$admin)
 
 # Fit models
 mods <- model_jp(
 data = hiv_data,
- value = hiv_rate,
+value = hiv_rate,
 time = year,
-group = c("region", "sex"),
+group = "admin",
 k = 2,
-min_dist = 3
+min_dist = 2
 )
 
 # Show the output of the first model by calling its index
-mods[[1]]
+mods[[2]]
 
 # Same output will be obtained when calling model name
-mods$Central_Female
+mods$CABA
 
 }
 \references{
 Kim HJ, Fay MP, Feuer EJ, Midthune DN (2000).
 "Permutation Tests for Joinpoint Regression with Applications to Cancer Rates."
 \emph{Statistics in Medicine}, 19(3), 335--351.
-doi:10.1002/(sici)1097-0258(20000215)19:3<335::aid-sim336>3.0.co;2-z.
+\doi{10.1002/(SICI)1097-0258(20000215)19:3<335::AID-SIM336>3.0.CO;2-Z}
 
-Muggeo, V.M.R., Adelfio, G. (2011).
-Efficient change point detection in genomic sequences of continuous
-measurements. \emph{Bioinformatics}, 27, 161–166.
+Muggeo VMR, Adelfio G (2011).
+"Efficient change point detection in genomic sequences of continuous measurements."
+\emph{Bioinformatics}, 27(2), 161--166.
+\doi{10.1093/bioinformatics/btq647}
 
-Muggeo, Vito. (2020).
-Selecting number of breakpoints in segmented regression:
-implementation in the R package segmented. 10.13140/RG.2.2.12891.39201.
+Muggeo VMR (2020).
+"Selecting number of breakpoints in segmented regression: implementation in the R package segmented."
+\doi{10.13140/RG.2.2.12891.39201}
 }
 \author{
 Tamara Ricardo
