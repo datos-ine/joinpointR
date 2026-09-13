@@ -52,13 +52,13 @@ get_apc <- function(
     mods,
     function(x) {
       mod <- x$model
-      joinpoints <- x$joinpoints
+      jp <- x$joinpoints
 
       b <- stats::coef(mod)
       V <- stats::vcov(mod)
 
       # ---- Number of segments ----
-      n_segments <- length(joinpoints) + 1
+      n_segments <- length(jp) + 1
 
       # ---- Segment slopes ----
       slopes <- numeric(n_segments)

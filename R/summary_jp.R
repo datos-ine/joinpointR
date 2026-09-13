@@ -67,7 +67,6 @@ summary_jp <- function(
       )
 
       # ---- APC ----
-
       tab <- get_apc(
         list(mod),
         digits = digits,
@@ -84,7 +83,6 @@ summary_jp <- function(
         ) |>
 
         # ---- Add AAPC ----
-
         dplyr::mutate(
           AAPC = dplyr::if_else(
             dplyr::row_number() == 1,
@@ -99,7 +97,6 @@ summary_jp <- function(
         ) |>
 
         # ---- Separate grouping variables ----
-
         tidyr::separate_wider_delim(
           cols = group,
           names = c("group", "subgroup"),
@@ -109,7 +106,6 @@ summary_jp <- function(
         )
 
       # ---- Remove unnecessary columns ----
-
       if (all(is.na(tab$subgroup))) {
         tab |>
           dplyr::select(-subgroup, -model, -segment)

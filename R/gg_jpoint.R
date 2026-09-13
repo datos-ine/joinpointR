@@ -7,7 +7,7 @@
 #' @param obs Logical. If `TRUE`, observed data points are displayed.
 #' @param jp Logical. If `TRUE`, joinpoints are displayed as vertical dashed lines.
 #' @param facets Character. Determines the facet layout: `"wrap"` for faceting by group,
-#'  `"grid"` for faceting by group and subgroup, or `"grid2"` for faceting by subgroup 
+#'  `"grid"` for faceting by group and subgroup, or `"grid2"` for faceting by subgroup
 #' and group. When grouping variables are absent shows a single panel plot.
 #' @param ncol Numeric. Number of columns to display when `facets = "wrap"`.
 #' @param psize Numeric. Size of the observed data points.
@@ -44,14 +44,14 @@
 #' @examples
 #' # Load example data
 #' data(hiv_data)
-#' 
+#'
 #' # Filter data
-#' hiv_data <- hiv_data |> 
+#' hiv_data <- hiv_data |>
 #' dplyr::filter(admin %in% c("CABA", "Catamarca", "Chaco", "Chubut"))
 #'
 #' # Fit the joinpoint models
-#' mods <- model_jp(
-#'   data = hiv_data,
+#' mod <- model_jp(
+#'   data = hiv_data ,
 #'   value = hiv_rate,
 #'   time = year,
 #'   group = c("admin", "sex"),
@@ -64,7 +64,7 @@
 #' # Facet by group and subgroup
 #' gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = "grid")
 #'
-#' # Single panel without joinpoints
+#' # Facet by subgroup and group
 #' gg_jpoint(mods, jp = FALSE, facets = "grid2")
 #'
 #' # Use a different colorblind-friendly palette
@@ -90,7 +90,7 @@ gg_jpoint <- function(
   psize = 2.5,
   ptr = 0.75,
   jp = TRUE,
-  facets = c(NULL,"wrap", "grid", "grid2"),
+  facets = c("wrap", "grid", "grid2"),
   ncol = 4,
   cb = TRUE,
   cbpal = c(
@@ -113,12 +113,27 @@ gg_jpoint <- function(
     cbpal <- match.arg(cbpal)
   }
 
-  facets <- match.arg(facets)
+  if (cb) {
+  cbcol <- cols4all::c4a(
+    palette = cbpal,
+    n = 1
+  )[1]
+}
+  
+  n_mods <- length(mods)
 
-  # ---- Validate ncol ----
-  if (facets != "wrap") {
+  # ---- Validate facets ----
+  if (n_mods > 1) {
+    facets <- match.arg(facets)
+  } else {
+    facets <- "none"
+    message("Facets were ignored because there were no grouping variable(s).")
+  }
+
+  # ---- Validate facet columns ----
+  if (n_mods > 1 && facets != "wrap") {
     message(
-      "Number of columns will be ignored when facets 'none' or 'grid'."
+      "Number of columns will be ignored when facets 'grid' or 'grid2'."
     )
   }
 
@@ -134,19 +149,11 @@ gg_jpoint <- function(
 
   # ---- Validate disable colorblind-friendly palette ----
   if (!cb) {
-    message(
-      "Colorblind-friendly palettes disabled, use `scale_color_` functions to set line and point colors."
-    )
+    message("Colorblind-friendly palettes disabled.")
   }
 
-  # ---- Validate facets ----
-  if (length(mods) <=1){
-    if (facets != "none"){
-    stop("Facetting is only available when the model contains any grouping variables")
-  }}
-
   # ---- Generate subgroups ----
-  get_sg <- function(.x) {
+  get_groups <- function(.x) {
     .x |>
       tidyr::separate_wider_delim(
         cols = group_var,
@@ -176,28 +183,43 @@ gg_jpoint <- function(
         fit = mod$fitted.values
       )
     },
-    .id = "group_var"
-  ) |>
-    get_sg()
+    .id = if (n_mods > 1) "group_var" else NULL
+  )
+
+  if (n_mods > 1) {
+    data <- data |> get_groups()
+  }
 
   # ---- Generate dataset for joinpoint positions ----
-  jp_data <- purrr::imap_dfr(
-    mods,
-    \(mod, group) {
-      if (length(mod$joinpoints) > 0) {
-        tibble::tibble(
-          group_var = group,
-          jp = mod$joinpoints
-        )
-      } else {
-        tibble::tibble(
-          group_var = character(),
-          jp = numeric()
-        )
+  jp_data <- if (n_mods > 1) {
+    purrr::imap_dfr(
+      mods,
+      \(mod, group) {
+        if (length(mod$joinpoints) > 0) {
+          tibble::tibble(
+            group_var = group,
+            jp = mod$joinpoints
+          )
+        } else {
+          tibble::tibble(
+            group_var = character(),
+            jp = numeric()
+          )
+        }
       }
+    ) |>
+      get_groups()
+  } else {
+    if (length(mods[[1]]$joinpoints) > 0) {
+      tibble::tibble(
+        jp = mods[[1]]$joinpoints
+      )
+    } else {
+      tibble::tibble(
+        jp = numeric()
+      )
     }
-  ) |>
-    get_sg()
+  }
 
   # ---- Generate base plot layout ----
   if (facets != "none") {
@@ -206,7 +228,11 @@ gg_jpoint <- function(
         ggplot2::aes(
           x = time,
           y = obs,
-          color = group
+          color = if (facets != "grid2") {
+            group
+          } else {
+            subgroup
+          }
         )
       ) +
       ggplot2::geom_line(
@@ -228,14 +254,13 @@ gg_jpoint <- function(
       ggplot2::ggplot(
         ggplot2::aes(
           x = time,
-          y = obs,
-          group = group_var,
-          color = group_var
+          y = obs
         )
       ) +
       ggplot2::geom_line(
         ggplot2::aes(y = fit),
-        linewidth = 1
+        linewidth = 1,
+        color = if (cb) cbcol else NULL
       ) +
       ggplot2::labs(
         y = "log(rate)",
@@ -251,24 +276,31 @@ gg_jpoint <- function(
   # ---- Add facets ----
   g <- switch(
     facets,
+
     grid = g + ggplot2::facet_grid(group ~ subgroup),
+
     grid2 = g + ggplot2::facet_grid(subgroup ~ group),
-    wrap = g + ggplot2::facet_wrap(~group_var, ncol = ncol),
+
+    wrap = g +
+      ggplot2::facet_wrap(
+        ~group_var,
+        ncol = ncol
+      ),
+
     none = g
   )
 
   # ---- Add data points ----
-
   if (obs) {
     g <- g +
       ggplot2::geom_point(
         size = psize,
-        alpha = ptr
+        alpha = ptr,
+        color = if (facets == "none" && cb) cbcol else NULL
       )
-  }
+  } 
 
   # ---- Add joinpoints ----
-
   if (jp && nrow(jp_data) > 0) {
     g <- g +
       ggplot2::geom_vline(
@@ -281,24 +313,15 @@ gg_jpoint <- function(
   }
 
   # ---- Show plot ----
-
   if (cb && facets != "none") {
-    g +
-      ggplot2::scale_color_manual(
-        values = cols4all::c4a(
-          palette = cbpal,
-          n = dplyr::n_distinct(data$group)
-        )
+  g +
+    ggplot2::scale_color_manual(
+      values = cols4all::c4a(
+        palette = cbpal,
+        n = dplyr::n_distinct(data$group)
       )
-  } else if (cb && facets == "none") {
-    g +
-      ggplot2::scale_color_manual(
-        values = cols4all::c4a(
-          palette = cbpal,
-          n = dplyr::n_distinct(data$group_var)
-        )
-      )
-  } else {
-    g
-  }
+    )
+} else {
+  g
+}
 }

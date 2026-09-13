@@ -33,7 +33,7 @@ element contains the following components:
 \description{
 Fits segmented linear regression models for standardized or crude rates
 using joinpoint regression with grid search. It selects the optimal model
-(containing up to five joinpoints) based on the Bayesian Information
+(containing up to seven joinpoints) based on the Bayesian Information
 Criterion (BIC), applying an internal log transformation to the response
 variable to ensure appropriate variance stabilization.
 }
@@ -47,7 +47,9 @@ of joinpoints based on the length of the time series (Kim et al., 2000):
 \item 12--16 time points: 2 joinpoints.
 \item 17--21 time points: 3 joinpoints.
 \item 22--26 time points: 4 joinpoints.
-\item 27+ time points: 5 joinpoints.
+\item 27--31 time points: 5 joinpoints.
+\item 32--36 time points: 6 joinpoints.
+\item 37+ time points: 7 joinpoints.
 }
 }
 \examples{
@@ -55,7 +57,7 @@ of joinpoints based on the length of the time series (Kim et al., 2000):
 data("hiv_data")
 
 # Filter data
-hiv_data <- hiv_data |> 
+hiv_data <- hiv_data |>
 dplyr::filter(sex == "Both" & admin != "ARG")
 
 # Check group levels

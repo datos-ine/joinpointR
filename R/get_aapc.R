@@ -49,13 +49,11 @@ get_aapc <- function(
   dec = "."
 ) {
   # ---- Validate input ----
-
   if (!is.list(mods)) {
     stop("`mods` must be a list returned by `model_jp_grid()`.")
   }
 
   # ---- Format 95% CI ----
-
   fmt_ci <- function(x, y, z) {
     paste0(
       scales::percent(
@@ -80,7 +78,6 @@ get_aapc <- function(
   }
 
   # ---- Format significance stars ----
-
   fmt_stars <- function(x, stars) {
     paste0(
       scales::percent(
@@ -93,7 +90,6 @@ get_aapc <- function(
   }
 
   # ---- Estimate AAPC for each model ----
-
   purrr::map_dfr(
     mods,
     function(x) {
@@ -101,14 +97,12 @@ get_aapc <- function(
       joinpoints <- x$joinpoints
 
       # ---- Time range ----
-
       time <- mod$model$time
 
       t_min <- min(time, na.rm = TRUE)
       t_max <- max(time, na.rm = TRUE)
 
       # ---- Segment slopes ----
-
       b <- stats::coef(mod)
 
       n_segments <- length(joinpoints) + 1
@@ -127,7 +121,6 @@ get_aapc <- function(
       }
 
       # ---- Segment lengths ----
-
       breaks <- c(
         t_min,
         joinpoints,
@@ -137,18 +130,15 @@ get_aapc <- function(
       lengths <- diff(breaks)
 
       # ---- Weighted average slope ----
-
       beta_aapc <- sum(
         slopes * lengths
       ) /
         sum(lengths)
 
       # ---- AAPC ----
-
       AAPC <- exp(beta_aapc) - 1
 
       # ---- Variance of weighted slope ----
-
       L <- numeric(length(b))
       names(L) <- names(b)
 
@@ -171,7 +161,6 @@ get_aapc <- function(
       se_beta <- sqrt(var_beta)
 
       # ---- 95% CI ----
-
       df <- stats::df.residual(mod)
 
       t_crit <- stats::qt(
@@ -186,7 +175,6 @@ get_aapc <- function(
       CI_upp <- exp(beta_upp) - 1
 
       # ---- Significance ----
-
       stars <- ifelse(
         CI_low > 0 | CI_upp < 0,
         "*",
@@ -194,7 +182,6 @@ get_aapc <- function(
       )
 
       # ---- Return object ----
-
       tibble::tibble(
         AAPC = if (show_ci) {
           fmt_ci(

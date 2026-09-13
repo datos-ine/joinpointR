@@ -10,7 +10,7 @@ gg_jpoint(
   psize = 2.5,
   ptr = 0.75,
   jp = TRUE,
-  facets = c(NULL, "wrap", "grid", "grid2"),
+  facets = c("wrap", "grid", "grid2"),
   ncol = 4,
   cb = TRUE,
   cbpal = c("viridis", "managua", "plasma", "roma", "vanimo", "algae", "arches2",
@@ -73,12 +73,12 @@ Sequential palettes:
 data(hiv_data)
 
 # Filter data
-hiv_data <- hiv_data |> 
+hiv_data <- hiv_data |>
 dplyr::filter(admin \%in\% c("CABA", "Catamarca", "Chaco", "Chubut"))
 
 # Fit the joinpoint models
-mods <- model_jp(
-  data = hiv_data,
+mod <- model_jp(
+  data = hiv_data ,
   value = hiv_rate,
   time = year,
   group = c("admin", "sex"),
@@ -91,7 +91,7 @@ gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = "wrap")
 # Facet by group and subgroup
 gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = "grid")
 
-# Single panel without joinpoints
+# Facet by subgroup and group
 gg_jpoint(mods, jp = FALSE, facets = "grid2")
 
 # Use a different colorblind-friendly palette
