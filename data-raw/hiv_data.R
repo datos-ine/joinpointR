@@ -32,7 +32,9 @@ hiv_data <- data_raw |>
     .default = "Male"
   )) |> 
 
-  mutate(across(.cols = c(admin, sex), .fns = ~factor(.x)))
+  mutate(across(.cols = c(admin, sex), .fns = ~factor(.x))) |> 
+  
+  arrange(admin, sex, year)
 
 
 usethis::use_data(hiv_data, overwrite = TRUE)
