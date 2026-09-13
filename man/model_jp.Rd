@@ -58,7 +58,7 @@ data("hiv_data")
 
 # Filter data
 hiv_data <- hiv_data |>
-dplyr::filter(sex == "Both" & admin != "ARG")
+dplyr::filter(sex == "Both") 
 
 # Check group levels
 levels(hiv_data$admin)

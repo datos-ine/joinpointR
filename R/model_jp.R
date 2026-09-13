@@ -61,7 +61,7 @@
 #'
 #' # Filter data
 #' hiv_data <- hiv_data |>
-#' dplyr::filter(sex == "Both" & admin != "ARG")
+#' dplyr::filter(sex == "Both") 
 #'
 #' # Check group levels
 #' levels(hiv_data$admin)
@@ -92,25 +92,34 @@ model_jp <- function(
   k = 2,
   min_dist = 2
 ) {
-  # ---- Define response variable ----
-  value <- rlang::ensym(value)
+  # ==========================================================
+  # Define variables
+  # ==========================================================
 
-  # ---- Define time variable ----
+  value <- rlang::ensym(value)
   time <- rlang::ensym(time)
 
-  # ---- Validate response variable ----
+  # ==========================================================
+  # Validate response variable
+  # ==========================================================
+
   if (any(data[[value]] <= 0, na.rm = TRUE)) {
     stop(
       "The response variable must be > 0 to apply log() transformation"
     )
   }
 
-  # ---- Validate maximum number of joinpoints ----
+  # ==========================================================
+  # Validate maximum number of joinpoints
+  # ==========================================================
   if (k > 7) {
     stop("This function supports a maximum of 7 joinpoints")
   }
 
-  # ---- Validate optimal number of joinpoints ----
+  # ==========================================================
+  # Validate optimal number of joinpoints
+  # ==========================================================
+
   t <- dplyr::n_distinct(data[[time]])
 
   max_jp <- max(
@@ -135,17 +144,23 @@ model_jp <- function(
     )
   }
 
-  # ---- Validate grouping variables ----
-  if (!all(group %in% names(data))) {
-    stop("Some grouping variable names are not present in data")
-  }
+  # ==========================================================
+  # Validate grouping variables
+  # ==========================================================
 
-  # ---- Validate number of grouping variables ----
-  if (length(group) > 2) {
-    stop("This function allows a maximum of two grouping variables")
-  }
+    if (!all(group %in% names(data))) {
+      stop("Some grouping variable names are not present in data")
+    }
 
-  # ---- Prepare data ----
+    if (length(group) > 2) {
+      stop("This function allows a maximum of two grouping variables")
+    }
+  
+
+  # ==========================================================
+  # Prepare data
+  # ==========================================================
+
   if (!is.null(group)) {
     data <- data |>
       dplyr::mutate(
@@ -168,7 +183,10 @@ model_jp <- function(
       dplyr::arrange(.time)
   }
 
-  # ---- Define groups ----
+  # ==========================================================
+  # Define groups
+  # ==========================================================
+
   groups <- dplyr::group_keys(
     dplyr::group_by(data, .jp_group)
   )$.jp_group
@@ -191,6 +209,7 @@ model_jp <- function(
       )
 
       # ---- Create hinge functions ----
+
       if (length(jp) >= 1) {
         X$U1.time <- pmax(x - jp[1], 0)
       }
@@ -220,6 +239,7 @@ model_jp <- function(
       }
 
       # ---- Fit model ----
+
       if (length(jp) == 0) {
         stats::lm(
           y ~ time,
@@ -247,12 +267,23 @@ model_jp <- function(
         )
       } else if (length(jp) == 5) {
         stats::lm(
-          y ~ time + U1.time + U2.time + U3.time + U4.time + U5.time,
+          y ~ time +
+            U1.time +
+            U2.time +
+            U3.time +
+            U4.time +
+            U5.time,
           data = X
         )
-      } else if (length(jp == 6)) {
+      } else if (length(jp) == 6) {
         stats::lm(
-          y ~ time + U1.time + U2.time + U3.time + U4.time + U5.time + U6.time,
+          y ~ time +
+            U1.time +
+            U2.time +
+            U3.time +
+            U4.time +
+            U5.time +
+            U6.time,
           data = X
         )
       } else {
@@ -271,8 +302,21 @@ model_jp <- function(
     }
 
     # --------------------------------------------------------
+    # Calculate Joinpoint BIC
+    # --------------------------------------------------------
+
+    bic_jp <- function(mod, n_jp) {
+      mse <- mean(stats::residuals(mod)^2)
+      n <- stats::nobs(mod)
+
+      log(mse) +
+        2 * n_jp * log(n) / n
+    }
+
+    # --------------------------------------------------------
     # Validate joinpoints
     # --------------------------------------------------------
+
     valid_jp <- function(jp) {
       idx <- match(
         jp,
@@ -300,11 +344,13 @@ model_jp <- function(
     # --------------------------------------------------------
     # Model results
     # --------------------------------------------------------
+
     results <- list()
 
-    # --------------------------------------------------------
+    # ========================================================
     # 0 joinpoints
-    # --------------------------------------------------------
+    # ========================================================
+
     mod0 <- fit_jp(numeric(0))
 
     results[[length(results) + 1]] <-
@@ -317,12 +363,13 @@ model_jp <- function(
         jp5 = NA_real_,
         jp6 = NA_real_,
         jp7 = NA_real_,
-        BIC = stats::BIC(mod0)
+        BIC = bic_jp(mod0, 0)
       )
 
-    # --------------------------------------------------------
+    # ========================================================
     # 1 joinpoint
-    # --------------------------------------------------------
+    # ========================================================
+
     if (k >= 1) {
       for (jp1 in data$.time) {
         jp <- c(jp1)
@@ -343,14 +390,15 @@ model_jp <- function(
             jp5 = NA_real_,
             jp6 = NA_real_,
             jp7 = NA_real_,
-            BIC = stats::BIC(mod)
+            BIC = bic_jp(mod, 1)
           )
       }
     }
 
-    # --------------------------------------------------------
+    # ========================================================
     # 2 joinpoints
-    # --------------------------------------------------------
+    # ========================================================
+
     if (k >= 2) {
       for (jp1 in data$.time) {
         for (jp2 in data$.time) {
@@ -376,15 +424,16 @@ model_jp <- function(
               jp5 = NA_real_,
               jp6 = NA_real_,
               jp7 = NA_real_,
-              BIC = stats::BIC(mod)
+              BIC = bic_jp(mod, 2)
             )
         }
       }
     }
 
-    # --------------------------------------------------------
+    # ========================================================
     # 3 joinpoints
-    # --------------------------------------------------------
+    # ========================================================
+
     if (k >= 3) {
       for (jp1 in data$.time) {
         for (jp2 in data$.time) {
@@ -397,11 +446,7 @@ model_jp <- function(
               next
             }
 
-            jp <- c(
-              jp1,
-              jp2,
-              jp3
-            )
+            jp <- c(jp1, jp2, jp3)
 
             if (!valid_jp(jp)) {
               next
@@ -419,16 +464,17 @@ model_jp <- function(
                 jp5 = NA_real_,
                 jp6 = NA_real_,
                 jp7 = NA_real_,
-                BIC = stats::BIC(mod)
+                BIC = bic_jp(mod, 3)
               )
           }
         }
       }
     }
 
-    # --------------------------------------------------------
+    # ========================================================
     # 4 joinpoints
-    # --------------------------------------------------------
+    # ========================================================
+
     if (k >= 4) {
       for (jp1 in data$.time) {
         for (jp2 in data$.time) {
@@ -446,12 +492,7 @@ model_jp <- function(
                 next
               }
 
-              jp <- c(
-                jp1,
-                jp2,
-                jp3,
-                jp4
-              )
+              jp <- c(jp1, jp2, jp3, jp4)
 
               if (!valid_jp(jp)) {
                 next
@@ -469,7 +510,7 @@ model_jp <- function(
                   jp5 = NA_real_,
                   jp6 = NA_real_,
                   jp7 = NA_real_,
-                  BIC = stats::BIC(mod)
+                  BIC = bic_jp(mod, 4)
                 )
             }
           }
@@ -477,9 +518,10 @@ model_jp <- function(
       }
     }
 
-    # --------------------------------------------------------
+    # ========================================================
     # 5 joinpoints
-    # --------------------------------------------------------
+    # ========================================================
+
     if (k >= 5) {
       for (jp1 in data$.time) {
         for (jp2 in data$.time) {
@@ -524,9 +566,9 @@ model_jp <- function(
                     jp3 = jp3,
                     jp4 = jp4,
                     jp5 = jp5,
-                    jp6 = NA_real,
-                    jp7 = NA_real,
-                    BIC = stats::BIC(mod)
+                    jp6 = NA_real_,
+                    jp7 = NA_real_,
+                    BIC = bic_jp(mod, 5)
                   )
               }
             }
@@ -535,9 +577,10 @@ model_jp <- function(
       }
     }
 
-    # --------------------------------------------------------
+    # ========================================================
     # 6 joinpoints
-    # --------------------------------------------------------
+    # ========================================================
+
     if (k >= 6) {
       for (jp1 in data$.time) {
         for (jp2 in data$.time) {
@@ -582,15 +625,15 @@ model_jp <- function(
 
                   results[[length(results) + 1]] <-
                     tibble::tibble(
-                      n_jp = 5,
+                      n_jp = 6,
                       jp1 = jp1,
                       jp2 = jp2,
                       jp3 = jp3,
                       jp4 = jp4,
                       jp5 = jp5,
                       jp6 = jp6,
-                      jp7 = NA_real,
-                      BIC = stats::BIC(mod)
+                      jp7 = NA_real_,
+                      BIC = bic_jp(mod, 6)
                     )
                 }
               }
@@ -600,9 +643,10 @@ model_jp <- function(
       }
     }
 
-    # --------------------------------------------------------
+    # ========================================================
     # 7 joinpoints
-    # --------------------------------------------------------
+    # ========================================================
+
     if (k >= 7) {
       for (jp1 in data$.time) {
         for (jp2 in data$.time) {
@@ -653,7 +697,7 @@ model_jp <- function(
 
                     results[[length(results) + 1]] <-
                       tibble::tibble(
-                        n_jp = 5,
+                        n_jp = 7,
                         jp1 = jp1,
                         jp2 = jp2,
                         jp3 = jp3,
@@ -661,7 +705,7 @@ model_jp <- function(
                         jp5 = jp5,
                         jp6 = jp6,
                         jp7 = jp7,
-                        BIC = stats::BIC(mod)
+                        BIC = bic_jp(mod, 7)
                       )
                   }
                 }
@@ -672,15 +716,17 @@ model_jp <- function(
       }
     }
 
-    # --------------------------------------------------------
+    # ========================================================
     # Full list of models
-    # --------------------------------------------------------
+    # ========================================================
+
     results <- dplyr::bind_rows(results) |>
       dplyr::arrange(BIC)
 
-    # --------------------------------------------------------
+    # ========================================================
     # Select best model
-    # --------------------------------------------------------
+    # ========================================================
+
     best <- results |>
       dplyr::slice_min(
         BIC,
@@ -688,9 +734,10 @@ model_jp <- function(
         with_ties = FALSE
       )
 
-    # --------------------------------------------------------
+    # ========================================================
     # Selected joinpoints
-    # --------------------------------------------------------
+    # ========================================================
+
     joinpoints <- best |>
       dplyr::select(
         jp1,
@@ -706,27 +753,30 @@ model_jp <- function(
       ) |>
       stats::na.omit()
 
-    # --------------------------------------------------------
+    # ========================================================
     # Final model
-    # --------------------------------------------------------
+    # ========================================================
+
     model <- fit_jp(joinpoints)
 
-    # --------------------------------------------------------
+    # ========================================================
     # Return
-    # --------------------------------------------------------
+    # ========================================================
+
     list(
       model = model,
       joinpoints = joinpoints,
       time = data$.time,
       log_rate = data$.log_value,
-      BIC = best$BIC
-      # results = results
+      BIC = best$BIC,
+      results = results
     )
   }
 
   # ==========================================================
   # Fit each group
   # ==========================================================
+
   data_split <- data |>
     dplyr::group_by(.jp_group) |>
     dplyr::group_split()
@@ -736,10 +786,16 @@ model_jp <- function(
     fit_group
   )
 
-  # ---- Name models ----
+  # ==========================================================
+  # Name models
+  # ==========================================================
+
   names(mods) <- as.character(groups)
 
-  # ---- Message ----
+  # ==========================================================
+  # Message
+  # ==========================================================
+
   purrr::iwalk(
     mods,
     ~ {
@@ -767,6 +823,9 @@ model_jp <- function(
     }
   )
 
-  # ---- Return ----
+  # ==========================================================
+  # Return
+  # ==========================================================
+
   mods
 }
