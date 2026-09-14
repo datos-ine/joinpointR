@@ -3,8 +3,8 @@
 #' Calculates the Annual Percent Change (APC) and corresponding 95% confidence
 #' intervals for each segment of one or more joinpoint regression models.
 #'
-#' @param mods A joinpoint regression model or a list of joinpoint regression
-#'   models returned by \code{model_jp()}.
+#' @param mods A list of models returned by \code{model_jp_grid()} or
+#' \code{model_jp_step()}.
 #' @param digits Integer. Number of decimal places used to display the results.
 #' @param dec Character. Decimal separator to use (e.g. `"."` or `","`).
 #'
@@ -20,7 +20,7 @@
 #' data(hiv_data)
 #'
 #' # Filter dataset
-#' hiv_data <- hiv_data |> 
+#' hiv_data <- hiv_data |>
 #' dplyr::filter_out(sex == "Both" | admin != "ARG")
 #'
 #' # Fit joinpoint models
@@ -36,7 +36,6 @@
 #' get_apc(mods, digits = 1, dec = ".")
 #'
 #' @export
-
 get_apc <- function(
   mods,
   digits = 1,

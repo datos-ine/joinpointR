@@ -18,7 +18,8 @@ gg_jpoint(
 )
 }
 \arguments{
-\item{mods}{A list of joinpoint regression models returned by \code{model_jp()}.}
+\item{mods}{A list of models returned by \code{model_jp_grid()} or
+\code{model_jp_step()}.}
 
 \item{obs}{Logical. If \code{TRUE}, observed data points are displayed.}
 
@@ -73,13 +74,13 @@ Sequential palettes:
 data(hiv_data)
 
 # Filter data
-hiv_data <- hiv_data |>
+data <- hiv_data |>
 dplyr::filter(admin \%in\% c("CABA", "Catamarca", "Chaco", "Chubut"))
 
 # Fit the joinpoint models
-mod <- model_jp(
-  data = hiv_data ,
-  value = hiv_rate,
+mod <- model_jp_grid(
+  data = data ,
+  rate = hiv_rate,
   time = year,
   group = c("admin", "sex"),
   k = 2

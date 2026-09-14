@@ -7,8 +7,8 @@
 get_apc(mods, digits = 1, dec = ".")
 }
 \arguments{
-\item{mods}{A joinpoint regression model or a list of joinpoint regression
-models returned by \code{model_jp()}.}
+\item{mods}{A list of models returned by \code{model_jp_grid()} or
+\code{model_jp_step()}.}
 
 \item{digits}{Integer. Number of decimal places used to display the results.}
 
@@ -28,7 +28,7 @@ intervals for each segment of one or more joinpoint regression models.
 data(hiv_data)
 
 # Filter dataset
-hiv_data <- hiv_data |> 
+hiv_data <- hiv_data |>
 dplyr::filter_out(sex == "Both" | admin != "ARG")
 
 # Fit joinpoint models

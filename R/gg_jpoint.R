@@ -3,7 +3,8 @@
 #' Creates a ggplot showing observed values, fitted joinpoint regression lines,
 #' and optional joinpoints.
 #'
-#' @param mods A list of joinpoint regression models returned by \code{model_jp()}.
+#' @param mods A list of models returned by \code{model_jp_grid()} or
+#' \code{model_jp_step()}.
 #' @param obs Logical. If `TRUE`, observed data points are displayed.
 #' @param jp Logical. If `TRUE`, joinpoints are displayed as vertical dashed lines.
 #' @param facets Character. Determines the facet layout: `"wrap"` for faceting by group,
@@ -46,13 +47,13 @@
 #' data(hiv_data)
 #'
 #' # Filter data
-#' hiv_data <- hiv_data |>
+#' data <- hiv_data |>
 #' dplyr::filter(admin %in% c("CABA", "Catamarca", "Chaco", "Chubut"))
 #'
 #' # Fit the joinpoint models
-#' mod <- model_jp(
-#'   data = hiv_data ,
-#'   value = hiv_rate,
+#' mods <- model_jp_grid(
+#'   data = data ,
+#'   rate = hiv_rate,
 #'   time = year,
 #'   group = c("admin", "sex"),
 #'   k = 2
@@ -114,12 +115,12 @@ gg_jpoint <- function(
   }
 
   if (cb) {
-  cbcol <- cols4all::c4a(
-    palette = cbpal,
-    n = 1
-  )[1]
-}
-  
+    cbcol <- cols4all::c4a(
+      palette = cbpal,
+      n = 1
+    )[1]
+  }
+
   n_mods <- length(mods)
 
   # ---- Validate facets ----
@@ -127,7 +128,7 @@ gg_jpoint <- function(
     facets <- match.arg(facets)
   } else {
     facets <- "none"
-    message("Facets were ignored because there were no grouping variable(s).")
+    message("Facets were ignored because only one model was supplied.")
   }
 
   # ---- Validate facet columns ----
@@ -175,12 +176,10 @@ gg_jpoint <- function(
   data <- purrr::map_dfr(
     mods,
     \(x) {
-      mod <- x$model
-
       tibble::tibble(
-        time = mod$model$time,
-        obs = mod$model$y,
-        fit = mod$fitted.values
+        time = x$time,
+        obs = x$log_rate,
+        fit = stats::fitted(x$model)
       )
     },
     .id = if (n_mods > 1) "group_var" else NULL
@@ -292,13 +291,21 @@ gg_jpoint <- function(
 
   # ---- Add data points ----
   if (obs) {
-    g <- g +
-      ggplot2::geom_point(
-        size = psize,
-        alpha = ptr,
-        color = if (facets == "none" && cb) cbcol else NULL
-      )
-  } 
+    if (facets == "none") {
+      g <- g +
+        ggplot2::geom_point(
+          size = psize,
+          alpha = ptr,
+          color = if (cb) cbcol else NULL
+        )
+    } else {
+      g <- g +
+        ggplot2::geom_point(
+          size = psize,
+          alpha = ptr
+        )
+    }
+  }
 
   # ---- Add joinpoints ----
   if (jp && nrow(jp_data) > 0) {
@@ -314,14 +321,14 @@ gg_jpoint <- function(
 
   # ---- Show plot ----
   if (cb && facets != "none") {
-  g +
-    ggplot2::scale_color_manual(
-      values = cols4all::c4a(
-        palette = cbpal,
-        n = dplyr::n_distinct(data$group)
+    g +
+      ggplot2::scale_color_manual(
+        values = cols4all::c4a(
+          palette = cbpal,
+          n = dplyr::n_distinct(data$group)
+        )
       )
-    )
-} else {
-  g
-}
+  } else {
+    g
+  }
 }

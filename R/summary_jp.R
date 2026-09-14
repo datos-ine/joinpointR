@@ -5,7 +5,8 @@
 #' Change (APC) with 95% confidence intervals, and Average Annual Percent
 #' Change (AAPC) with statistical significance.
 #'
-#' @param mods A list of models returned by \code{model_jp()}.
+#' @param mods A list of models returned by \code{model_jp_grid()} or
+#' \code{model_jp_step()}.
 #' @param digits Integer. Number of decimal places used to display the results.
 #' @param dec Character. Decimal separator to use (e.g. `"."` or `","`).
 #'
@@ -21,7 +22,7 @@
 #' data(hiv_data)
 #'
 #' # Fit joinpoint models
-#' mods <- model_jp(
+#' mods <- model_jp_grid(
 #'   data = hiv_data,
 #'   value = hiv_rate,
 #'   time = year,
@@ -32,7 +33,6 @@
 #' summary_jp(mods, digits = 1, dec = ".")
 #'
 #' @export
-
 summary_jp <- function(
   mods,
   digits = 1,

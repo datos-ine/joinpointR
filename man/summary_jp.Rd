@@ -7,7 +7,8 @@
 summary_jp(mods, digits = 1, dec = c(".", ","))
 }
 \arguments{
-\item{mods}{A list of models returned by \code{model_jp()}.}
+\item{mods}{A list of models returned by \code{model_jp_grid()} or
+\code{model_jp_step()}.}
 
 \item{digits}{Integer. Number of decimal places used to display the results.}
 
@@ -29,7 +30,7 @@ Change (AAPC) with statistical significance.
 data(hiv_data)
 
 # Fit joinpoint models
-mods <- model_jp(
+mods <- model_jp_grid(
   data = hiv_data,
   value = hiv_rate,
   time = year,

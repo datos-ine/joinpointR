@@ -5,8 +5,8 @@
 #' statistical significance can be displayed using significance stars instead
 #' of confidence intervals.
 #'
-#' @param mods A joinpoint regression model, a list of joinpoint regression
-#'   models returned by \code{model_jp()}.
+#' @param mods A list of models returned by \code{model_jp_grid()} or
+#' \code{model_jp_step()}.
 #' @param digits Integer. Number of decimal places used to display the results.
 #' @param show_ci Logical. If `TRUE`, displays the 95% confidence interval.
 #'   If `FALSE`, displays significance stars.
@@ -21,10 +21,10 @@
 #' @examples
 #' # Load example data
 #' data(hiv_data)
-#' 
+#'
 #' # Filter data
 #' hiv_data <- hiv_data |>
-#' dplyr::filter(sex == "Both" & admin == "ARG") 
+#' dplyr::filter(sex == "Both" & admin == "ARG")
 #'
 #' # Fit joinpoint models
 #' mods <- model_jp(
