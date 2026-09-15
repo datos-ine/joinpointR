@@ -1,0 +1,8 @@
+{
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "Posit.air-vscode",
+    "editor.fontSize": 12,
+    "files.autoSave": "afterDelay",
+    "editor.wordWrap": "on",
+    "air.executableStrategy": "bundled"
+}

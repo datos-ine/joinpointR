@@ -6,13 +6,12 @@
 \usage{
 gg_jpoint(
   mods,
-  obs = TRUE,
-  psize = 2.5,
-  ptr = 0.75,
-  jp = TRUE,
+  geom = c("line", "linepoint"),
+  jp = c("line", "area", "hide"),
   facets = c("wrap", "grid", "grid2"),
   ncol = 4,
-  cb = TRUE,
+  psize = 2.5,
+  tr = 0.75,
   cbpal = c("viridis", "managua", "plasma", "roma", "vanimo", "algae", "arches2",
     "glasgow", "tokyo", "blue_fluoride")
 )
@@ -21,13 +20,11 @@ gg_jpoint(
 \item{mods}{A list of models returned by \code{model_jp_grid()} or
 \code{model_jp_step()}.}
 
-\item{obs}{Logical. If \code{TRUE}, observed data points are displayed.}
+\item{geom}{Character. Determines the geom displayer: \code{"line"} for regression line,
+\code{"linepoint"} for regression line and data points.}
 
-\item{psize}{Numeric. Size of the observed data points.}
-
-\item{ptr}{Numeric. Transparency level of the observed data points (0-1).}
-
-\item{jp}{Logical. If \code{TRUE}, joinpoints are displayed as vertical dashed lines.}
+\item{jp}{Character. Whether to display joinpoint(s) position as a vertical line (\code{"line"}),
+a shaded area (\code{"area"}) or hide them (\code{"hide"}).}
 
 \item{facets}{Character. Determines the facet layout: \code{"wrap"} for faceting by group,
 \code{"grid"} for faceting by group and subgroup, or \code{"grid2"} for faceting by subgroup
@@ -35,7 +32,9 @@ and group. When grouping variables are absent shows a single panel plot.}
 
 \item{ncol}{Numeric. Number of columns to display when \code{facets = "wrap"}.}
 
-\item{cb}{Logical. If \code{TRUE}, a colorblind-friendly palette is used.}
+\item{psize}{Numeric. Size of the observed data points.}
+
+\item{tr}{Numeric. Controls the transparency of the data points and joinpoint lines.}
 
 \item{cbpal}{Character. Name of the colorblind-friendly palette to use.
 See Details.}
@@ -73,12 +72,12 @@ Sequential palettes:
 # Load example data
 data(hiv_data)
 
-# Filter data
+# Create reduced dataset
 data <- hiv_data |>
 dplyr::filter(admin \%in\% c("CABA", "Catamarca", "Chaco", "Chubut"))
 
 # Fit the joinpoint models
-mod <- model_jp_grid(
+mods <- model_jp_grid(
   data = data ,
   rate = hiv_rate,
   time = year,
@@ -87,27 +86,20 @@ mod <- model_jp_grid(
 )
 
 # Plot results
-gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = "wrap")
+gg_jpoint(mods, geom = "line", jp = "line", facets = "wrap")
 
 # Facet by group and subgroup
-gg_jpoint(mods, obs = TRUE, jp = TRUE, facets = "grid")
+gg_jpoint(mods, "linepoint", jp = "line", facets = "grid")
 
 # Facet by subgroup and group
-gg_jpoint(mods, jp = FALSE, facets = "grid2")
+gg_jpoint(mods, geom = "line",  jp = "area", facets = "grid2")
 
 # Use a different colorblind-friendly palette
 gg_jpoint(
   mods,
-  obs = TRUE,
-  jp = TRUE,
-  facets = "grid",
-  cb = TRUE,
+geom = "line",
+jp = "area",
   cbpal = "managua"
 )
 
-# Use default ggplot2 palette (can be changed using `scale_color_`)
-gg_jpoint(
-mods,
-cb = FALSE
-)
 }
