@@ -4,7 +4,7 @@
 \alias{plot_cbpal}
 \title{Display colorblind-friendly palettes}
 \usage{
-plot_cbpal(type = c("all", "cat", "div", "seq"), fair = c("No", "Yes"), n = 8)
+plot_cbpal(type = c("all", "cat", "div", "seq"), fair = c("No", "Yes"), n = 3)
 }
 \arguments{
 \item{type}{Character. Type of palette to display: categorical (\code{"cat"}),
@@ -13,7 +13,7 @@ sequential (\code{"seq"}), diverging (\code{"div"}) or \code{"all"}. Defaults to
 \item{fair}{Character. The palette contains an equal amount of vivid and
 pastel colors. Defaults to \code{"No"}.}
 
-\item{n}{Numeric. Number of colors to display (Min = 3, Max = 13). Defaults to 7.}
+\item{n}{Numeric. Number of colors to display (Min = 3, Max = 13). Defaults to 3.}
 
 \item{series}{Character. Palette collection. Defaults to \code{"scico"}.}
 }

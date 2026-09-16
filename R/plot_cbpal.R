@@ -8,7 +8,7 @@
 #' @param series Character. Palette collection. Defaults to `"scico"`.
 #' @param fair Character. The palette contains an equal amount of vivid and
 #' pastel colors. Defaults to `"No"`.
-#' @param n Numeric. Number of colors to display (Min = 3, Max = 13). Defaults to 7.
+#' @param n Numeric. Number of colors to display (Min = 3, Max = 13). Defaults to 3.
 #'
 #' @return
 #' A `ggplot` object showing available palettes.
@@ -16,7 +16,7 @@
 plot_cbpal <- function(
   type = c("all", "cat", "div", "seq"),
   fair = c("No", "Yes"),
-  n = 8
+  n = 3
 ) {
   # ---- Validate number of colors ----
   if (n < 3 || n > 13) {
