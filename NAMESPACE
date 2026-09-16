@@ -6,6 +6,7 @@ export(gg_jpoint)
 export(jp_to_ft)
 export(model_jp_grid)
 export(model_jp_step)
+export(plot_cbpal)
 export(summary_jp)
 importFrom(dplyr,where)
 importFrom(rlang,

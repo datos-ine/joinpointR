@@ -9,11 +9,12 @@ gg_jpoint(
   geom = c("line", "linepoint"),
   jp = c("line", "area", "hide"),
   facets = c("wrap", "grid", "grid2"),
-  ncol = 4,
+  facet_cols = 4,
   psize = 2.5,
-  tr = 0.75,
-  cbpal = c("viridis", "managua", "plasma", "roma", "vanimo", "algae", "arches2",
-    "glasgow", "tokyo", "blue_fluoride")
+  lwd = 1,
+  alpha = 0.75,
+  cbpal = "viridis",
+  cbpal_n = 7
 )
 }
 \arguments{
@@ -30,14 +31,18 @@ a shaded area (\code{"area"}) or hide them (\code{"hide"}).}
 \code{"grid"} for faceting by group and subgroup, or \code{"grid2"} for faceting by subgroup
 and group. When grouping variables are absent shows a single panel plot.}
 
-\item{ncol}{Numeric. Number of columns to display when \code{facets = "wrap"}.}
+\item{facet_cols}{Numeric. Number of columns to display when \code{facets = "wrap"}.}
 
-\item{psize}{Numeric. Size of the observed data points.}
+\item{psize}{Numeric. Size of the observed data points. Defaults to 2.5 points.}
 
-\item{tr}{Numeric. Controls the transparency of the data points and joinpoint lines.}
+\item{lwd}{Numeric. Size of the regression line. Defaults to 1 point.}
 
-\item{cbpal}{Character. Name of the colorblind-friendly palette to use.
-See Details.}
+\item{alpha}{Numeric. Controls the transparency of the data points and joinpoint lines.}
+
+\item{cbpal}{Character. Name of the colorblind-friendly palette to use. Defaults to \code{"viridis"}.}
+
+\item{cbpal_n}{Numeric. Maximum number of colors to display in the palette.
+Defaults to 5.}
 }
 \value{
 A \code{ggplot} object showing observed values, fitted joinpoint regression
@@ -48,25 +53,7 @@ Creates a ggplot showing observed values, fitted joinpoint regression lines,
 and optional joinpoints.
 }
 \details{
-Available colorblind-friendly palettes from the \code{cols4all} package include:
-
-Diverging palettes:
-\itemize{
-\item \code{"managua"}
-\item \code{"plasma"}
-\item \code{"roma"}
-\item \code{"vanimo"}
-\item \code{"viridis"}
-}
-
-Sequential palettes:
-\itemize{
-\item \code{"algae"}
-\item \code{"arches2"}
-\item \code{"blue_fluoride"}
-\item \code{"glasgow"}
-\item \code{"tokyo"}
-}
+Available colorblind-friendly palettes can be checked using \code{plot_cbpal()}.
 }
 \examples{
 # Load example data
@@ -74,7 +61,8 @@ data(hiv_data)
 
 # Create reduced dataset
 data <- hiv_data |>
-dplyr::filter(admin \%in\% c("CABA", "Catamarca", "Chaco", "Chubut"))
+  dplyr::filter(dplyr::between(admin, "ARG", "Chubut")) |>
+  droplevels()
 
 # Fit the joinpoint models
 mods <- model_jp_grid(
@@ -85,21 +73,16 @@ mods <- model_jp_grid(
   k = 2
 )
 
-# Plot results
-gg_jpoint(mods, geom = "line", jp = "line", facets = "wrap")
+# Plot results with default settings
+gg_jpoint(mods = mods, geom = "line", jp = "line", facets = "wrap")
 
-# Facet by group and subgroup
-gg_jpoint(mods, "linepoint", jp = "line", facets = "grid")
+# Change the geom and facetting style
+gg_jpoint(mods = mods, geom = "linepoint", jp = "line", facets = "grid")
 
-# Facet by subgroup and group
-gg_jpoint(mods, geom = "line",  jp = "area", facets = "grid2")
+# Change the joinpoint and facetting style
+gg_jpoint(mods = mods, geom = "linepoint", jp = "area", facets = "grid2")
 
-# Use a different colorblind-friendly palette
-gg_jpoint(
-  mods,
-geom = "line",
-jp = "area",
-  cbpal = "managua"
-)
+# Use a different color palette
+gg_jpoint(mods = mods, cbpal = "managua")
 
 }

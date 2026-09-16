@@ -12,36 +12,20 @@
 #' @param facets Character. Determines the facet layout: `"wrap"` for faceting by group,
 #'  `"grid"` for faceting by group and subgroup, or `"grid2"` for faceting by subgroup
 #' and group. When grouping variables are absent shows a single panel plot.
-#' @param ncol Numeric. Number of columns to display when `facets = "wrap"`.
-#' @param psize Numeric. Size of the observed data points.
-#' @param tr Numeric. Controls the transparency of the data points and joinpoint lines.
-#' @param cbpal Character. Name of the colorblind-friendly palette to use.
-#'   See Details.
+#' @param facet_cols Numeric. Number of columns to display when `facets = "wrap"`.
+#' @param psize Numeric. Size of the observed data points. Defaults to 2.5 points.
+#' @param lwd Numeric. Size of the regression line. Defaults to 1 point.
+#' @param alpha Numeric. Controls the transparency of the data points and joinpoint lines.
+#' @param cbpal Character. Name of the colorblind-friendly palette to use. Defaults to `"viridis"`.
+#' @param cbpal_n Numeric. Maximum number of colors to display in the palette.
+#' Defaults to 5.
 #'
 #' @return
 #' A `ggplot` object showing observed values, fitted joinpoint regression
 #' lines, and optional joinpoints.
 #'
 #' @details
-#' Available colorblind-friendly palettes from the `cols4all` package include:
-#'
-#' Diverging palettes:
-#' \itemize{
-#'   \item `"managua"`
-#'   \item `"plasma"`
-#'   \item `"roma"`
-#'   \item `"vanimo"`
-#'   \item `"viridis"`
-#' }
-#'
-#' Sequential palettes:
-#' \itemize{
-#'   \item `"algae"`
-#'   \item `"arches2"`
-#'   \item `"blue_fluoride"`
-#'   \item `"glasgow"`
-#'   \item `"tokyo"`
-#' }
+#' Available colorblind-friendly palettes can be checked using `plot_cbpal()`.
 #'
 #' @examples
 #' # Load example data
@@ -49,7 +33,8 @@
 #'
 #' # Create reduced dataset
 #' data <- hiv_data |>
-#' dplyr::filter(admin %in% c("CABA", "Catamarca", "Chaco", "Chubut"))
+#'   dplyr::filter(dplyr::between(admin, "ARG", "Chubut")) |>
+#'   droplevels()
 #'
 #' # Fit the joinpoint models
 #' mods <- model_jp_grid(
@@ -60,22 +45,17 @@
 #'   k = 2
 #' )
 #'
-#' # Plot results
-#' gg_jpoint(mods, geom = "line", jp = "line", facets = "wrap")
+#' # Plot results with default settings
+#' gg_jpoint(mods = mods, geom = "line", jp = "line", facets = "wrap")
 #'
-#' # Facet by group and subgroup
-#' gg_jpoint(mods, "linepoint", jp = "line", facets = "grid")
+#' # Change the geom and facetting style
+#' gg_jpoint(mods = mods, geom = "linepoint", jp = "line", facets = "grid")
 #'
-#' # Facet by subgroup and group
-#' gg_jpoint(mods, geom = "line",  jp = "area", facets = "grid2")
+#' # Change the joinpoint and facetting style
+#' gg_jpoint(mods = mods, geom = "linepoint", jp = "area", facets = "grid2")
 #'
-#' # Use a different colorblind-friendly palette
-#' gg_jpoint(
-#'   mods,
-#' geom = "line",
-#' jp = "area",
-#'   cbpal = "managua"
-#' )
+#' # Use a different color palette
+#' gg_jpoint(mods = mods, cbpal = "managua")
 #'
 #' @export
 
@@ -84,23 +64,12 @@ gg_jpoint <- function(
   geom = c("line", "linepoint"),
   jp = c("line", "area", "hide"),
   facets = c("wrap", "grid", "grid2"),
-  ncol = 4,
+  facet_cols = 4,
   psize = 2.5,
-  tr = 0.75,
-  cbpal = c(
-    # Sequential
-    "viridis",
-    "managua",
-    "plasma",
-    "roma",
-    "vanimo",
-    # Diverging
-    "algae",
-    "arches2",
-    "glasgow",
-    "tokyo",
-    "blue_fluoride"
-  )
+  lwd = 1,
+  alpha = 0.75,
+  cbpal = "viridis",
+  cbpal_n = 7
 ) {
   # ---- Default values ----
   ## ---- Geoms ----
@@ -115,38 +84,36 @@ gg_jpoint <- function(
   ## ---- Number of models ----
   n_mods <- length(mods)
 
-  ## ---- Number of joinpoints ----
-  n_jp <- purrr::map_int(
-    mods,
-    ~ length(.x$joinpoints)
-  )
-
-  ## ---- Colorblind-friendly palettes ----
-  cbpal <- match.arg(cbpal)
-  cbcol <- cols4all::c4a(palette = cbpal, n = 1)[1]
-
   # ---- Validate facets ----
   if (n_mods > 1) {
     facets <- match.arg(facets)
   } else {
-    facets <- "none"
     if (facets != "none") {
       message(
         "Argument 'facets' was ignored because only one model was supplied."
       )
     }
+
+    facets <- "none"
   }
 
   # ---- Validate facet columns ----
   if (n_mods > 1 && facets != "wrap") {
     message(
-      "Argument 'ncol' is ignored when facets = 'grid' or 'grid2'."
+      "Argument 'facet_cols' is ignored when facets = 'grid' or 'grid2'."
     )
   }
 
   # ---- Validate hide joinpoints ----
   if (jp == "hide") {
     message("Joinpoint(s) position(s) will not be displayed.")
+  }
+
+  # ---- Validate palette colors ----
+  if (cbpal_n > 13) {
+    warning(
+      "The number of colors selected exceeds the maximum number of colors allowed. Number of colors will be set to 13."
+    )
   }
 
   # ============================================================
@@ -200,6 +167,25 @@ gg_jpoint <- function(
     # --- Grouping variables ---
     groups()
 
+  # ============================================================
+  # ---- Generate palettes ----
+  # ============================================================
+  cbpal_list <- get_cbpal()$name
+
+  # ---- Validate palette name ----
+  if (!cbpal %in% cbpal_list) {
+    stop(
+      sprintf(
+        "Palette '%s' is not available among the colorblind-friendly palettes.",
+        cbpal
+      ),
+      call. = FALSE
+    )
+  }
+
+  ## ---- Select colorblind-friendly palettes ----
+  cbpal <- match.arg(cbpal, choices = cbpal_list)
+
   # =============================================================
   # ---- Base plot layout -----
   #  ============================================================
@@ -231,7 +217,7 @@ gg_jpoint <- function(
       facets,
       grid = g + ggplot2::facet_grid(group ~ subgroup),
       grid2 = g + ggplot2::facet_grid(subgroup ~ group),
-      wrap = g + ggplot2::facet_wrap(~group_var, ncol = ncol),
+      wrap = g + ggplot2::facet_wrap(~group_var, ncol = facet_cols),
       g
     )
   }
@@ -246,7 +232,7 @@ gg_jpoint <- function(
         mapping = ggplot2::aes(xintercept = jp),
         color = "darkgrey",
         lwd = 1,
-        alpha = tr
+        alpha = alpha
       )
   } else if (jp == "area" && nrow(data_jp) > 0) {
     # ---- Create dataset ----
@@ -295,7 +281,7 @@ gg_jpoint <- function(
           data = data_jp,
           mapping = ggplot2::aes(xintercept = jp),
           lty = "dashed",
-          alpha = tr
+          alpha = alpha
         ) +
 
         ggplot2::scale_fill_manual(
@@ -317,14 +303,16 @@ gg_jpoint <- function(
           mapping = ggplot2::aes(
             y = fit,
             color = if (facets == "grid2") subgroup else group
-          )
+          ),
+          lwd = lwd
         )
     } else {
       g <- g +
         ggplot2::geom_line(
           mapping = ggplot2::aes(
             y = fit,
-          )
+          ),
+          lwd = lwd
         )
     }
   } else if (geom == "linepoint") {
@@ -334,23 +322,24 @@ gg_jpoint <- function(
           mapping = ggplot2::aes(
             y = fit,
             color = if (facets == "grid2") subgroup else group
-          )
+          ),
+          lwd = lwd
         ) +
         ggplot2::geom_point(
           mapping = ggplot2::aes(
             color = if (facets == "grid2") subgroup else group
           ),
           size = psize,
-          alpha = tr
+          alpha = alpha
         )
     } else {
       g <- g +
         ggplot2::geom_line(
-          mapping = ggplot2::aes(y = fit)
+          mapping = ggplot2::aes(y = fit, lwd = lwd)
         ) +
         ggplot2::geom_point(
           size = psize,
-          alpha = tr
+          alpha = alpha
         )
     }
   }
@@ -363,7 +352,7 @@ gg_jpoint <- function(
       ggplot2::scale_color_manual(
         values = cols4all::c4a(
           palette = cbpal,
-          n = dplyr::n_distinct(data$group)
+          n = if (cbpal_n <= 13) cbpal_n else 13
         )
       )
   } else {

@@ -185,3 +185,41 @@ fit_jp_groups <- function(
   # Return ---------------------------------------------------
   mods
 }
+#' Get list of colorblind-friendly palettes
+#'
+#' @keywords internal
+#'
+get_cbpal <- function() {
+  purrr::map_df(
+    c("cat", "seq", "div"),
+    \(type) {
+      cols4all::c4a_table(
+        type = type,
+        filters = "cbf"
+      ) |>
+        as.character() |>
+        rvest::read_html() |>
+        rvest::html_element("table") |>
+        rvest::html_table() |>
+        janitor::clean_names() |>
+        dplyr::select(-x3d_blues)
+    },
+    .id = "type"
+  ) |>
+    dplyr::filter_out(hues == "🖌") |>
+    dplyr::mutate(
+      type = forcats::fct_relabel(
+        type,
+        ~ c("cat", "seq", "div")
+      ),
+      fair = dplyr::if_else(fair == "⨯", "No", "Yes", missing = "No")
+    ) |>
+    dplyr::arrange(name) |>
+    dplyr::select(
+      type,
+      series,
+      name,
+      fair
+    ) |>
+    dplyr::distinct(name, .keep_all = TRUE)
+}
