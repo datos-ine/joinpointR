@@ -4,23 +4,28 @@
 \alias{plot_cbpal}
 \title{Display colorblind-friendly palettes}
 \usage{
-plot_cbpal(type = c("all", "cat", "div", "seq"), fair = c("No", "Yes"), n = 3)
+plot_cbpal(
+  type = c("seq", "cat", "div"),
+  colors = c("all", "vivid", "fair", "pastel"),
+  n = 3
+)
 }
 \arguments{
 \item{type}{Character. Type of palette to display: categorical (\code{"cat"}),
-sequential (\code{"seq"}), diverging (\code{"div"}) or \code{"all"}. Defaults to \code{"all"}.}
+sequential (\code{"seq"}) or diverging (\code{"div"}). Defaults to \code{"seq"}.}
 
-\item{fair}{Character. The palette contains an equal amount of vivid and
-pastel colors. Defaults to \code{"No"}.}
+\item{colors}{Character. Defines the type of colors present in the palette:
+\code{"vivid"} selects palettes with bright colors, \code{"pastel"} selects palettes with
+pastel colors, \code{"fair"} selects palettes with a mix of vivid and pastel colors,
+\code{"all"} selects all the available palettes. Defaults to \code{"all"}.}
 
 \item{n}{Numeric. Number of colors to display (Min = 3, Max = 13). Defaults to 3.}
-
-\item{series}{Character. Palette collection. Defaults to \code{"scico"}.}
 }
 \value{
 A \code{ggplot} object showing available palettes.
 }
 \description{
 Plots a list of the available colorblind-friendly palettes used for
-\code{gg_jpoint()} plots. Allows to select by category, fairness and color brightness. Internally calls \code{cols4all}.
+\code{gg_jpoint()} plots. Allows to select by category, fairness and color
+brightness. Internally calls \code{cols4all}.
 }

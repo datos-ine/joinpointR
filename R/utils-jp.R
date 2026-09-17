@@ -188,38 +188,92 @@ fit_jp_groups <- function(
 #' Get list of colorblind-friendly palettes
 #'
 #' @keywords internal
-#'
-get_cbpal <- function() {
-  purrr::map_df(
+get_cbpal <- function(
+  colors = c("all", "vivid", "fair", "pastel"),
+  n = 5
+) {
+  # ============================================================
+  # ---- Set defaults ----
+  # ============================================================
+  pal_colors <- match.arg(colors)
+
+  # ============================================================
+  # ---- Retrieve available palettes ----
+  # ============================================================
+  pal_list <- purrr::map_df(
     c("cat", "seq", "div"),
     \(type) {
+      # --- Get HTML table ---
       cols4all::c4a_table(
         type = type,
         filters = "cbf"
       ) |>
+        # --- HTML to dataframe ---
         as.character() |>
         rvest::read_html() |>
         rvest::html_element("table") |>
         rvest::html_table() |>
+        # --- Clean column names ---
         janitor::clean_names() |>
-        dplyr::select(-x3d_blues)
+        # --- Exclude monochromatic palettes ---
+        dplyr::filter_out(hues == "🖌") |>
+
+        # --- Modify factor levels ---
+        dplyr::mutate(
+          dplyr::across(
+            .cols = c(fair, vivid),
+            .fns = ~ factor(.x, labels = c(rep("No", 2), "Yes"))
+          )
+        )
     },
     .id = "type"
-  ) |>
-    dplyr::filter_out(hues == "🖌") |>
-    dplyr::mutate(
-      type = forcats::fct_relabel(
-        type,
-        ~ c("cat", "seq", "div")
-      ),
-      fair = dplyr::if_else(fair == "⨯", "No", "Yes", missing = "No")
-    ) |>
+  )
+
+  # ----  Filter by color type ----
+  if (pal_colors == "fair") {
+    pal_list <- pal_list |>
+      dplyr::filter(fair == "Yes")
+  } else if (pal_colors == "vivid") {
+    pal_list <- pal_list |>
+      dplyr::filter(fair == "No" & vivid == "Yes")
+  } else if (pal_colors == "pastel") {
+    pal_list <- pal_list |>
+      dplyr::filter(vivid == "No")
+  } else {
+    pal_list
+  }
+
+  # ---- Retrieve color names ----
+  pal_list <- pal_list |>
+    # --- Arrange by name ---
     dplyr::arrange(name) |>
-    dplyr::select(
-      type,
-      series,
-      name,
-      fair
-    ) |>
-    dplyr::distinct(name, .keep_all = TRUE)
+
+    # --- Remove duplicates ---
+    dplyr::distinct(name, .keep_all = TRUE) |>
+
+    dplyr::pull(name)
+
+  # ============================================================
+  # ---- Generate palette data ----
+  # ============================================================
+  pal_data <- purrr::map(
+    pal_list,
+    \(pal) {
+      tibble::tibble(
+        name = pal,
+        color = cols4all::c4a(
+          palette = pal,
+          n = n,
+          verbose = FALSE
+        ),
+        position = seq_len(n)
+      )
+    }
+  ) |>
+    purrr::list_rbind()
+
+  # ============================================================
+  # ---- Return ----
+  # ============================================================
+  pal_data
 }

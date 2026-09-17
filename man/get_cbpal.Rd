@@ -4,7 +4,7 @@
 \alias{get_cbpal}
 \title{Get list of colorblind-friendly palettes}
 \usage{
-get_cbpal()
+get_cbpal(colors = c("all", "vivid", "fair", "pastel"), n = 5)
 }
 \description{
 Get list of colorblind-friendly palettes

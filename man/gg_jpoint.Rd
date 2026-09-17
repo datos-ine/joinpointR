@@ -6,15 +6,13 @@
 \usage{
 gg_jpoint(
   mods,
-  geom = c("line", "linepoint"),
-  jp = c("line", "area", "hide"),
+  geom = c("line", "linepoint", "area"),
+  jp = c("line", "hide"),
   facets = c("wrap", "grid", "grid2"),
-  facet_cols = 4,
-  psize = 2.5,
+  cbpal.name = "viridis",
+  cbpal.n = 6,
   lwd = 1,
-  alpha = 0.75,
-  cbpal = "viridis",
-  cbpal_n = 7
+  psize = 2.5
 )
 }
 \arguments{
@@ -22,27 +20,26 @@ gg_jpoint(
 \code{model_jp_step()}.}
 
 \item{geom}{Character. Determines the geom displayer: \code{"line"} for regression line,
-\code{"linepoint"} for regression line and data points.}
+\code{"linepoint"} for regression line with observed data points, \code{"area"} for smoothed areas.}
 
-\item{jp}{Character. Whether to display joinpoint(s) position as a vertical line (\code{"line"}),
-a shaded area (\code{"area"}) or hide them (\code{"hide"}).}
+\item{jp}{Logical. Whether to display joinpoint position(s) as vertical line(s).
+Defaults to \code{TRUE}.}
 
-\item{facets}{Character. Determines the facet layout: \code{"wrap"} for faceting by group,
-\code{"grid"} for faceting by group and subgroup, or \code{"grid2"} for faceting by subgroup
-and group. When grouping variables are absent shows a single panel plot.}
+\item{facets}{Character. Determines the facet layout: \code{"wrap"} for faceting
+by group,\code{"grid"} for faceting by group and subgroup, or \code{"grid2"} for
+faceting by subgroup and group. When grouping variables are absent shows
+a single panel plot.}
 
-\item{facet_cols}{Numeric. Number of columns to display when \code{facets = "wrap"}.}
+\item{cbpal.name}{Character. Name of the colorblind-friendly palette to use. Defaults to \code{"viridis"}.}
+
+\item{lwd}{Numeric. Width of the regression line. Defaults to 1 point.}
 
 \item{psize}{Numeric. Size of the observed data points. Defaults to 2.5 points.}
 
-\item{lwd}{Numeric. Size of the regression line. Defaults to 1 point.}
-
-\item{alpha}{Numeric. Controls the transparency of the data points and joinpoint lines.}
-
-\item{cbpal}{Character. Name of the colorblind-friendly palette to use. Defaults to \code{"viridis"}.}
+\item{palpha}{Numeric. Controls the transparency of the data points.}
 
 \item{cbpal_n}{Numeric. Maximum number of colors to display in the palette.
-Defaults to 5.}
+Defaults to 6.}
 }
 \value{
 A \code{ggplot} object showing observed values, fitted joinpoint regression
@@ -73,16 +70,5 @@ mods <- model_jp_grid(
   k = 2
 )
 
-# Plot results with default settings
-gg_jpoint(mods = mods, geom = "line", jp = "line", facets = "wrap")
-
-# Change the geom and facetting style
-gg_jpoint(mods = mods, geom = "linepoint", jp = "line", facets = "grid")
-
-# Change the joinpoint and facetting style
-gg_jpoint(mods = mods, geom = "linepoint", jp = "area", facets = "grid2")
-
-# Use a different color palette
-gg_jpoint(mods = mods, cbpal = "managua")
 
 }
