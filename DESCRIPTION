@@ -9,11 +9,7 @@ Authors@R:
         role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-0921-2611"))
 Description: Provides tools to fit joinpoint regression models with a log-linear 
-    specification by levels of a categorical variable. The package acts as a 
-    wrapper around the 'segmented' package, facilitating model fitting, selection, 
-    and interpretation. It includes functions to estimate the Annual Percent Change 
-    (APC) and the Average Annual Percent Change (AAPC), along with their 95% 
-    confidence intervals, and to generate formatted summary tables and plots of results.
+    specification by levels of one or two categorical variable(s). The package allows to fit models using a grid search method or a stepwise procedure It includes functions to estimate the Annual Percent Change (APC) and the Average Annual Percent Change (AAPC), along with their 95% confidence intervals, and to generate formatted summary tables and plots of results.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports:
@@ -22,7 +18,6 @@ Imports:
     tidyr,
     tibble,
     ggplot2,
-    segmented,
     scales,
     flextable,
     rlang,

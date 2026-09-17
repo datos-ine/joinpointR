@@ -1,1 +1,1 @@
-utils::globalVariables(c(".data", "grupo"))
+utils::globalVariables(c(".data"))

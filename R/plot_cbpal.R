@@ -1,11 +1,9 @@
 #' Display colorblind-friendly palettes
 #'
 #' Plots a list of the available colorblind-friendly palettes used for
-#' `gg_jpoint()` plots. Allows to select by category, fairness and color
-#' brightness. Internally calls `cols4all`.
+#' `gg_jpoint()` plots. Allows to select by color brightness and number of colors.
+#'  Internally calls `get_cbpal()`.
 #'
-#' @param type Character. Type of palette to display: categorical (`"cat"`),
-#' sequential (`"seq"`) or diverging (`"div"`). Defaults to `"seq"`.
 #' @param colors Character. Defines the type of colors present in the palette:
 #' `"vivid"` selects palettes with bright colors, `"pastel"` selects palettes with
 #'  pastel colors, `"fair"` selects palettes with a mix of vivid and pastel colors,
@@ -16,15 +14,12 @@
 #' A `ggplot` object showing available palettes.
 #' @export
 plot_cbpal <- function(
-  type = c("seq", "cat", "div"),
   colors = c("all", "vivid", "fair", "pastel"),
   n = 3
 ) {
   # ============================================================
   # ---- Set defaults ----
   # ============================================================
-  pal_type <- match.arg(type)
-
   pal_colors <- match.arg(colors)
 
   # ============================================================
@@ -42,7 +37,6 @@ plot_cbpal <- function(
   # ---- Get palette data ----
   # ============================================================
   dat <- get_cbpal(
-    type = pal_type,
     colors = pal_colors,
     n = n
   )
