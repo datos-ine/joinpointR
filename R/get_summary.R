@@ -173,11 +173,9 @@ get_apc <- function(
         )
 
         # --- CI on log scale ---
-        lower <- slopes -
-          critical * se
+        lower <- slopes - critical * se
 
-        upper <- slopes +
-          critical * se
+        upper <- slopes + critical * se
 
         # --- Transform to APC ---
         apc <- (exp(slopes) - 1) * 100
@@ -221,17 +219,56 @@ get_apc <- function(
 
 #' @export
 # Get AAPC ---------------------------------------------------------------
+#' @export
+# Get AAPC ---------------------------------------------------------------
 get_aapc <- function(
   mods,
   level = 0.95,
   sig = TRUE
 ) {
+  # ---------------------------------------------------------
+  # If there are no joinpoints, AAPC = APC
+  # ---------------------------------------------------------
+  if (
+    all(
+      purrr::map_int(
+        mods,
+        ~ length(.x$joinpoints)
+      ) ==
+        0
+    )
+  ) {
+    apc <- get_apc(
+      mods,
+      level = level,
+      sig = sig
+    )
+
+    return(
+      apc |>
+        dplyr::transmute(
+          model = model,
+          aapc = apc,
+          aapc_lower = apc_lower,
+          aapc_upper = apc_upper,
+          aapc_sig = apc_sig
+        )
+    )
+  }
+
+  # ---------------------------------------------------------
+  # AAPC for models with joinpoints
+  # ---------------------------------------------------------
   aapc <- purrr::map(
     mods,
     function(x) {
+      # --- Extract model information ---
       ext <- extract_jp_mod(x)
 
       with(ext, {
+        # ---------------------------------------------------
+        # Time weights
+        # ---------------------------------------------------
         time <- x$time
 
         limits <- c(
@@ -244,12 +281,16 @@ get_aapc <- function(
           (max(time, na.rm = TRUE) -
             min(time, na.rm = TRUE))
 
-        # --- AAPC slope ---
+        # ---------------------------------------------------
+        # Weighted slope
+        # ---------------------------------------------------
         slope_aapc <- sum(
           weights * slopes
         )
 
-        # --- AAPC contrast ---
+        # ---------------------------------------------------
+        # AAPC contrast
+        # ---------------------------------------------------
         L_aapc <- numeric(
           length(beta)
         )
@@ -261,11 +302,15 @@ get_aapc <- function(
         if (length(delta) > 0) {
           for (j in seq_along(delta)) {
             L_aapc[delta[j]] <-
-              sum(weights[(j + 1):segments])
+              sum(
+                weights[(j + 1):segments]
+              )
           }
         }
 
-        # --- Variance ---
+        # ---------------------------------------------------
+        # Variance of AAPC slope
+        # ---------------------------------------------------
         var_aapc <- drop(
           L_aapc %*%
             var %*%
@@ -276,51 +321,67 @@ get_aapc <- function(
           var_aapc
         )
 
-        # --- Critical value ---
-        critical <- if (segments == 1) {
-          stats::qt(
-            1 - (1 - level) / 2,
-            df = stats::df.residual(fit)
-          )
-        } else {
-          stats::qnorm(
-            1 - (1 - level) / 2
-          )
-        }
+        # ---------------------------------------------------
+        # Parametric critical value
+        #
+        # Joinpoint:
+        # AAPC with joinpoints -> normal distribution
+        # ---------------------------------------------------
+        critical <- stats::qnorm(
+          1 - (1 - level) / 2
+        )
 
-        # --- CI on log scale ---
+        # ---------------------------------------------------
+        # CI on log scale
+        # ---------------------------------------------------
         lower_slope <- slope_aapc -
           critical * se_aapc
 
         upper_slope <- slope_aapc +
           critical * se_aapc
 
-        # --- Transform ---
+        # ---------------------------------------------------
+        # Transform to percentage scale
+        # ---------------------------------------------------
         aapc <- (exp(slope_aapc) - 1) * 100
 
         aapc_lower <- (exp(lower_slope) - 1) * 100
 
         aapc_upper <- (exp(upper_slope) - 1) * 100
 
+        # ---------------------------------------------------
+        # Significance
+        # ---------------------------------------------------
+        aapc_sig <- ifelse(
+          aapc_lower > 0 | aapc_upper < 0,
+          "*",
+          ""
+        )
+
+        # ---------------------------------------------------
+        # Return
+        # ---------------------------------------------------
         tibble::tibble(
           aapc = aapc,
           aapc_lower = aapc_lower,
           aapc_upper = aapc_upper,
-          aapc_sig = ifelse(
-            aapc_lower > 0 | aapc_upper < 0,
-            "*",
-            ""
-          )
+          aapc_sig = aapc_sig
         )
       })
     }
   )
 
+  # ---------------------------------------------------------
+  # Bind models
+  # ---------------------------------------------------------
   aapc <- aapc |>
     purrr::list_rbind(
       names_to = "model"
     )
 
+  # ---------------------------------------------------------
+  # Remove significance if requested
+  # ---------------------------------------------------------
   if (!sig) {
     aapc |>
       dplyr::select(-aapc_sig)
@@ -328,7 +389,6 @@ get_aapc <- function(
     aapc
   }
 }
-
 
 #' @export
 # Summarise data ---------------------------------------------------------
