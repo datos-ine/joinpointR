@@ -53,8 +53,8 @@
 #' # Plot results as area
 #' gg_jpoint(mods = mods, geom = "area", jp = TRUE)
 #'
-#' ## Plot results as area
-#' gg_jpoint(mods = mods, geom = "area", facets = "grid2", jp = TRUE, cbpal.name = "managua")
+#' ## Plot results as line and reverse the facets
+#' gg_jpoint(mods = mods, geom = "line", facets = "grid2", jp = TRUE, cbpal.name = "managua")
 #'
 #' @export
 
@@ -90,9 +90,6 @@ gg_jpoint <- function(
   } else {
     facets <- "none"
   }
-
-  # --- Number of columns ----
-  ncol <- match.arg(ncol.wrap)
 
   #  ============================================================
   # ---- Validations ----
@@ -177,7 +174,7 @@ gg_jpoint <- function(
   #  ============================================================
   if (facets == "wrap") {
     g <- g +
-      ggplot2::facet_wrap(~group_var, ncol = ncol)
+      ggplot2::facet_wrap(~group_var, ncol = ncol.wrap)
   } else if (facets == "grid") {
     g <- g +
       ggplot2::facet_grid(group ~ subgroup)

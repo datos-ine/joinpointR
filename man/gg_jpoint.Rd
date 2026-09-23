@@ -78,7 +78,7 @@ gg_jpoint(mods = mods, geom = "linepoint", jp = TRUE)
 # Plot results as area
 gg_jpoint(mods = mods, geom = "area", jp = TRUE)
 
-## Plot results as area
-gg_jpoint(mods = mods, geom = "area", facets = "grid2", jp = TRUE, cbpal.name = "managua")
+## Plot results as line and reverse the facets
+gg_jpoint(mods = mods, geom = "line", facets = "grid2", jp = TRUE, cbpal.name = "managua")
 
 }

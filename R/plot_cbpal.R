@@ -45,9 +45,9 @@ plot_cbpal <- function(
   # ============================================================
   # ---- Get palette data ----
   # ============================================================
-  data(cbpal_list) 
-  
-  cbpal_list <- cbpal_list|>
+  data(cbpal_list)
+
+  cbpal_list <- cbpal_list |>
     tidyr::pivot_longer(
       cols = x1:x7,
       names_to = "pos",
@@ -61,25 +61,25 @@ plot_cbpal <- function(
   # ============================================================
   # ---- Filter by type ----
   if (pal_type != "all") {
-    cbpal_list<- cbpal_list |>
+    cbpal_list <- cbpal_list |>
       dplyr::filter(type == pal_type)
   }
 
   # ---- Filter by series ----
   if (!is.null(series)) {
-    cbpal_list<- cbpal_list |>
+    cbpal_list <- cbpal_list |>
       dplyr::filter(series %in% {{ series }})
   }
 
   # ---- Filter by name ----
   if (!is.null(name)) {
-    cbpal_list<- cbpal_list |>
+    cbpal_list <- cbpal_list |>
       dplyr::filter(name %in% {{ name }})
   }
   # ============================================================
   # ---- Return ----
   # ============================================================
-  cbpal_list|>
+  cbpal_list |>
     ggplot2::ggplot(
       mapping = ggplot2::aes(
         x = pos,
@@ -97,4 +97,3 @@ plot_cbpal <- function(
       panel.grid = ggplot2::element_blank()
     )
 }
-
