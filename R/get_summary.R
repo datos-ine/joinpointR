@@ -158,13 +158,9 @@ get_apc <- function(
 
       with(ext, {
         # --- Variance of slopes ---
-        var_slopes <- L %*%
-          var %*%
-          t(L)
+        var_slopes <- L %*% var %*% t(L)
 
-        se <- sqrt(
-          diag(var_slopes)
-        )
+        se <- sqrt(diag(var_slopes))
 
         # --- Critical value for APC ---
         critical <- stats::qt(
@@ -187,7 +183,6 @@ get_apc <- function(
         # --- Return ---
         tibble::tibble(
           jp = segments - 1,
-          segment = seq_len(segments),
           period = period$period,
           apc = apc,
           apc_lower = apc_lower,

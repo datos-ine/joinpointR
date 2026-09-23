@@ -222,13 +222,13 @@ model_jp_grid <- function(
         # ---- Calculate Joinpoint BIC ----
         # ========================================================
         bic_jp <- function(mod, n_jp) {
-            mse <- mean(
-                stats::residuals(mod)^2
-            )
+            mse <- mean(stats::residuals(mod)^2)
 
             n <- stats::nobs(mod)
 
-            log(mse) + 2 * (n_jp + 1) * log(n) / n
+            n_par <- 2 * n_jp + 2
+
+            log(mse) + (n_par / n) * log(n)
         }
 
         # ========================================================
