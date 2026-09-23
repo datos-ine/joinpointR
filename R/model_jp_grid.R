@@ -16,7 +16,8 @@
 #' @param min.dist Integer specifying the minimum number of time points
 #' required between consecutive joinpoints and between each endpoint of
 #' the time series and the nearest joinpoint. Defaults to 2.
-#'
+#'@param method Method used to select the best fit model. One of \code{"bic"},
+#' \code{"bic3"}, \code{"wbic"}. Defaults to \code{"bic"} (see Details).
 #'
 #' @return A named list containing one element for each group. Each element contains:
 #'  \itemize{
@@ -89,7 +90,8 @@ model_jp_grid <- function(
     time,
     group = NULL,
     jp = 2,
-    min.dist = 2
+    min.dist = 2,
+    method = c("bic", "bic3", "wbic")
 ) {
     # ==========================================================
     # ---- Define variables ----
@@ -97,6 +99,8 @@ model_jp_grid <- function(
     rate <- rlang::as_name(rlang::ensym(rate))
 
     time <- rlang::as_name(rlang::ensym(time))
+
+    method <- match.arg(method)
 
     # ==========================================================
     # ---- Prepare data ----
@@ -135,6 +139,15 @@ model_jp_grid <- function(
             ),
             call. = FALSE
         )
+    }
+
+    # ---- Method ---
+    if (method == "bic3") {
+        message("Model selection was performed based on the BIC3.")
+    } else if (method == "wbic") {
+        message("Model selection was performed based on the WBIC.")
+    } else {
+        message("Model selection was performed based on the BIC.")
     }
 
     # ==========================================================
@@ -221,14 +234,21 @@ model_jp_grid <- function(
         # ========================================================
         # ---- Calculate Joinpoint BIC ----
         # ========================================================
-        bic_jp <- function(mod, n_jp) {
+        bic_jp <- function(mod, n_jp, r2_max = 0) {
+            # --- Residuals and observations  ---
             mse <- mean(stats::residuals(mod)^2)
-
             n <- stats::nobs(mod)
 
-            n_par <- 2 * n_jp + 2
-
-            log(mse) + (n_par / n) * log(n)
+            # --- Estimate BIC ---
+            if (method == "bic3") {
+                log(mse) + ((3 * n_jp + 2) / n) * log(n)
+            } else if (method == "wbic") {
+                n_parm_wbic <- (2 + r2_max) * n_jp + 2
+                log(mse) + (n_parm_wbic / n) * log(n)
+            } else {
+                # Default: BIC
+                log(mse) + ((2 * n_jp + 2) / n) * log(n)
+            }
         }
 
         # ========================================================
@@ -247,6 +267,8 @@ model_jp_grid <- function(
             joinpoints = joinpoints
         )
 
+        r2 <- summary(mod)$r.squared
+
         results[[length(results) + 1]] <- tibble::tibble(
             n_jp = 0,
             jp1 = NA_real_,
@@ -257,7 +279,7 @@ model_jp_grid <- function(
             jp6 = NA_real_,
             jp7 = NA_real_,
             SSE = sum(stats::residuals(mod)^2),
-            BIC = bic_jp(mod, 0)
+            BIC = bic_jp(mod, 0, r2)
         )
 
         # ========================================================
@@ -308,7 +330,7 @@ model_jp_grid <- function(
                                 jp6 = jp_values_out[6],
                                 jp7 = jp_values_out[7],
                                 SSE = sum(stats::residuals(mod)^2),
-                                BIC = bic_jp(mod, n_jp)
+                                BIC = bic_jp(mod, n_jp, r2)
                             )
                     }
                 }
