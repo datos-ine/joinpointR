@@ -1,0 +1,91 @@
+---
+title: "Introduction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Joinpoint regression is commonly used in epidemiology to identify changes in temporal trends. The joinpointR package provides tools to fit joinpoint regression models using the grid search method, estimate annual percentage changes, and present results.
+
+## Joinpoint regression models by group
+The function `model_jp_grid()` allows to fit joinpoint regression models with a log-response by levels of up to two categorical variables, using the grid search method and model selection based in the Bayesian Information Criteria (BIC).
+For the examples, we are going to use a simulated dataset with the HIV rates by sex in five regions
+
+```{r}
+#| message: false
+#| id: example-data
+# Load required packages
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(joinpointR)
+
+# Load example data
+data(hiv_data)
+```
+
+### Model selection by one grouping variable
+
+```{r}
+#| id: fit-1
+## Create a reduced dataset
+data_sex <- hiv_data |>
+  filter(admin == "ARG")
+
+## Fit the joinpoint model
+mods_sex <- model_jp_grid(
+  data = data_sex,
+  rate = hiv_rate,
+  time = year,
+  group = "sex"
+)
+```
+
+### Model selection by two grouping variables
+```{r}
+#| id: fit-2
+## Create a reduced dataset
+data_admin <- hiv_data |>
+  filter(between(admin, "Buenos Aires", "Chubut"))
+
+## Fit the joinpoint model
+mods_admin <- model_jp_grid(
+  data = data_admin,
+  rate = hiv_rate,
+  time = year,
+  group = c("admin", "sex")
+)
+```
+
+## Annual percentage change (APC)
+The function `get_apc()` provides the annual percentage change and its 95% confidence interval for models of class `"model_jp"`.
+
+```{r}
+#| id: apc-1
+get_apc(mods = mods_sex)
+
+get_apc(mods = mods_admin)
+```
+
+## Average annual percent change (AAPC)
+The function `get_aapc()` allows users to estimate the global trend for models of class `"model_jp"` using the parametric method for estimating the IC.
+
+```{r}
+#| id: aapc-1
+get_aapc(mods = mods_sex)
+
+get_aapc(mods = mods_admin)
+```
+
+## Summary tables
+The functions `get_summary()` or `summary()s`
