@@ -74,10 +74,10 @@
 #' mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = c("admin", "sex"))
 #'
 #' # Filter dataset
-#' data_arg_f <- hiv_data |>
+#' data_arg <- hiv_data |>
 #' dplyr::filter(admin == "ARG" & sex == "Female")
 #'
-#' mod1 <- model_jp_grid(data = data_arg_f, rate = hiv_rate, time = year)
+#' mod1 <- model_jp(data = data_arg, rate = hiv_rate, time = year)
 #'
 #' mod1[[1]]$BIC
 #'
@@ -409,9 +409,6 @@ model_jp_grid <- function(
 #' @export
 model_jp <- function(
     data,
-    rate,
-    time,
-    group,
     ...
 ) {
     model_jp_grid(
