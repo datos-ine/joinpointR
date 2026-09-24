@@ -4,50 +4,62 @@
 \alias{model_jp_grid}
 \title{Fit Joinpoint Regression Models Using Grid Search}
 \usage{
-model_jp_grid(data, rate, time, group = NULL, jp = 2, min.dist = 2)
+model_jp_grid(
+  data,
+  rate,
+  time,
+  group = NULL,
+  jp = 2,
+  min.dist = 2,
+  method = "bic"
+)
 }
 \arguments{
-\item{data}{A dataset containing the rates, time points, and, optionally,
-grouping variables.}
+\item{data}{A data frame or tibble containing rates, time points, and
+optional grouping variables.}
 
-\item{rate}{Name of the variable containing the rates.}
+\item{rate}{Character string specifying the variable with the rates.}
 
-\item{time}{Name of the variable containing the time points.}
+\item{time}{Character string specifying the variable with the time points.}
 
 \item{group}{Character vector specifying the name(s) of the variable(s)
 used to group the data. A maximum of two grouping variables is allowed.
 Defaults to \code{NULL}.}
 
 \item{jp}{Integer specifying the maximum number of joinpoints to test.
-Must be between 0 and 7 (See details).}
+Must be between 0 and 7 (see Details). Defaults to \code{2}.}
 
 \item{min.dist}{Integer specifying the minimum number of time points
-required between consecutive joinpoints and between each endpoint of
-the time series and the nearest joinpoint. Defaults to 2.}
+required between consecutive joinpoints, as well as between each endpoint
+of the time series and the nearest joinpoint. Defaults to \code{2}.}
+
+\item{method}{Character string specifying the method used to calculate the BIC.
+Options are \code{"bic"} for standard BIC, \code{"bic3"} for penalized BIC (BIC3),
+or \code{"wbic"} for weighted BIC (WBIC). Defaults to \code{"bic"} (see Details).}
 }
 \value{
-A named list containing one element for each group. Each element contains:
+A named list with one element per group, where each element contains:
 \itemize{
 \item \code{fit}: An \code{lm} object corresponding to the selected
 joinpoint model.
-\item \code{joinpoints}: Numeric vector containing the estimated
-joinpoint positions of the selected model.
-\item \code{time} Vector of time points used to fit the model.
-\item \code{log_rate} Vector of log-transformed rates used as the
-response variable.
-\item \code{BIC} BIC value of the selected model.
+\item \code{joinpoints}: Numeric vector with the estimated joinpoint
+positions of the selected model.
+\item \code{time}: Vector of time points used to fit the model.
+\item \code{log_rate}: Vector of log-transformed rates used as the response
+variable.
+\item \code{BIC}: BIC value of the selected model based on the specified
+\code{method}.
 \item \code{model_sel}: A tibble containing the number and positions of
-joinpoints, SSE, and BIC for all candidate models evaluated.
+joinpoints, SSE, and BIC for all evaluated candidate models.
 }
 }
 \description{
-Fits log-linear joinpoint regression models by grid search and selects
+Fits log-linear joinpoint regression models using grid search and selects
 the best model according to the Bayesian Information Criterion (BIC).
 }
 \details{
-The maximum recommended number of joinpoints is determined from the
-number of time points in the series, following the criteria described
-by Kim et al. (2000):
+The maximum recommended number of joinpoints is determined by the number of
+time points in the series, following the criteria described by Kim et al. (2000):
 
 \itemize{
 \item 0--6 time points: 0 joinpoints.
@@ -59,16 +71,6 @@ by Kim et al. (2000):
 \item 32--36 time points: 6 joinpoints.
 \item 37+ time points: 7 joinpoints.
 }
-
-The Bayesian Information Criterion (BIC) is calculated as:
-
-\deqn{
-BIC = \log(MSE) + \frac{2(n_{jp}+1)\log(n)}{n}
-}
-
-where \code{MSE} is the mean squared error of the fitted model,
-\code{n_jp} is the number of joinpoints, and \code{n} is the number
-of observations used to fit the model.
 
 When grouping variables are specified, all groups must contain the same
 number of time points.
@@ -90,7 +92,5 @@ data_arg <- hiv_data |>
 dplyr::filter(admin == "ARG" & sex == "Female")
 
 mod1 <- model_jp(data = data_arg, rate = hiv_rate, time = year)
-
-mod1[[1]]$BIC
 
 }

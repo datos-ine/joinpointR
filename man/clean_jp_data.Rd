@@ -20,16 +20,17 @@ used to group the data. A maximum of two grouping variables is allowed.}
 \value{
 An object of class \code{jp_data} containing:
 \itemize{
-\item \code{group_data}A list of tibbles, one for each group level,
+\item \code{group_data} A list of tibbles, one for each group level,
 containing the time points, observed rates, and log-transformed rates.
 \item \code{groups} Character vector containing the names of the
 grouping variables.
 \item \code{group_levels} Character vector containing the names of the groups.
-\item \code{time_points} Integer. The number of unique time points in the series.
-\item \code{k} Integer. The recommended maximum number of joinpoints to test.
-}
+\item \code{time_points} An integer containing the number of unique time points
+in the series.
+\item \code{k} An integer containing the recommended maximum number of joinpoints to
+test.}
 }
 \description{
-Prepare Data for Joinpoint Regression
+Cleans and prepares data for fitting joinpoint regression models.
 }
 \keyword{internal}

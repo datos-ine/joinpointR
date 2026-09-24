@@ -1,5 +1,8 @@
 #' Prepare Data for Joinpoint Regression
 #'
+#' @description 
+#' Cleans and prepares data for fitting joinpoint regression models.
+#' 
 #' @param data A dataset containing the rates, time points, and, optionally,
 #' grouping variables.
 #'
@@ -12,14 +15,15 @@
 #'
 #' @return An object of class \code{jp_data} containing:
 #' \itemize{
-#' \item \code{group_data}A list of tibbles, one for each group level,
+#' \item \code{group_data} A list of tibbles, one for each group level,
 #' containing the time points, observed rates, and log-transformed rates.
 #' \item \code{groups} Character vector containing the names of the
 #' grouping variables.
 #' \item \code{group_levels} Character vector containing the names of the groups.
-#' \item \code{time_points} Integer. The number of unique time points in the series.
-#' \item \code{k} Integer. The recommended maximum number of joinpoints to test.
-#' }
+#' \item \code{time_points} An integer containing the number of unique time points
+#'  in the series.
+#' \item \code{k} An integer containing the recommended maximum number of joinpoints to
+#'  test.}
 #'
 #' @keywords internal
 
@@ -84,7 +88,7 @@ clean_jp_data <- function(
   # ---- Check for NAs ----
   if (anyNA(data[[time]]) || anyNA(data[[rate]])) {
     stop(
-      "The time and response variables must not contain missing values.",
+      "The data must not contain missing values.",
       call. = FALSE
     )
   }
@@ -105,7 +109,7 @@ clean_jp_data <- function(
       group_var = if (!is.null(group)) {
         interaction(!!!rlang::syms(group), sep = "_")
       } else {
-        NA
+        NA_character_
       }
     ) |>
 

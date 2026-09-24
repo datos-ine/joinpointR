@@ -1,42 +1,49 @@
 #' Fit Joinpoint Regression Models Using Grid Search
 #'
 #' @description
-#' Fits log-linear joinpoint regression models by grid search and selects
+#' Fits log-linear joinpoint regression models using grid search and selects
 #' the best model according to the Bayesian Information Criterion (BIC).
 #'
-#' @param data A dataset containing the rates, time points, and, optionally,
-#' grouping variables.
-#' @param rate Name of the variable containing the rates.
-#' @param time Name of the variable containing the time points.
+#' @param data A data frame or tibble containing rates, time points, and
+#' optional grouping variables.
+#'
+#' @param rate Character string specifying the variable with the rates.
+#'
+#' @param time Character string specifying the variable with the time points.
+#'
 #' @param group Character vector specifying the name(s) of the variable(s)
 #' used to group the data. A maximum of two grouping variables is allowed.
 #' Defaults to \code{NULL}.
-#' @param jp Integer specifying the maximum number of joinpoints to test.
-#' Must be between 0 and 7 (See details).
-#' @param min.dist Integer specifying the minimum number of time points
-#' required between consecutive joinpoints and between each endpoint of
-#' the time series and the nearest joinpoint. Defaults to 2.
-#'@param method Method used to select the best fit model. One of \code{"bic"},
-#' \code{"bic3"}, \code{"wbic"}. Defaults to \code{"bic"} (see Details).
 #'
-#' @return A named list containing one element for each group. Each element contains:
-#'  \itemize{
-#' \item \code{fit}: An \code{lm} object corresponding to the selected
+#' @param jp Integer specifying the maximum number of joinpoints to test.
+#' Must be between 0 and 7 (see Details). Defaults to \code{2}.
+#'
+#' @param min.dist Integer specifying the minimum number of time points
+#' required between consecutive joinpoints, as well as between each endpoint
+#' of the time series and the nearest joinpoint. Defaults to \code{2}.
+#'
+#' @param method Character string specifying the method used to calculate the BIC.
+#' Options are \code{"bic"} for standard BIC, \code{"bic3"} for penalized BIC (BIC3),
+#' or \code{"wbic"} for weighted BIC (WBIC). Defaults to \code{"bic"} (see Details).
+#'
+#' @return A named list with one element per group, where each element contains:
+#' \itemize{
+#'   \item \code{fit}: An \code{lm} object corresponding to the selected
 #' joinpoint model.
-#' \item \code{joinpoints}: Numeric vector containing the estimated
-#'  joinpoint positions of the selected model.
-#' \item \code{time} Vector of time points used to fit the model.
-#' \item \code{log_rate} Vector of log-transformed rates used as the
-#'  response variable.
-#' \item \code{BIC} BIC value of the selected model.
-#' \item \code{model_sel}: A tibble containing the number and positions of
-#'  joinpoints, SSE, and BIC for all candidate models evaluated.
+#'   \item \code{joinpoints}: Numeric vector with the estimated joinpoint
+#' positions of the selected model.
+#'   \item \code{time}: Vector of time points used to fit the model.
+#'   \item \code{log_rate}: Vector of log-transformed rates used as the response
+#' variable.
+#'   \item \code{BIC}: BIC value of the selected model based on the specified
+#'     \code{method}.
+#'   \item \code{model_sel}: A tibble containing the number and positions of
+#' joinpoints, SSE, and BIC for all evaluated candidate models.
 #' }
 #'
 #' @details
-#' The maximum recommended number of joinpoints is determined from the
-#' number of time points in the series, following the criteria described
-#' by Kim et al. (2000):
+#' The maximum recommended number of joinpoints is determined by the number of
+#' time points in the series, following the criteria described by Kim et al. (2000):
 #'
 #' \itemize{
 #'   \item 0--6 time points: 0 joinpoints.
@@ -48,16 +55,6 @@
 #'   \item 32--36 time points: 6 joinpoints.
 #'   \item 37+ time points: 7 joinpoints.
 #' }
-#'
-#' The Bayesian Information Criterion (BIC) is calculated as:
-#'
-#' \deqn{
-#' BIC = \log(MSE) + \frac{2(n_{jp}+1)\log(n)}{n}
-#' }
-#'
-#' where \code{MSE} is the mean squared error of the fitted model,
-#' \code{n_jp} is the number of joinpoints, and \code{n} is the number
-#' of observations used to fit the model.
 #'
 #' When grouping variables are specified, all groups must contain the same
 #' number of time points.
@@ -80,10 +77,7 @@
 #'
 #' mod1 <- model_jp(data = data_arg, rate = hiv_rate, time = year)
 #'
-#' mod1[[1]]$BIC
-#'
 #' @export
-
 model_jp_grid <- function(
     data,
     rate,
@@ -91,7 +85,7 @@ model_jp_grid <- function(
     group = NULL,
     jp = 2,
     min.dist = 2,
-    method = c("bic", "bic3", "wbic")
+    method = "bic"
 ) {
     # ==========================================================
     # ---- Define variables ----
@@ -99,8 +93,6 @@ model_jp_grid <- function(
     rate <- rlang::as_name(rlang::ensym(rate))
 
     time <- rlang::as_name(rlang::ensym(time))
-
-    method <- match.arg(method)
 
     # ==========================================================
     # ---- Prepare data ----
@@ -119,6 +111,15 @@ model_jp_grid <- function(
     # ==========================================================
     # ---- Validations ----
     # ==========================================================
+    # ---- Validate method ---
+    if (method == "bic3") {
+        message("Model selection based on the BIC3.")
+    } else if (method == "wbic") {
+        message("Model selection based on the WBIC.")
+    } else {
+        message("Model selection based on the BIC.")
+    }
+
     # ---- Maximum number of joinpoints ----
     if (jp > 7) {
         stop(
@@ -141,15 +142,6 @@ model_jp_grid <- function(
         )
     }
 
-    # ---- Method ---
-    if (method == "bic3") {
-        message("Model selection was performed based on the BIC3.")
-    } else if (method == "wbic") {
-        message("Model selection was performed based on the WBIC.")
-    } else {
-        message("Model selection was performed based on the BIC.")
-    }
-
     # ==========================================================
     # ---- Fit models ----
     # ==========================================================
@@ -163,33 +155,30 @@ model_jp_grid <- function(
         # --------------------------------------------------------
         # ---- Fit linear joinpoint model ----
         # --------------------------------------------------------
-        fit_jp <- function(x, y, joinpoints) {
+        fit_jp <- function(x, y, k) {
             # ---- Create model data ----
             model_data <- dplyr::bind_cols(
                 tibble::tibble(x, y),
                 purrr::map(
-                    seq_along(joinpoints),
+                    seq_along(k),
                     function(i) {
-                        pmax(0, x - joinpoints[i])
+                        pmax(0, x - k[i])
                     }
                 ) |>
                     rlang::set_names(
-                        paste0("U.", seq_along(joinpoints))
+                        paste0("U.", seq_along(k))
                     )
             )
 
             # ---- Fit linear model ----
-            model <- stats::lm(
-                y ~ .,
-                data = model_data
-            )
+            model <- stats::lm(y ~ ., data = model_data)
 
             # ------------------------------------------------------
             # ---- Store data used by the model ----
             # ------------------------------------------------------
             model$.jp_time <- x
             model$.jp_log_rate <- y
-            model$.jp_joinpoints <- joinpoints
+            model$.jp_k <- k
             model$.jp_fitted_values <- stats::fitted(model)
 
             model
@@ -203,52 +192,13 @@ model_jp_grid <- function(
                 return(TRUE)
             }
 
-            idx <- match(
-                jp_values,
-                x
-            )
-
+            idx <- match(jp_values, x)
             if (anyNA(idx)) {
                 return(FALSE)
             }
 
-            idx <- sort(idx)
-
-            left <- idx[1] - 1
-
-            middle <- if (length(idx) > 1) {
-                diff(idx) - 1
-            } else {
-                numeric(0)
-            }
-
-            right <- length(x) - idx[length(idx)]
-
-            all(
-                left >= min.dist,
-                middle >= min.dist,
-                right >= min.dist
-            )
-        }
-
-        # ========================================================
-        # ---- Calculate Joinpoint BIC ----
-        # ========================================================
-        bic_jp <- function(mod, n_jp, r2_max = 0) {
-            # --- Residuals and observations  ---
-            mse <- mean(stats::residuals(mod)^2)
-            n <- stats::nobs(mod)
-
-            # --- Estimate BIC ---
-            if (method == "bic3") {
-                log(mse) + ((3 * n_jp + 2) / n) * log(n)
-            } else if (method == "wbic") {
-                n_parm_wbic <- (2 + r2_max) * n_jp + 2
-                log(mse) + (n_parm_wbic / n) * log(n)
-            } else {
-                # Default: BIC
-                log(mse) + ((2 * n_jp + 2) / n) * log(n)
-            }
+            # --- Distances ---
+            all(diff(c(0, sort(idx), length(x) + 1)) - 1 >= min.dist)
         }
 
         # ========================================================
@@ -264,10 +214,8 @@ model_jp_grid <- function(
         mod <- fit_jp(
             x = x,
             y = y,
-            joinpoints = joinpoints
+            k = joinpoints
         )
-
-        r2 <- summary(mod)$r.squared
 
         results[[length(results) + 1]] <- tibble::tibble(
             n_jp = 0,
@@ -278,9 +226,9 @@ model_jp_grid <- function(
             jp5 = NA_real_,
             jp6 = NA_real_,
             jp7 = NA_real_,
-            SSE = sum(stats::residuals(mod)^2),
-            BIC = bic_jp(mod, 0, r2)
-        )
+            SSE = sum(stats::residuals(mod)^2)
+        ) |>
+            dplyr::bind_cols(calc_bic_jp(mod))
 
         # ========================================================
         # ---- Model with 1 to k joinpoints ----
@@ -307,7 +255,7 @@ model_jp_grid <- function(
                         mod <- fit_jp(
                             x = x,
                             y = y,
-                            joinpoints = jp_values
+                            k = jp_values
                         )
 
                         jp_values_out <- rep(
@@ -329,9 +277,9 @@ model_jp_grid <- function(
                                 jp5 = jp_values_out[5],
                                 jp6 = jp_values_out[6],
                                 jp7 = jp_values_out[7],
-                                SSE = sum(stats::residuals(mod)^2),
-                                BIC = bic_jp(mod, n_jp, r2)
-                            )
+                                SSE = sum(stats::residuals(mod)^2)
+                            ) |>
+                            dplyr::bind_cols(calc_bic_jp(mod))
                     }
                 }
             }
@@ -340,18 +288,42 @@ model_jp_grid <- function(
         # ========================================================
         # ---- Full list of models ----
         # ========================================================
-        results <- dplyr::bind_rows(results) |>
-            dplyr::arrange(BIC)
+        results <- dplyr::bind_rows(results)
+
+        if (method == "wbic") {
+            results <- results |> dplyr::arrange(WBIC)
+        } else if (method == "bic3") {
+            results <- results |> dplyr::arrange(BIC3)
+        } else {
+            results <- results |> dplyr::arrange(BIC)
+        }
+        #     dplyr::arrange(BIC)
 
         # ========================================================
         # ---- Select best model ----
         # ========================================================
-        best <- results |>
-            dplyr::slice_min(
-                BIC,
-                n = 1,
-                with_ties = FALSE
-            )
+        if (method == "wbic") {
+            best <- results |>
+                dplyr::slice_min(
+                    WBIC,
+                    n = 1,
+                    with_ties = FALSE
+                )
+        } else if (method == "bic3") {
+            best <- results |>
+                dplyr::slice_min(
+                    BIC3,
+                    n = 1,
+                    with_ties = FALSE
+                )
+        } else {
+            best <- results |>
+                dplyr::slice_min(
+                    BIC,
+                    n = 1,
+                    with_ties = FALSE
+                )
+        }
 
         # ========================================================
         # ---- Selected joinpoints ----
@@ -372,7 +344,7 @@ model_jp_grid <- function(
         model <- fit_jp(
             x = x,
             y = y,
-            joinpoints = joinpoints
+            k = joinpoints
         )
 
         # ========================================================
@@ -383,7 +355,13 @@ model_jp_grid <- function(
             joinpoints = joinpoints,
             time = x,
             log_rate = y,
-            BIC = best$BIC,
+            BIC = if (method == "wbic") {
+                best$WBIC
+            } else if (method == "bic3") {
+                best$BIC3
+            } else {
+                best$BIC
+            },
             model_sel = results
         )
     }
@@ -414,8 +392,16 @@ model_jp_grid <- function(
                 if (length(jp) > 0) {
                     paste(jp, collapse = ", ")
                 } else {
-                    "None detected."
-                }
+                    "None detected"
+                },
+                if (method == "wbic") {
+                    "| WBIC: "
+                } else if (method == "bic3") {
+                    " | BIC3: "
+                } else {
+                    " | BIC: "
+                },
+                round(.x$BIC, 3)
             ))
         }
     )
