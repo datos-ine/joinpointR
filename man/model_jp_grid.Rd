@@ -87,10 +87,7 @@ dplyr::between(admin, "ARG", "Chubut"))
 # Fit the joinpoint models
 mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = c("admin", "sex"))
 
-# Filter dataset
-data_arg <- hiv_data |>
-dplyr::filter(admin == "ARG" & sex == "Female")
-
-mod1 <- model_jp(data = data_arg, rate = hiv_rate, time = year)
+# Select models based on the BIC3
+mods_bic3 <- update(mods, method = "bic3")
 
 }
