@@ -47,11 +47,84 @@ model, including its confidence interval and significance stars when
 Calculates the annual percent change (APC) and the average annual
 percent change (AAPC) of joinpoint regression models.
 }
-\examples{
-# Load data
-data(hiv_data)
+\details{
+For each segment, the Annual Percent Change (APC) is calculated from the
+estimated slope \eqn{\hat{\beta}} of the log-linear model as:
 
-# Create a reduced dataset
+\deqn{
+APC = 100[\exp(\hat{\beta}) - 1].
+}
+
+Confidence intervals for the APC are calculated using the Student's
+\eqn{t} distribution and the standard error of the estimated slope.
+The resulting confidence limits are then back-transformed to the APC scale:
+
+\deqn{
+APC_{lower} =
+100[\exp{\hat{\beta} -
+t_{1-\alpha/2,df}SE(\hat{\beta})} - 1],
+}
+
+\deqn{
+APC_{upper} =
+100[\exp{\hat{\beta} +
+t_{1-\alpha/2,df}SE(\hat{\beta})} - 1].
+}
+
+The standard errors used for the segment-specific slopes are obtained
+from the variance-covariance matrix of the fitted joinpoint model.
+
+For each fitted model, the Annual Average Percent Change (AAPC) is
+calculated as the exponential transformation of the weighted average
+of the segment-specific slopes on the log scale:
+
+\deqn{
+AAPC =
+100\left[
+\exp\left(\sum_j w_j\hat{\beta}j\right) - 1
+\right],
+}
+
+where \eqn{\hat{\beta}j} is the estimated slope for segment \eqn{j},
+and \eqn{w_j} is the length of segment \eqn{j} divided by the total
+length of the selected time interval. Thus, the weights sum to one.
+For models without joinpoints, the AAPC is equivalent to the APC.
+
+The confidence interval for the AAPC is calculated on the log scale.
+The variance of the weighted slope is obtained from the
+variance-covariance matrix of the segment-specific slopes. The confidence
+limits are calculated using the Student's \eqn{t} distribution and the
+residual degrees of freedom of the fitted model, and are then
+back-transformed to the AAPC scale:
+
+\deqn{
+AAPC{lower} =
+100\left[
+\exp\left{
+\hat{\beta}{AAPC} -
+t_{1-\alpha/2,df}SE(\hat{\beta}{AAPC})
+\right} - 1
+\right],
+}
+
+\deqn{
+AAPC{upper} =
+100\left[
+\exp\left{
+\hat{\beta}{AAPC} +
+t{1-\alpha/2,df}SE(\hat{\beta}_{AAPC})
+\right} - 1
+\right].
+}
+
+The confidence intervals described above are based on the
+variance-covariance matrix and residual degrees of freedom of the fitted
+joinpoint model and may therefore differ from confidence intervals
+reported by other joinpoint regression software using different
+inferential procedures.
+}
+\examples{
+# Create an example dataset
 data <- hiv_data |>
 dplyr::filter(admin == "ARG")
 

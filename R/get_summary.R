@@ -29,11 +29,84 @@
 #' model, including its confidence interval and significance stars when
 #' \code{sig = TRUE}.
 #'
-#' @examples
-#' # Load data
-#' data(hiv_data)
+#' @details
+#' For each segment, the Annual Percent Change (APC) is calculated from the
+#' estimated slope \eqn{\hat{\beta}} of the log-linear model as:
 #'
-#' # Create a reduced dataset
+#' \deqn{
+#' APC = 100[\exp(\hat{\beta}) - 1].
+#' }
+#'
+#' Confidence intervals for the APC are calculated using the Student's
+#' \eqn{t} distribution and the standard error of the estimated slope.
+#' The resulting confidence limits are then back-transformed to the APC scale:
+#'
+#' \deqn{
+#' APC_{lower} =
+#' 100[\exp{\hat{\beta} -
+#' t_{1-\alpha/2,df}SE(\hat{\beta})} - 1],
+#' }
+#'
+#' \deqn{
+#' APC_{upper} =
+#' 100[\exp{\hat{\beta} +
+#' t_{1-\alpha/2,df}SE(\hat{\beta})} - 1].
+#' }
+#'
+#' The standard errors used for the segment-specific slopes are obtained
+#' from the variance-covariance matrix of the fitted joinpoint model.
+#'
+#' For each fitted model, the Annual Average Percent Change (AAPC) is
+#' calculated as the exponential transformation of the weighted average
+#' of the segment-specific slopes on the log scale:
+#'
+#' \deqn{
+#' AAPC =
+#' 100\left[
+#' \exp\left(\sum_j w_j\hat{\beta}j\right) - 1
+#' \right],
+#' }
+#'
+#' where \eqn{\hat{\beta}j} is the estimated slope for segment \eqn{j},
+#' and \eqn{w_j} is the length of segment \eqn{j} divided by the total
+#' length of the selected time interval. Thus, the weights sum to one.
+#' For models without joinpoints, the AAPC is equivalent to the APC.
+#'
+#' The confidence interval for the AAPC is calculated on the log scale.
+#' The variance of the weighted slope is obtained from the
+#' variance-covariance matrix of the segment-specific slopes. The confidence
+#' limits are calculated using the Student's \eqn{t} distribution and the
+#' residual degrees of freedom of the fitted model, and are then
+#' back-transformed to the AAPC scale:
+#'
+#' \deqn{
+#' AAPC{lower} =
+#' 100\left[
+#' \exp\left{
+#' \hat{\beta}{AAPC} -
+#' t_{1-\alpha/2,df}SE(\hat{\beta}{AAPC})
+#' \right} - 1
+#' \right],
+#' }
+#'
+#' \deqn{
+#' AAPC{upper} =
+#' 100\left[
+#' \exp\left{
+#' \hat{\beta}{AAPC} +
+#' t{1-\alpha/2,df}SE(\hat{\beta}_{AAPC})
+#' \right} - 1
+#' \right].
+#' }
+#'
+#' The confidence intervals described above are based on the
+#' variance-covariance matrix and residual degrees of freedom of the fitted
+#' joinpoint model and may therefore differ from confidence intervals
+#' reported by other joinpoint regression software using different
+#' inferential procedures.
+#'
+#' @examples
+#' # Create an example dataset
 #' data <- hiv_data |>
 #' dplyr::filter(admin == "ARG")
 #'
@@ -55,10 +128,8 @@
 #' @name get_summary
 #' @aliases get_summary get_apc get_aapc
 #'
-#' @rdname get_summary
 #' @export
-
-# Get APC ----------------------------------------------------------------
+#'
 get_apc <- function(
   mods,
   level = 0.95,
@@ -67,69 +138,63 @@ get_apc <- function(
   apc <- purrr::map(
     mods,
     function(x) {
-      # --- Get model data ---
-      ext <- extract_jp_mod(x)
+      # ---- Get model data ----
+      mod_data <- extract_jp_mod(x)
 
-      with(ext, {
-        # --- Variance of slopes ---
-        var_slopes <- L %*% var %*% t(L)
+      # ---- Variance of the slopes ----
+      var_slopes <- mod_data$L %*%
+        mod_data$var %*%
+        t(mod_data$L)
 
-        se <- sqrt(diag(var_slopes))
+      # ---- Standard error ----
+      se <- sqrt(diag(var_slopes))
 
-        # --- Critical value for APC ---
-        critical <- stats::qt(
-          1 - (1 - level) / 2,
-          df = stats::df.residual(fit)
+      # ---- Critical value ----
+      critical <- stats::qt(
+        1 - (1 - level) / 2,
+        df = stats::df.residual(mod_data$fit)
+      )
+
+      # ---- APC ----
+      apc <- (exp(mod_data$slopes) - 1) * 100
+
+      # ---- Confidence interval ----
+      apc_lower <- (exp(mod_data$slopes - critical * se) - 1) * 100
+
+      apc_upper <- (exp(mod_data$slopes + critical * se) - 1) * 100
+
+      # ---- Return ----
+      tibble::tibble(
+        jp = mod_data$segments - 1,
+        period = mod_data$period$period,
+        apc = apc,
+        apc_lower = apc_lower,
+        apc_upper = apc_upper,
+        apc_sig = ifelse(
+          apc_lower > 0 | apc_upper < 0,
+          "*",
+          ""
         )
-
-        # --- CI on log scale ---
-        lower <- slopes - critical * se
-
-        upper <- slopes + critical * se
-
-        # --- Transform to APC ---
-        apc <- (exp(slopes) - 1) * 100
-
-        apc_lower <- (exp(lower) - 1) * 100
-
-        apc_upper <- (exp(upper) - 1) * 100
-
-        # --- Return ---
-        tibble::tibble(
-          jp = segments - 1,
-          period = period$period,
-          apc = apc,
-          apc_lower = apc_lower,
-          apc_upper = apc_upper,
-          apc_sig = ifelse(
-            apc_lower > 0 | apc_upper < 0,
-            "*",
-            ""
-          )
-        )
-      })
+      )
     }
   )
-  # -------------------------------------------------------
+
   # ---- Return ----
-  # -------------------------------------------------------
   apc <- apc |>
-    purrr::list_rbind(
-      names_to = "model"
-    )
+    purrr::list_rbind(names_to = "model")
 
   if (!sig) {
-    apc |>
-      dplyr::select(-apc_sig)
+    apc |> dplyr::select(-sig)
   } else {
     apc
   }
 }
 
 
+#' Get AAPC
 #' @rdname get_summary
 #' @export
-# Get AAPC ---------------------------------------------------------------
+#'
 get_aapc <- function(
   mods,
   level = 0.95,
@@ -138,140 +203,66 @@ get_aapc <- function(
   aapc <- purrr::map(
     mods,
     function(x) {
-      # -----------------------------------------------------
-      # No joinpoints:
-      # AAPC = APC
-      # -----------------------------------------------------
-      if (length(x$joinpoints) == 0) {
-        apc <- get_apc(
-          list(x),
-          level = level,
-          sig = TRUE
-        )
+      # ---- Get model data ----
+      mod_data <- extract_jp_mod(x)
 
-        return(
-          apc |>
-            dplyr::transmute(
-              aapc = apc,
-              aapc_lower = apc_lower,
-              aapc_upper = apc_upper,
-              aapc_sig = apc_sig
-            )
-        )
-      }
+      # ---- Segment lengths ----
+      years <- stringr::str_split_fixed(mod_data$period$period, "-", 2)
 
-      # -----------------------------------------------------
-      # Joinpoints present:
-      # Segmented style AAPC
-      # -----------------------------------------------------
-      ext <- extract_jp_mod(x)
+      segment_length <- as.numeric(years[, 2]) -
+        as.numeric(years[, 1])
 
-      with(ext, {
-        # ---------------------------------------------------
-        # Segment weights
-        # ---------------------------------------------------
-        time <- x$time
+      # ---- Weights ----
+      wt <- segment_length / sum(segment_length)
 
-        limits <- c(
-          min(time, na.rm = TRUE),
-          jp,
-          max(time, na.rm = TRUE)
-        )
+      # ---- Weighted slope ----
+      beta <- sum(wt * mod_data$slopes)
 
-        weights <- diff(limits) /
-          (max(time, na.rm = TRUE) -
-            min(time, na.rm = TRUE))
+      # ---- Variance-covariance matrix of slopes ----
+      var_slopes <- mod_data$L %*%
+        mod_data$var %*%
+        t(mod_data$L)
 
-        # ---------------------------------------------------
-        # Weighted slope (mu)
-        # ---------------------------------------------------
-        slope_aapc <- sum(
-          weights * slopes
-        )
+      # ---- Variance of weighted slope ----
+      var_beta <- t(wt) %*%
+        var_slopes %*%
+        wt
 
-        # ---------------------------------------------------
-        # AAPC contrast matrix (L_aapc)
-        # ---------------------------------------------------
-        L_aapc <- numeric(
-          length(beta)
-        )
+      # ---- Standard error ----
+      se <- sqrt(as.numeric(var_beta))
 
-        names(L_aapc) <- names(beta)
+      # ---- Critical value ----
+      critical <- stats::qt(
+        1 - (1 - level) / 2,
+        df = stats::df.residual(mod_data$fit)
+      )
 
-        L_aapc["x"] <- 1
+      # ---- AAPC ----
+      aapc <- (exp(beta) - 1) * 100
 
-        if (length(delta) > 0) {
-          for (j in seq_along(delta)) {
-            L_aapc[delta[j]] <-
-              sum(
-                weights[(j + 1):segments]
-              )
-          }
-        }
+      # ---- Confidence interval ----
+      aapc_lower <- (exp(beta - critical * se) - 1) * 100
 
-        # ---------------------------------------------------
-        # Variance and Standard Error of slope
-        # ---------------------------------------------------
-        var_aapc <- drop(
-          L_aapc %*%
-            var %*%
-            L_aapc
-        )
+      aapc_upper <- (exp(beta + critical * se) - 1) * 100
 
-        se_aapc <- sqrt(
-          var_aapc
-        )
-
-        # ---------------------------------------------------
-        # Critical value (Standard Normal Z)
-        # ---------------------------------------------------
-        critical <- stats::qnorm(
-          1 - (1 - level) / 2
-        )
-
-        # ---------------------------------------------------
-        # CI on slope scale (segmented approach)
-        # ---------------------------------------------------
-        lower_slope <- slope_aapc - critical * se_aapc
-        upper_slope <- slope_aapc + critical * se_aapc
-
-        # ---------------------------------------------------
-        # Transform to percentage scale (exp(slope) - 1) * 100
-        # ---------------------------------------------------
-        aapc <- (exp(slope_aapc) - 1) * 100
-        aapc_lower <- (exp(lower_slope) - 1) * 100
-        aapc_upper <- (exp(upper_slope) - 1) * 100
-
-        # ---------------------------------------------------
-        # Significance
-        # ---------------------------------------------------
-        aapc_sig <- dplyr::if_else(
+      # ---- Return ----
+      tibble::tibble(
+        aapc = aapc,
+        aapc_lower = aapc_lower,
+        aapc_upper = aapc_upper,
+        aapc_sig = ifelse(
           aapc_lower > 0 | aapc_upper < 0,
           "*",
           ""
         )
-
-        tibble::tibble(
-          aapc = aapc,
-          aapc_lower = aapc_lower,
-          aapc_upper = aapc_upper,
-          aapc_sig = aapc_sig
-        )
-      })
+      )
     }
   )
 
-  # ---------------------------------------------------------
-  # Model names
-  # ---------------------------------------------------------
+  # ---- Return ----
   aapc <- aapc |>
-    purrr::list_rbind(
-      names_to = "model"
-    )
+    purrr::list_rbind(names_to = "model")
 
-  # ---------------------------------------------------------
-  # Significance
-  # ---------------------------------------------------------
   if (!sig) {
     aapc |>
       dplyr::select(-aapc_sig)
@@ -280,23 +271,21 @@ get_aapc <- function(
   }
 }
 
+
+#' Summarise Joinpoint Regression
 #' @rdname get_summary
 #' @export
-# Summarise data ---------------------------------------------------------
+#'
 get_summary <- function(
   mods,
   ci = c("both", "apc", "aapc", "hide"),
   sig = TRUE,
   level = 0.95
 ) {
-  # ----------------------------------------------------------
   # ---- Defaults ----
-  # ----------------------------------------------------------
   ci <- match.arg(ci)
 
-  # ----------------------------------------------------------
   # ---- Validations ----
-  # ----------------------------------------------------------
   # --- Significance stars and CI ---
   if (ci == "hide" && !sig) {
     stop(
@@ -364,12 +353,9 @@ summary.model_jp <- function(
 }
 
 
+#' Extract model data
 #' @keywords internal
-
-# Prepare data -----------------------------------------------------------
-extract_jp_mod <- function(
-  x
-) {
+extract_jp_mod <- function(x) {
   # --- Model fit ---
   fit <- x$fit
 
@@ -433,10 +419,7 @@ extract_jp_mod <- function(
     for (i in seq_along(delta)) {
       L[i + 1, "x"] <- 1
 
-      L[
-        i + 1,
-        delta[seq_len(i)]
-      ] <- 1
+      L[i + 1, delta[seq_len(i)]] <- 1
     }
   }
 
