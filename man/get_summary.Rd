@@ -14,7 +14,9 @@ get_summary(
   mods,
   ci = c("both", "apc", "aapc", "hide"),
   sig = TRUE,
-  level = 0.95
+  level = 0.95,
+  as.ft = FALSE,
+  dec = c(".", ",")
 )
 }
 \arguments{
@@ -29,6 +31,15 @@ and AAPC. Defaults to \code{TRUE}.}
 \item{ci}{Character. Controls which confidence intervals are displayed
 in the summary table. One of \code{"both"}, \code{"apc"},
 \code{"aapc"}, or \code{"hide"}. Defaults to \code{"both"}.}
+
+\item{as.ft}{Logical. Whether to display the model summary as a \code{flextable}
+object. Defaults to \code{FALSE}.}
+
+\item{dec}{Character. When \code{dec = "."} is selected, the table displays
+decimal separators as points and thousand separators as commans;
+when \code{dec = ","} is selected, the table display decimal separators as commas
+and thousand separatos as points. Defaults to \code{"."}. This argument will be
+ignore when \code{as.ft = FALSE}.}
 }
 \value{
 For \code{get_summary()}, a \code{tibble} containing the APC and AAPC
@@ -135,7 +146,7 @@ mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = "sex")
 get_summary(mods, level = 0.95, ci = "both", sig = TRUE)
 
 # Same output calling summary(mods)
-summary(mods)
+summary(mods, as.ft = TRUE)
 
 # Obtain the APC with 95\% CI
 get_apc(mods = mods, level = 0.95, sig = TRUE)

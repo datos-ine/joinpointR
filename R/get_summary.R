@@ -16,6 +16,15 @@
 #' @param sig Logical. Whether to display significance stars for the APC
 #' and AAPC. Defaults to \code{TRUE}.
 #'
+#' @param as.ft Logical. Whether to display the model summary as a \code{flextable}
+#' object. Defaults to \code{FALSE}.
+#'
+#' @param dec Character. When \code{dec = "."} is selected, the table displays
+#' decimal separators as points and thousand separators as commans;
+#' when \code{dec = ","} is selected, the table display decimal separators as commas
+#' and thousand separatos as points. Defaults to \code{"."}. This argument will be
+#' ignore when \code{as.ft = FALSE}.
+#'
 #' @return
 #' For \code{get_summary()}, a \code{tibble} containing the APC and AAPC
 #' for each model, together with their confidence intervals and/or
@@ -117,7 +126,7 @@
 #' get_summary(mods, level = 0.95, ci = "both", sig = TRUE)
 #'
 #' # Same output calling summary(mods)
-#' summary(mods)
+#' summary(mods, as.ft = TRUE)
 #'
 #' # Obtain the APC with 95% CI
 #' get_apc(mods = mods, level = 0.95, sig = TRUE)
@@ -280,12 +289,20 @@ get_summary <- function(
   mods,
   ci = c("both", "apc", "aapc", "hide"),
   sig = TRUE,
-  level = 0.95
+  level = 0.95,
+  as.ft = FALSE,
+  dec = c(".", ",")
 ) {
+  # -----------------------------------------------------------------
   # ---- Defaults ----
+  # -----------------------------------------------------------------
   ci <- match.arg(ci)
 
+  dec <- match.arg(dec)
+
+  # -----------------------------------------------------------------
   # ---- Validations ----
+  # -----------------------------------------------------------------
   # --- Significance stars and CI ---
   if (ci == "hide" && !sig) {
     stop(
@@ -311,7 +328,23 @@ get_summary <- function(
     )
   }
 
+  # --- Format as flextable ---
+  if (as.ft) {
+    message("The summary table will be displayed as a flextable object.")
+  } else {
+    message("The summary table will be displayed as a tibble.")
+  }
+
+  # ---- Decimal mark ----
+  if (dec == ",") {
+    message(
+      "Decimal mark changed to comma, thousands mark will display as point."
+    )
+  }
+
+  # -----------------------------------------------------------------
   # ---- Calculate APC ----
+  # -----------------------------------------------------------------
   apc <- get_apc(mods, level = level, sig = sig)
 
   # ---- Calculate AAPC ----
@@ -327,7 +360,7 @@ get_summary <- function(
   # ---- Select which CIs to display ----
   if (ci == "apc") {
     tab <- tab |>
-      dplyr::select(-aapc_lower, -aapc_upper)
+      dplyr::select(-aapc_lower, -aapc_upper, -aapc_ci)
   } else if (ci == "aapc") {
     tab <- tab |>
       dplyr::select(-apc_lower, -apc_upper)
@@ -337,7 +370,18 @@ get_summary <- function(
   }
 
   # ---- Return ----
-  tab
+  if (as.ft) {
+    tab |>
+      flextable::flextable() |>
+      flextable::colformat_double(
+        j = -2,
+        big.mark = if (dec == ",") "." else ",",
+        decimal.mark = if (dec == ",") "," else ".",
+        digits = 2
+      )
+  } else {
+    tab
+  }
 }
 
 # ---- Use summary ----
