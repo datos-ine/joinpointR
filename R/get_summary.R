@@ -54,96 +54,10 @@
 #'
 #' @name get_summary
 #' @aliases get_summary get_apc get_aapc
-#' @keywords internal
-# Prepare data -----------------------------------------------------------
-extract_jp_mod <- function(
-  x
-) {
-  # --- Model fit ---
-  fit <- x$fit
-
-  # --- Coefficients ---
-  beta <- stats::coef(fit)
-
-  # --- Variance/covariance matrix ---
-  var <- stats::vcov(fit)
-
-  # --- Joinpoints ---
-  jp <- x$joinpoints
-
-  # --- Number of segments ---
-  segments <- length(jp) + 1
-
-  # --- Time breaks ---
-  breaks <- sort(c(
-    min(x$time, na.rm = TRUE),
-    jp,
-    max(x$time, na.rm = TRUE)
-  ))
-
-  # --- Time segments ---
-  period <- tibble::tibble(
-    period = paste(
-      head(breaks, -1),
-      tail(breaks, -1),
-      sep = "-"
-    )
-  )
-
-  # --- Hinge variable names ---
-  delta <- grep(
-    "^U\\.",
-    names(beta),
-    value = TRUE
-  )
-
-  # --- Slopes ---
-  slopes <- c(
-    beta["x"],
-    beta["x"] + cumsum(beta[delta])
-  )
-
-  # --- Contrast matrix ---
-  L <- matrix(
-    0,
-    nrow = segments,
-    ncol = length(beta),
-    dimnames = list(
-      paste0("segment", seq_len(segments)),
-      names(beta)
-    )
-  )
-
-  # --- First segment ---
-  L[1, "x"] <- 1
-
-  # --- Remaining segments ---
-  if (length(delta) > 0) {
-    for (i in seq_along(delta)) {
-      L[i + 1, "x"] <- 1
-
-      L[
-        i + 1,
-        delta[seq_len(i)]
-      ] <- 1
-    }
-  }
-
-  # --- Return ---
-  list(
-    fit = fit,
-    beta = beta,
-    delta = delta,
-    slopes = slopes,
-    var = var,
-    L = L,
-    jp = jp,
-    segments = segments,
-    period = period
-  )
-}
-
+#'
+#' @rdname get_summary
 #' @export
+
 # Get APC ----------------------------------------------------------------
 get_apc <- function(
   mods,
@@ -213,6 +127,7 @@ get_apc <- function(
 }
 
 
+#' @rdname get_summary
 #' @export
 # Get AAPC ---------------------------------------------------------------
 get_aapc <- function(
@@ -365,7 +280,7 @@ get_aapc <- function(
   }
 }
 
-
+#' @rdname get_summary
 #' @export
 # Summarise data ---------------------------------------------------------
 get_summary <- function(
@@ -445,5 +360,96 @@ summary.model_jp <- function(
   get_summary(
     object,
     ...
+  )
+}
+
+
+#' @keywords internal
+
+# Prepare data -----------------------------------------------------------
+extract_jp_mod <- function(
+  x
+) {
+  # --- Model fit ---
+  fit <- x$fit
+
+  # --- Coefficients ---
+  beta <- stats::coef(fit)
+
+  # --- Variance/covariance matrix ---
+  var <- stats::vcov(fit)
+
+  # --- Joinpoints ---
+  jp <- x$joinpoints
+
+  # --- Number of segments ---
+  segments <- length(jp) + 1
+
+  # --- Time breaks ---
+  breaks <- sort(c(
+    min(x$time, na.rm = TRUE),
+    jp,
+    max(x$time, na.rm = TRUE)
+  ))
+
+  # --- Time segments ---
+  period <- tibble::tibble(
+    period = paste(
+      head(breaks, -1),
+      tail(breaks, -1),
+      sep = "-"
+    )
+  )
+
+  # --- Hinge variable names ---
+  delta <- grep(
+    "^U\\.",
+    names(beta),
+    value = TRUE
+  )
+
+  # --- Slopes ---
+  slopes <- c(
+    beta["x"],
+    beta["x"] + cumsum(beta[delta])
+  )
+
+  # --- Contrast matrix ---
+  L <- matrix(
+    0,
+    nrow = segments,
+    ncol = length(beta),
+    dimnames = list(
+      paste0("segment", seq_len(segments)),
+      names(beta)
+    )
+  )
+
+  # --- First segment ---
+  L[1, "x"] <- 1
+
+  # --- Remaining segments ---
+  if (length(delta) > 0) {
+    for (i in seq_along(delta)) {
+      L[i + 1, "x"] <- 1
+
+      L[
+        i + 1,
+        delta[seq_len(i)]
+      ] <- 1
+    }
+  }
+
+  # --- Return ---
+  list(
+    fit = fit,
+    beta = beta,
+    delta = delta,
+    slopes = slopes,
+    var = var,
+    L = L,
+    jp = jp,
+    segments = segments,
+    period = period
   )
 }

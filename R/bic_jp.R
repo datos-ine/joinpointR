@@ -5,12 +5,13 @@
 #' the penalized BIC (BIC3), and the weighted BIC (WBIC) for
 #' models of class \code{model_jp}.
 #'
-#' @param mod Model of class \code{model_jp}.
+#' @param mod Models of class \code{model_jp}.
 #'
-#' @return A number or a list of numbers containing the BIC values.
+#' @return A \code{tibble} containing the values for the BIC, BIC3, WBIC and the
+#' weights used to estimate the WBIC.
 #'
 #' @details
-#' The Bayesian Information Criterion (BIC) for $k$ joinpoints is estimated as:
+#' The Bayesian Information Criterion (BIC) for \code{k} joinpoints is estimated as:
 #'
 #'  \deqn{BIC = \log(MSE) + \frac{param(k)}{n} * \log{n}}
 #'
@@ -18,7 +19,7 @@
 #' \code{param(k)} is the number of parameters in the model, and \code{n} is the
 #' number of observations.
 #'
-#' The number of parameters for the standard BIC is defined as:
+#' The number of parameters for the standard BIC are calculated as:
 #' \deqn{param(k) = 2k + 2}
 #'
 #' For BIC3, the penalty parameter is defined as:
@@ -39,9 +40,20 @@
 #' # Fit the joinpoint models
 #' mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = "sex")
 #'
+#' # Check the BIC, BIC3, WBIC values for a single model
 #' bic_jp(mods$Female)
 #'
+#' @name bic_jp
+#' @export
+#'
+bic_jp <- function(mod) {
+  calc_bic_jp(mod$fit)
+}
+
+
+#' Calculate BIC, BIC3 and WBIC
 #' @keywords internal
+#'
 calc_bic_jp <- function(
   mod
 ) {
@@ -92,15 +104,10 @@ calc_bic_jp <- function(
   wbic <- (bic * (1 - wt)) + (bic3 * wt)
 
   # ---- Return ----
-  data.frame(
+  tibble::tibble(
     BIC = bic,
     BIC3 = bic3,
-    WBIC = wbic,
-    Weight = wt
+    Weight = wt,
+    WBIC = wbic
   )
-}
-
-#' @export
-bic_jp <- function(mod) {
-  calc_bic_jp(mod$fit)
 }

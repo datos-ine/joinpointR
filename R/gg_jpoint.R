@@ -6,23 +6,31 @@
 #'
 #' @param mods A list of models returned by \code{model_jp_d()} or
 #' \code{model_jp_grid()}.
+#'
 #' @param geom Character. Determines how the model results are displayed.
 #' \code{geom = "line"} displays the fitted regression lines;
 #' \code{geom = "linepoint"} displays the fitted regression lines together
 #' with the observed data points; \code{geom = "area"} display the fitted values
 #' as a smoothed area. Defaults to \code{"line"}.
+#'
 #' @param jp Logical. Whether to display the locations of the estimated
 #'  joinpoint(s) as vertical lines. Defaults to \code{TRUE}.
+#'
 #' @param facets Character. Determines the facet layout.  \code{facets = "wrap"}
 #' displays the results using one facet per grouping level; \code{facets = "grid"}
 #' displays the results by group and subgroup; and \code{facets = "grid2"} reverses
 #'  the order of the grouping variables. This argument is ignored when only one
 #'  model is provided.
+#'
 #' @param lwd Numeric. Width of the fitted regression lines. Defaults to 1 point.
+#'
 #' @param psize Numeric. Size of the observed data points. Defaults to 2.5 points.
+#'
 #' @param alpha Numeric. Transparency of the observed data points. Defaults to 0.75.
+#'
 #' @param cbpal.name Character. Name of the colorblind-friendly palette to use.
 #' Defaults to \code{"viridis"}.
+#'
 #' @param ncol.wrap Integer. Number of columns to display when \code{facets = "wrap"}.
 #' Defaults to 4.
 #'
@@ -45,7 +53,8 @@
 #' filter(between(admin, "ARG", "Chubut"))
 #'
 #' # Fit models
-#' mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = c("admin", "sex"))
+#' mods <- model_jp_grid(data = data, rate = hiv_rate, time = year,
+#' group = c("admin", "sex"))
 #'
 #' # Plot results
 #' gg_jpoint(mods = mods, geom = "linepoint", jp = TRUE)
@@ -54,10 +63,11 @@
 #' gg_jpoint(mods = mods, geom = "area", jp = TRUE)
 #'
 #' ## Plot results as line and reverse the facets
-#' gg_jpoint(mods = mods, geom = "line", facets = "grid2", jp = TRUE, cbpal.name = "managua")
+#' gg_jpoint(mods = mods, geom = "line", facets = "grid2", jp = TRUE,
+#' cbpal.name = "managua")
 #'
 #' @export
-
+#' 
 gg_jpoint <- function(
   mods,
   geom = c("line", "linepoint", "area"),

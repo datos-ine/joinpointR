@@ -1,12 +1,16 @@
 #' Display colorblind-friendly palettes
 #'
+#' @description
 #' Plots a list of available colorblind-friendly palettes.
 #' Allows filtering by palette type, series, or name.
+#'
 #' @param type Character. Selects palettes based on type: \code{"cat"} for
 #'  categorical, \code{"div"} for diverging, or \code{"seq"} for sequential.
 #'  Defaults to \code{"all"}.
+#'
 #' @param series Character vector. Selects palettes based on their series name.
 #'  Defaults to \code{NULL}.
+#'
 #' @param name Character vector. Selects one or more specific palettes by name.
 #'  Defaults to \code{NULL}.
 #'

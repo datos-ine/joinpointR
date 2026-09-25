@@ -2,12 +2,13 @@
 % Please edit documentation in R/scale_cbpal_color.R
 \name{scale_cbpal}
 \alias{scale_cbpal}
-\alias{cbpal}
-\alias{scale_cbpal_fill}
 \alias{scale_cbpal_color}
+\alias{scale_cbpal_fill}
 \title{Colorblind-friendly scales}
 \usage{
-cbpal(palette = "viridis", reverse = FALSE)
+scale_cbpal_color(palette = "viridis", reverse = FALSE, discrete = TRUE, ...)
+
+scale_cbpal_fill(palette = "viridis", reverse = FALSE, discrete = TRUE, ...)
 }
 \arguments{
 \item{palette}{Character string specifying the palette.}
@@ -47,4 +48,3 @@ geom_bar() +
 scale_cbpal_fill()
 
 }
-\keyword{internal}

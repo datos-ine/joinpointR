@@ -33,4 +33,12 @@ test.}
 \description{
 Cleans and prepares data for fitting joinpoint regression models.
 }
+\examples{
+# Load data
+data(hiv_data)
+
+# Clean data
+clean_jp_data(hiv_data, rate = "hiv_rate", time = "year", group = c("admin", "sex"))
+
+}
 \keyword{internal}

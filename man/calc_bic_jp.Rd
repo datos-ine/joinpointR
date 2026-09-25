@@ -2,52 +2,11 @@
 % Please edit documentation in R/bic_jp.R
 \name{calc_bic_jp}
 \alias{calc_bic_jp}
-\title{Bayesian Information Criteria (BIC) for joinpoint regression models}
+\title{Calculate BIC, BIC3 and WBIC}
 \usage{
 calc_bic_jp(mod)
 }
-\arguments{
-\item{mod}{Model of class \code{model_jp}.}
-}
-\value{
-A number or a list of numbers containing the BIC values.
-}
 \description{
-Computes the Bayesian Information Criterion (BIC),
-the penalized BIC (BIC3), and the weighted BIC (WBIC) for
-models of class \code{model_jp}.
-}
-\details{
-The Bayesian Information Criterion (BIC) for $k$ joinpoints is estimated as:
-
-\deqn{BIC = \log(MSE) + \frac{param(k)}{n} * \log{n}}
-
-where \code{MSE} is the mean squared error of the fitted model,
-\code{param(k)} is the number of parameters in the model, and \code{n} is the
-number of observations.
-
-The number of parameters for the standard BIC is defined as:
-\deqn{param(k) = 2k + 2}
-
-For BIC3, the penalty parameter is defined as:
-\deqn{param(k) = 3k + 2}
-
-The weighted Bayesian Information Criterion (WBIC) combines BIC and BIC3 using
-a weighted penalty term based on the data:
-
-\deqn{WBIC = BIC * (1 - wt) + BIC3 * wt}
-
-where \code{wt} is the calculated weighted penalty.
-}
-\examples{
-# Create a reduced dataset
-data <- hiv_data |>
-dplyr::filter(admin == "ARG")
-
-# Fit the joinpoint models
-mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = "sex")
-
-bic_jp(mods$Female)
-
+Calculate BIC, BIC3 and WBIC
 }
 \keyword{internal}

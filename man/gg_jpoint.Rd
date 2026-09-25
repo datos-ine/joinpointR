@@ -70,7 +70,8 @@ data <- hiv_data |>
 filter(between(admin, "ARG", "Chubut"))
 
 # Fit models
-mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = c("admin", "sex"))
+mods <- model_jp_grid(data = data, rate = hiv_rate, time = year,
+group = c("admin", "sex"))
 
 # Plot results
 gg_jpoint(mods = mods, geom = "linepoint", jp = TRUE)
@@ -79,6 +80,7 @@ gg_jpoint(mods = mods, geom = "linepoint", jp = TRUE)
 gg_jpoint(mods = mods, geom = "area", jp = TRUE)
 
 ## Plot results as line and reverse the facets
-gg_jpoint(mods = mods, geom = "line", facets = "grid2", jp = TRUE, cbpal.name = "managua")
+gg_jpoint(mods = mods, geom = "line", facets = "grid2", jp = TRUE,
+cbpal.name = "managua")
 
 }

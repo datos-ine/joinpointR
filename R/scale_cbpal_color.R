@@ -4,8 +4,11 @@
 #' Scales for applying colorblind-friendly palettes to ggplot2 aesthetics.
 #'
 #' @param palette Character string specifying the palette.
+#'
 #' @param reverse Logical; if `TRUE`, reverses the palette.
+#'
 #' @param discrete Logical; should the scale be discrete?
+#'
 #' @param ... Other arguments passed to the underlying ggplot2 scale.
 #'
 #' @return A \code{ggplot2} scale.
@@ -34,38 +37,8 @@
 #'
 #' @name scale_cbpal
 #' @aliases scale_cbpal_fill scale_cbpal_color
-#' @keywords internal
-# ============================================================
-# ---- Select a colorblind-friendly palette ----
-# ============================================================
-cbpal <- function(
-  palette = "viridis",
-  reverse = FALSE
-) {
-  # --- Load list of available palettes ---
-  data(cbpal_list)
-
-  # --- Filter data ---
-  pal <- cbpal_list |>
-    dplyr::filter(name == palette) |>
-    tidyr::pivot_longer(
-      cols = x1:x7,
-      names_to = "pos",
-      values_to = "color"
-    ) |>
-    dplyr::pull(color)
-
-  # --- Reverse colors ---
-  if (reverse) {
-    pal <- rev(pal)
-  }
-
-  # --- Return ---
-  colorRampPalette(colors = pal)
-}
-
 #' @export
-# Generate color scale ---------------------------------------------------
+#'
 scale_cbpal_color <- function(
   palette = "viridis",
   reverse = FALSE,
@@ -91,8 +64,9 @@ scale_cbpal_color <- function(
 }
 
 
+#' @rdname scale_cbpal
 #' @export
-# Generate fill scale ----------------------------------------------------
+#' 
 scale_cbpal_fill <- function(
   palette = "viridis",
   reverse = FALSE,
@@ -115,4 +89,34 @@ scale_cbpal_fill <- function(
       ...
     )
   }
+}
+
+
+#' Selects a colorblind-friendly palette
+#' @keywords internal
+#' 
+cbpal <- function(
+  palette = "viridis",
+  reverse = FALSE
+) {
+  # --- Load list of available palettes ---
+  data(cbpal_list)
+
+  # --- Filter data ---
+  pal <- cbpal_list |>
+    dplyr::filter(name == palette) |>
+    tidyr::pivot_longer(
+      cols = x1:x7,
+      names_to = "pos",
+      values_to = "color"
+    ) |>
+    dplyr::pull(color)
+
+  # --- Reverse colors ---
+  if (reverse) {
+    pal <- rev(pal)
+  }
+
+  # --- Return ---
+  colorRampPalette(colors = pal)
 }

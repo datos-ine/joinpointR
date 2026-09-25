@@ -1,8 +1,8 @@
 #' Prepare Data for Joinpoint Regression
 #'
-#' @description 
+#' @description
 #' Cleans and prepares data for fitting joinpoint regression models.
-#' 
+#'
 #' @param data A dataset containing the rates, time points, and, optionally,
 #' grouping variables.
 #'
@@ -25,8 +25,15 @@
 #' \item \code{k} An integer containing the recommended maximum number of joinpoints to
 #'  test.}
 #'
+#' @examples
+#' # Load data
+#' data(hiv_data)
+#'
+#' # Clean data
+#' clean_jp_data(hiv_data, rate = "hiv_rate", time = "year", group = c("admin", "sex"))
+#' 
 #' @keywords internal
-
+#' 
 clean_jp_data <- function(
   data,
   rate,

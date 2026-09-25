@@ -2,12 +2,20 @@
 % Please edit documentation in R/get_summary.R
 \name{get_summary}
 \alias{get_summary}
-\alias{extract_jp_mod}
 \alias{get_apc}
 \alias{get_aapc}
 \title{Summary statistics for joinpoint regression models}
 \usage{
-extract_jp_mod(x)
+get_apc(mods, level = 0.95, sig = TRUE)
+
+get_aapc(mods, level = 0.95, sig = TRUE)
+
+get_summary(
+  mods,
+  ci = c("both", "apc", "aapc", "hide"),
+  sig = TRUE,
+  level = 0.95
+)
 }
 \arguments{
 \item{mods}{A model or a list of models of class \code{model_jp}.}
@@ -15,12 +23,12 @@ extract_jp_mod(x)
 \item{level}{Numeric. Confidence level used to calculate confidence
 intervals. Must be between 0 and 1. Defaults to \code{0.95}.}
 
+\item{sig}{Logical. Whether to display significance stars for the APC
+and AAPC. Defaults to \code{TRUE}.}
+
 \item{ci}{Character. Controls which confidence intervals are displayed
 in the summary table. One of \code{"both"}, \code{"apc"},
 \code{"aapc"}, or \code{"hide"}. Defaults to \code{"both"}.}
-
-\item{sig}{Logical. Whether to display significance stars for the APC
-and AAPC. Defaults to \code{TRUE}.}
 }
 \value{
 For \code{get_summary()}, a \code{tibble} containing the APC and AAPC
@@ -63,4 +71,3 @@ get_apc(mods = mods, level = 0.95, sig = TRUE)
 get_aapc(mods = mods, level = 0.95, sig = TRUE)
 
 }
-\keyword{internal}

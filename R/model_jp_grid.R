@@ -4,8 +4,8 @@
 #' Fits log-linear joinpoint regression models using grid search and selects
 #' the best model according to the Bayesian Information Criterion (BIC).
 #'
-#' @param data A data frame or tibble containing rates, time points, and
-#' optional grouping variables.
+#' @param data A \code{data.frame} or \code{tibble} containing rates, time points,
+#'  and optional grouping variables.
 #'
 #' @param rate Character string specifying the variable with the rates.
 #'
@@ -36,9 +36,10 @@
 #'   \item \code{log_rate}: Vector of log-transformed rates used as the response
 #' variable.
 #'   \item \code{BIC}: BIC value of the selected model based on the specified
-#'     \code{method}.
-#'   \item \code{model_sel}: A tibble containing the number and positions of
-#' joinpoints, SSE, and BIC for all evaluated candidate models.
+#' \code{method}.
+#'   \item \code{model_sel}: A \code{tibble} containing the number and positions
+#'  of joinpoints, SSE, BIC, BIC3, Weights and WBIC for all evaluated candidate
+#'  models.
 #' }
 #'
 #' @details
@@ -59,6 +60,12 @@
 #' When grouping variables are specified, all groups must contain the same
 #' number of time points.
 #'
+#' @references
+#' Kim, H. J., Fay, M. P., Feuer, E. J., & Midthune, D. N. (2000).
+#'  Permutation tests for joinpoint regression with applications to cancer
+#' rates. Statistics in Medicine, 19(3), 335–351.
+#'  https://doi.org/10.1002/(sici)1097-0258(20000215)19:3%253C335::aid-sim336%253E3.0.co;2-z
+#'
 #' @examples
 #' # Load data
 #' data(hiv_data)
@@ -69,12 +76,20 @@
 #' dplyr::between(admin, "ARG", "Chubut"))
 #'
 #' # Fit the joinpoint models
-#' mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = c("admin", "sex"))
+#' mods <- model_jp_grid(data = data, rate = hiv_rate,
+#' time = year, group = c("admin", "sex"))
 #'
-#' # Select models based on the BIC3
-#' mods_bic3 <- update(mods, method = "bic3")
+#' # Fit the models based on the WBIC
+#' mods_wbic <-  model_jp(data = data, rate = hiv_rate,
+#' time = year, group = c("admin", "sex"), method = "wbic")
 #'
+#' # Refit the models based on the BIC3
+#' mods_bic3 <- update(mods_wbic, method = "bic3")
+#'
+#' @name model_jp
+#' @aliases model_jp_grid model_jp update.model_jp update
 #' @export
+#'
 model_jp_grid <- function(
     data,
     rate,
@@ -414,8 +429,10 @@ model_jp_grid <- function(
 }
 
 
-# ---- Use model_jp ----
+#' Use model_jp
+#' @rdname model_jp
 #' @export
+#'
 model_jp <- function(
     data,
     ...
@@ -426,7 +443,10 @@ model_jp <- function(
     )
 }
 
+#' Update model_jp
+#' @rdname model_jp
 #' @export
+#'
 update.model_jp <- function(mod, ...) {
     # --- Extract the model call ---
     call <- attr(mod, "call")
