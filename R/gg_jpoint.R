@@ -1,54 +1,62 @@
 #' Plot Joinpoint Regression Models
 #'
 #' @description
-#' Creates a ggplot showing observed values, fitted joinpoint regression lines,
-#' and optional joinpoints.
+#' Creates a \code{ggplot2} visualization of joinpoint regression models,
+#' showing observed values, fitted regression lines, and optionally the
+#' estimated joinpoints and Average Annual Percent Change (AAPC).
 #'
-#' @param mods A list of models returned by \code{model_jp_d()} or
+#' @param mods A list of models of class \code{model_jp}, returned by
 #' \code{model_jp_grid()}.
 #'
 #' @param geom Character. Determines how the model results are displayed.
 #' \code{geom = "line"} displays the fitted regression lines;
 #' \code{geom = "linepoint"} displays the fitted regression lines together
-#' with the observed data points; \code{geom = "area"} display the fitted values
-#' as a smoothed area. Defaults to \code{"line"}.
+#' with the observed data points; and \code{geom = "area"} displays the
+#' fitted values as a smoothed area. Defaults to \code{"linepoint"}.
 #'
-#' @param jp Logical. Whether to display the locations of the estimated
-#'  joinpoint(s) as vertical lines. Defaults to \code{TRUE}.
+#' @param jp Logical. Whether to display the estimated joinpoint(s) as
+#' vertical lines. Defaults to \code{TRUE}.
 #'
-#' @param facets Character. Determines the facet layout.  \code{facets = "wrap"}
-#' displays the results using one facet per grouping level; \code{facets = "grid"}
-#' displays the results by group and subgroup; and \code{facets = "grid2"} reverses
-#'  the order of the grouping variables. This argument is ignored when only one
-#'  model is provided.
+#' @param facets Character. Determines the facet layout. \code{facets = "wrap"}
+#' displays one facet for each grouping level; \code{facets = "grid"}
+#' displays groups in rows and subgroups in columns; and
+#' \code{facets = "grid2"} displays subgroups in rows and groups in columns.
+#' This argument is ignored when only one model is provided.
 #'
-#' @param aapc Logical. Whether to display a label with the Average Annual Percent
-#' Change (AAPC) and its statistical significance. Defaults to \code{FALSE}.
+#' @param aapc Logical. Whether to display a label with the Average Annual
+#' Percent Change (AAPC) and its statistical significance. Defaults to
+#' \code{FALSE}.
 #'
-#' @param lwd Numeric. Width of the fitted regression lines. Defaults to 1 point.
+#' @param exp Logical. Whether to display observed and fitted values on the
+#' original rate scale. Defaults to \code{FALSE}.
 #'
-#' @param psize Numeric. Size of the observed data points. Defaults to 2.5 points.
+#' @param lwd Numeric. Width of the fitted regression lines. Defaults to
+#' \code{1}.
 #'
-#' @param alpha Numeric. Transparency of the observed data points. Defaults to 0.75.
+#' @param psize Numeric. Size of the observed data points. Defaults to
+#' \code{2.5}.
 #'
-#' @param ncol.wrap Integer. Number of columns to display when \code{facets = "wrap"}.
-#' Defaults to 4.
+#' @param alpha Numeric. Transparency of the observed data points.
+#' Defaults to \code{0.75}.
 #'
-#' @param date.breaks Characters. Date interval to display in the x axis. Defaults to
-#' \code{"2 years"}.
-#' 
-#' @param text.size Integer. Text size in points to display the AAPC label. Will be 
-#' ignored if \code{AAPC = FALSE}. Defaults to \code{8} points.
-#' 
-#' @param cbpal.name Character. Name of the colorblind-friendly palette to use.
+#' @param ncol.wrap Integer. Number of columns to display when
+#' \code{facets = "wrap"}. Defaults to \code{4}.
+#'
+#' @param date.breaks Character. Date interval used for the x-axis.
+#' Defaults to \code{"2 years"}.
+#'
+#' @param text.size Numeric. Text size in points used to display the AAPC
+#' label. Ignored if \code{aapc = FALSE}. Defaults to \code{8}.
+#'
+#' @param cbpal Character. Name of the colorblind-friendly palette to use.
 #' Defaults to \code{"viridis"}.
 #'
-#' @return
-#' A \code{ggplot2} object showing observed values, fitted joinpoint regression
-#' lines, and optional joinpoints.
+#' @return A \code{ggplot2} object showing observed values, fitted joinpoint
+#' regression lines, and optionally the estimated joinpoints and AAPC.
 #'
 #' @details
-#' Available colorblind-friendly palettes can be checked using \code{plot_cbpal()}.
+#' Available colorblind-friendly palettes can be checked using
+#' \code{plot_cbpal()}.
 #'
 #' @examples
 #' # Load packages
@@ -66,30 +74,30 @@
 #' group = c("admin", "sex"))
 #'
 #' # Plot results
-#' gg_jpoint(mods = mods, geom = "linepoint", jp = TRUE)
+#' gg_jpoint(mods = mods, jp = TRUE)
 #'
-#' # Plot results as area
-#' gg_jpoint(mods = mods, geom = "area", jp = TRUE, aapc = TRUE)
+#' # Plot results as area and show AAPC
+#' gg_jpoint(mods = mods, geom = "area", aapc = TRUE)
 #'
-#' ## Plot results as line and reverse the facets
-#' gg_jpoint(mods = mods, geom = "line", facets = "grid2", jp = TRUE,
-#' cbpal.name = "managua")
+#' ## Display as rates
+#' gg_jpoint(mods = mods,  exp = TRUE, facets = "grid2")
 #'
 #' @export
 #'
 gg_jpoint <- function(
   mods,
-  geom = c("line", "linepoint", "area"),
+  geom = c("linepoint", "line", "area"),
   jp = TRUE,
   facets = c("wrap", "grid", "grid2"),
   aapc = FALSE,
+  exp = FALSE,
   lwd = 1,
   psize = 2.5,
   alpha = 0.75,
   ncol.wrap = 4,
   date.breaks = "2 years",
   text.size = 8,
-  cbpal.name = "viridis"
+  cbpal = "viridis"
 ) {
   #  ============================================================
   # ---- Set defaults ----
@@ -102,7 +110,7 @@ gg_jpoint <- function(
 
   # --- Palette name ---
   cbpal <- match.arg(
-    cbpal.name,
+    cbpal,
     choices = cbpal_list |> dplyr::pull(name)
   )
 
@@ -137,11 +145,7 @@ gg_jpoint <- function(
       time = .x$time,
       log_rate = .x$log_rate,
       fitted = stats::fitted(.x$fit),
-      jp = if (length(.x$joinpoints) > 0) {
-        paste(.x$joinpoints, collapse = ",")
-      } else {
-        NA
-      }
+      period = findInterval(.x$time, .x$joinpoints) + 1
     )
   ) |>
     # --- List to tibble ---
@@ -158,6 +162,17 @@ gg_jpoint <- function(
 
     # --- Convert to date format ---
     dplyr::mutate(time = lubridate::ymd(paste0(time, "-01-01")))
+
+  #  ============================================================
+  # ---- Exponentiate data ----
+  #  ============================================================
+  if (exp) {
+    data <- data |>
+      dplyr::mutate(
+        rate = exp(log_rate),
+        fitted_rate = exp(fitted)
+      )
+  }
 
   #  ============================================================
   # ---- Generate joinpoint data ----
@@ -190,7 +205,7 @@ gg_jpoint <- function(
     data = data,
     mapping = ggplot2::aes(
       x = time,
-      y = log_rate
+      y = if (exp) rate else log_rate
     )
   ) +
 
@@ -203,14 +218,18 @@ gg_jpoint <- function(
     # --- LABELS ---
     ggplot2::labs(
       x = NULL,
-      y = "log(rate)"
+      y = if (exp) "rate" else "log(rate)"
     ) +
 
     # --- Theme ---
     ggplot2::theme_minimal() +
     ggplot2::theme(
       legend.position = "bottom",
-      legend.title = ggplot2::element_blank(),
+      legend.title = if (geom == "line") {
+        ggplot2::element_text()
+      } else {
+        ggplot2::element_blank()
+      },
       axis.text.x = ggplot2::element_text(angle = 90)
     )
 
@@ -246,27 +265,32 @@ gg_jpoint <- function(
   #  ============================================================
   # ---- Geometries ----
   #  ============================================================
-  if (geom %in% c("line", "linepoint")) {
-    # --- Add the regression line ---
+  if (geom == "line") {
     g <- g +
       ggplot2::geom_line(
         mapping = ggplot2::aes(
           y = fitted,
-          color = if (facets == "grid2") subgroup else group
+          color = factor(period),
+          group = group_var
         ),
         lwd = lwd
       )
-
-    if (geom == "linepoint") {
-      g <- g +
-        ggplot2::geom_point(
-          mapping = ggplot2::aes(
-            color = if (facets == "grid2") subgroup else group
-          ),
-          size = psize,
-          alpha = alpha
-        )
-    }
+  } else if (geom == "linepoint") {
+    g <- g +
+      ggplot2::geom_line(
+        mapping = ggplot2::aes(
+          y = if (exp) fitted_rate else fitted,
+          color = if (facets == "grid2") subgroup else group
+        ),
+        lwd = lwd
+      ) +
+      ggplot2::geom_point(
+        mapping = ggplot2::aes(
+          color = if (facets == "grid2") subgroup else group
+        ),
+        size = psize,
+        alpha = alpha
+      )
   } else if (geom == "area") {
     g <- g +
       ggplot2::geom_area(
@@ -274,9 +298,6 @@ gg_jpoint <- function(
           y = fitted,
           fill = if (facets == "grid2") subgroup else group
         ),
-        stat = "smooth",
-        method = "loess",
-        formula = 'y ~ x',
         alpha = 0.5,
         color = "grey20"
       )
@@ -325,6 +346,10 @@ gg_jpoint <- function(
   if (geom == "area") {
     g + scale_cbpal_fill(palette = cbpal)
   } else {
-    g + scale_cbpal_color(palette = cbpal)
+    g +
+      scale_cbpal_color(
+        palette = cbpal,
+        name = if (geom == "line") "Period" else NULL
+      )
   }
 }
