@@ -9,6 +9,7 @@ gg_jpoint(
   geom = c("line", "linepoint", "area"),
   jp = TRUE,
   facets = c("wrap", "grid", "grid2"),
+  aapc = FALSE,
   lwd = 1,
   psize = 2.5,
   alpha = 0.75,
@@ -35,6 +36,9 @@ displays the results using one facet per grouping level; \code{facets = "grid"}
 displays the results by group and subgroup; and \code{facets = "grid2"} reverses
 the order of the grouping variables. This argument is ignored when only one
 model is provided.}
+
+\item{aapc}{Logical. Whether to display a label with the Average Annual Percent
+Change (AAPC) and its statistical significance. Defaults to \code{FALSE}.}
 
 \item{lwd}{Numeric. Width of the fitted regression lines. Defaults to 1 point.}
 

@@ -22,6 +22,9 @@
 #'  the order of the grouping variables. This argument is ignored when only one
 #'  model is provided.
 #'
+#' @param aapc Logical. Whether to display a label with the Average Annual Percent
+#' Change (AAPC) and its statistical significance. Defaults to \code{FALSE}.
+#'
 #' @param lwd Numeric. Width of the fitted regression lines. Defaults to 1 point.
 #'
 #' @param psize Numeric. Size of the observed data points. Defaults to 2.5 points.
@@ -76,6 +79,7 @@ gg_jpoint <- function(
   geom = c("line", "linepoint", "area"),
   jp = TRUE,
   facets = c("wrap", "grid", "grid2"),
+  aapc = FALSE,
   lwd = 1,
   psize = 2.5,
   alpha = 0.75,
@@ -265,6 +269,41 @@ gg_jpoint <- function(
         lwd = 1.5,
         color = "darkgrey",
         alpha = 0.75
+      )
+  }
+
+  #  ============================================================
+  # ---- AAPC ----
+  #  ============================================================
+  if (aapc) {
+    aapc <- get_aapc(mods) |>
+      # --- Transform AAPC ---
+      dplyr::mutate(aapc = paste0(round(aapc, 2), aapc_sig)) |>
+
+      # --- Select columns ---
+      dplyr::select(group_var = model, aapc) |>
+
+      # --- Separate grouping variable ---
+      tidyr::separate_wider_delim(
+        group_var,
+        names = c("group", "subgroup"),
+        delim = "_",
+        too_few = "align_start",
+        cols_remove = FALSE
+      )
+
+    g <- g +
+      ggplot2::geom_label(
+        data = aapc,
+        ggplot2::aes(
+          x = max(data$time),
+          y = min(data$log_rate),
+          label = paste0("AAPC: ", aapc)
+        ),
+        size = 2.5,
+        vjust = 0.5,
+        hjust = 1,
+        alpha = 0.8
       )
   }
 
