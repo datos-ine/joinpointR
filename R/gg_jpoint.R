@@ -328,15 +328,21 @@ gg_jpoint <- function(
         data = aapc,
         ggplot2::aes(
           x = max(data$time),
-          y = min(data$log_rate),
+          y = min(data$log_rate) - diff(range(data$log_rate)) * 0.10,
           label = paste0("AAPC: ", aapc)
         ),
         size = text.size,
         size.unit = "pt",
-        vjust = 0.5,
-        hjust = 1,
-        alpha = 0.8,
-        position = "jitter"
+        hjust = 1
+      ) +
+      ggplot2::coord_cartesian(clip = "off") +
+      ggplot2::theme(
+        plot.margin = ggplot2::margin(
+          t = 5.5,
+          r = 5.5,
+          b = 30,
+          l = 5.5
+        )
       )
   }
 
