@@ -34,6 +34,9 @@
 #' @param ncol.wrap Integer. Number of columns to display when \code{facets = "wrap"}.
 #' Defaults to 4.
 #'
+#' @param date.breaks Characters. Date interval to display in the x axis. Defaults to
+#' \code{"2 years"}.
+#'
 #' @return
 #' A \code{ggplot2} object showing observed values, fitted joinpoint regression
 #' lines, and optional joinpoints.
@@ -67,7 +70,7 @@
 #' cbpal.name = "managua")
 #'
 #' @export
-#' 
+#'
 gg_jpoint <- function(
   mods,
   geom = c("line", "linepoint", "area"),
@@ -77,7 +80,8 @@ gg_jpoint <- function(
   psize = 2.5,
   alpha = 0.75,
   cbpal.name = "viridis",
-  ncol.wrap = 4
+  ncol.wrap = 4,
+  date.breaks = "2 years"
 ) {
   #  ============================================================
   # ---- Set defaults ----
@@ -127,14 +131,20 @@ gg_jpoint <- function(
       fitted = stats::fitted(.x$fit)
     )
   ) |>
+    # --- List to tibble ---
     purrr::list_rbind(names_to = "group_var") |>
+
+    # --- Separate grouping variable ---
     tidyr::separate_wider_delim(
       group_var,
       names = c("group", "subgroup"),
       delim = "_",
       too_few = "align_start",
       cols_remove = FALSE
-    )
+    ) |>
+
+    # --- Convert to date format ---
+    dplyr::mutate(time = lubridate::ymd(paste0(time, "-01-01")))
 
   #  ============================================================
   # ---- Generate joinpoint data ----
@@ -142,17 +152,23 @@ gg_jpoint <- function(
   jp_data <- purrr::map(
     mods,
     ~ tibble::tibble(
-      jp = .x$joinpoints
+      jp = .x$joinpoints,
     )
   ) |>
+    # --- List to tibble ---
     purrr::list_rbind(names_to = "group_var") |>
+
+    # --- Separate grouping variable ---
     tidyr::separate_wider_delim(
       group_var,
       names = c("group", "subgroup"),
       delim = "_",
       too_few = "align_start",
       cols_remove = FALSE
-    )
+    ) |>
+
+    # --- Convert to date format ---
+    dplyr::mutate(jp = lubridate::ymd(paste0(jp, "-01-01")))
 
   #  ============================================================
   # ---- Base plot layout ----
@@ -164,6 +180,12 @@ gg_jpoint <- function(
       y = log_rate
     )
   ) +
+
+    # --- X as date ---
+    ggplot2::scale_x_date(
+      date_breaks = date.breaks,
+      date_labels = "%Y"
+    ) +
 
     # --- LABELS ---
     ggplot2::labs(

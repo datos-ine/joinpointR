@@ -13,7 +13,8 @@ gg_jpoint(
   psize = 2.5,
   alpha = 0.75,
   cbpal.name = "viridis",
-  ncol.wrap = 4
+  ncol.wrap = 4,
+  date.breaks = "2 years"
 )
 }
 \arguments{
@@ -46,6 +47,9 @@ Defaults to \code{"viridis"}.}
 
 \item{ncol.wrap}{Integer. Number of columns to display when \code{facets = "wrap"}.
 Defaults to 4.}
+
+\item{date.breaks}{Characters. Date interval to display in the x axis. Defaults to
+\code{"2 years"}.}
 }
 \value{
 A \code{ggplot2} object showing observed values, fitted joinpoint regression
