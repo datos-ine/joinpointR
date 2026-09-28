@@ -31,14 +31,17 @@
 #'
 #' @param alpha Numeric. Transparency of the observed data points. Defaults to 0.75.
 #'
-#' @param cbpal.name Character. Name of the colorblind-friendly palette to use.
-#' Defaults to \code{"viridis"}.
-#'
 #' @param ncol.wrap Integer. Number of columns to display when \code{facets = "wrap"}.
 #' Defaults to 4.
 #'
 #' @param date.breaks Characters. Date interval to display in the x axis. Defaults to
 #' \code{"2 years"}.
+#' 
+#' @param text.size Integer. Text size in points to display the AAPC label. Will be 
+#' ignored if \code{AAPC = FALSE}. Defaults to \code{8} points.
+#' 
+#' @param cbpal.name Character. Name of the colorblind-friendly palette to use.
+#' Defaults to \code{"viridis"}.
 #'
 #' @return
 #' A \code{ggplot2} object showing observed values, fitted joinpoint regression
@@ -66,7 +69,7 @@
 #' gg_jpoint(mods = mods, geom = "linepoint", jp = TRUE)
 #'
 #' # Plot results as area
-#' gg_jpoint(mods = mods, geom = "area", jp = TRUE)
+#' gg_jpoint(mods = mods, geom = "area", jp = TRUE, aapc = TRUE)
 #'
 #' ## Plot results as line and reverse the facets
 #' gg_jpoint(mods = mods, geom = "line", facets = "grid2", jp = TRUE,
@@ -83,9 +86,10 @@ gg_jpoint <- function(
   lwd = 1,
   psize = 2.5,
   alpha = 0.75,
-  cbpal.name = "viridis",
   ncol.wrap = 4,
-  date.breaks = "2 years"
+  date.breaks = "2 years",
+  text.size = 8,
+  cbpal.name = "viridis"
 ) {
   #  ============================================================
   # ---- Set defaults ----
@@ -132,7 +136,12 @@ gg_jpoint <- function(
     ~ tibble::tibble(
       time = .x$time,
       log_rate = .x$log_rate,
-      fitted = stats::fitted(.x$fit)
+      fitted = stats::fitted(.x$fit),
+      jp = if (length(.x$joinpoints) > 0) {
+        paste(.x$joinpoints, collapse = ",")
+      } else {
+        NA
+      }
     )
   ) |>
     # --- List to tibble ---
@@ -220,6 +229,21 @@ gg_jpoint <- function(
   }
 
   #  ============================================================
+  # ---- Joinpoints ----
+  #  ============================================================
+  if (jp) {
+    g <- g +
+      ggplot2::geom_vline(
+        data = jp_data,
+        mapping = ggplot2::aes(xintercept = jp),
+        lwd = 0.75,
+        color = "darkgrey",
+        linetype = "dashed",
+        alpha = 0.75
+      )
+  }
+
+  #  ============================================================
   # ---- Geometries ----
   #  ============================================================
   if (geom %in% c("line", "linepoint")) {
@@ -259,20 +283,6 @@ gg_jpoint <- function(
   }
 
   #  ============================================================
-  # ---- Joinpoints ----
-  #  ============================================================
-  if (jp) {
-    g <- g +
-      ggplot2::geom_vline(
-        data = jp_data,
-        mapping = ggplot2::aes(xintercept = jp),
-        lwd = 1.5,
-        color = "darkgrey",
-        alpha = 0.75
-      )
-  }
-
-  #  ============================================================
   # ---- AAPC ----
   #  ============================================================
   if (aapc) {
@@ -293,17 +303,19 @@ gg_jpoint <- function(
       )
 
     g <- g +
-      ggplot2::geom_label(
+      ggplot2::geom_text(
         data = aapc,
         ggplot2::aes(
           x = max(data$time),
           y = min(data$log_rate),
           label = paste0("AAPC: ", aapc)
         ),
-        size = 2.5,
+        size = text.size,
+        size.unit = "pt",
         vjust = 0.5,
         hjust = 1,
-        alpha = 0.8
+        alpha = 0.8,
+        position = "jitter"
       )
   }
 

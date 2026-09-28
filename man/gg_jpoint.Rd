@@ -13,9 +13,10 @@ gg_jpoint(
   lwd = 1,
   psize = 2.5,
   alpha = 0.75,
-  cbpal.name = "viridis",
   ncol.wrap = 4,
-  date.breaks = "2 years"
+  date.breaks = "2 years",
+  text.size = 8,
+  cbpal.name = "viridis"
 )
 }
 \arguments{
@@ -46,14 +47,17 @@ Change (AAPC) and its statistical significance. Defaults to \code{FALSE}.}
 
 \item{alpha}{Numeric. Transparency of the observed data points. Defaults to 0.75.}
 
-\item{cbpal.name}{Character. Name of the colorblind-friendly palette to use.
-Defaults to \code{"viridis"}.}
-
 \item{ncol.wrap}{Integer. Number of columns to display when \code{facets = "wrap"}.
 Defaults to 4.}
 
 \item{date.breaks}{Characters. Date interval to display in the x axis. Defaults to
 \code{"2 years"}.}
+
+\item{text.size}{Integer. Text size in points to display the AAPC label. Will be
+ignored if \code{AAPC = FALSE}. Defaults to \code{8} points.}
+
+\item{cbpal.name}{Character. Name of the colorblind-friendly palette to use.
+Defaults to \code{"viridis"}.}
 }
 \value{
 A \code{ggplot2} object showing observed values, fitted joinpoint regression
@@ -85,7 +89,7 @@ group = c("admin", "sex"))
 gg_jpoint(mods = mods, geom = "linepoint", jp = TRUE)
 
 # Plot results as area
-gg_jpoint(mods = mods, geom = "area", jp = TRUE)
+gg_jpoint(mods = mods, geom = "area", jp = TRUE, aapc = TRUE)
 
 ## Plot results as line and reverse the facets
 gg_jpoint(mods = mods, geom = "line", facets = "grid2", jp = TRUE,
