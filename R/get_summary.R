@@ -320,19 +320,11 @@ get_summary <- function(
       scales::percent(level),
       "CI)."
     ))
-  } else {
-    message(
-      "Confidence level set to default value (",
-      scales::percent(level),
-      " CI)."
-    )
   }
 
   # --- Format as flextable ---
   if (as.ft) {
     message("The summary table will be displayed as a flextable object.")
-  } else {
-    message("The summary table will be displayed as a tibble.")
   }
 
   # ---- Decimal mark ----
