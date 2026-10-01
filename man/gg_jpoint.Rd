@@ -6,78 +6,64 @@
 \usage{
 gg_jpoint(
   mods,
-  geom = c("line", "linepoint", "area"),
-  jp = TRUE,
+  geom = c("linepoint", "line", "area"),
   facets = c("wrap", "grid", "grid2"),
+  exp = FALSE,
+  jp = TRUE,
   aapc = FALSE,
-  lwd = 1,
-  psize = 2.5,
-  alpha = 0.75,
-  ncol.wrap = 4,
-  date.breaks = "2 years",
-  text.size = 8,
-  cbpal.name = "viridis"
+  cbpal = NULL,
+  ...
 )
 }
 \arguments{
-\item{mods}{A list of models returned by \code{model_jp_d()} or
+\item{mods}{A list of models of class \code{model_jp}, returned by
 \code{model_jp_grid()}.}
 
 \item{geom}{Character. Determines how the model results are displayed.
 \code{geom = "line"} displays the fitted regression lines;
 \code{geom = "linepoint"} displays the fitted regression lines together
-with the observed data points; \code{geom = "area"} display the fitted values
-as a smoothed area. Defaults to \code{"line"}.}
+with the observed data points; and \code{geom = "area"} displays the
+fitted values as a smoothed area. Defaults to \code{"linepoint"}.}
 
-\item{jp}{Logical. Whether to display the locations of the estimated
-joinpoint(s) as vertical lines. Defaults to \code{TRUE}.}
+\item{facets}{Character. Determines the facet layout. \code{facets = "wrap"}
+displays one facet for each grouping level; \code{facets = "grid"}
+displays groups in rows and subgroups in columns; and
+\code{facets = "grid2"} displays subgroups in rows and groups in columns.
+This argument is ignored when only one model is provided.}
 
-\item{facets}{Character. Determines the facet layout.  \code{facets = "wrap"}
-displays the results using one facet per grouping level; \code{facets = "grid"}
-displays the results by group and subgroup; and \code{facets = "grid2"} reverses
-the order of the grouping variables. This argument is ignored when only one
-model is provided.}
+\item{exp}{Logical. Whether to display observed and fitted values on the
+original rate scale. Defaults to \code{FALSE}.}
 
-\item{aapc}{Logical. Whether to display a label with the Average Annual Percent
-Change (AAPC) and its statistical significance. Defaults to \code{FALSE}.}
+\item{jp}{Logical. Whether to display the estimated joinpoint(s) as
+vertical lines. Defaults to \code{TRUE}.}
 
-\item{lwd}{Numeric. Width of the fitted regression lines. Defaults to 1 point.}
+\item{aapc}{Logical. Whether to display a label with the Average Annual
+Percent Change (AAPC) and its statistical significance. Defaults to
+\code{FALSE}.}
 
-\item{psize}{Numeric. Size of the observed data points. Defaults to 2.5 points.}
-
-\item{alpha}{Numeric. Transparency of the observed data points. Defaults to 0.75.}
-
-\item{ncol.wrap}{Integer. Number of columns to display when \code{facets = "wrap"}.
-Defaults to 4.}
-
-\item{date.breaks}{Characters. Date interval to display in the x axis. Defaults to
-\code{"2 years"}.}
-
-\item{text.size}{Integer. Text size in points to display the AAPC label. Will be
-ignored if \code{AAPC = FALSE}. Defaults to \code{8} points.}
-
-\item{cbpal.name}{Character. Name of the colorblind-friendly palette to use.
+\item{cbpal}{Character. Name of the colorblind-friendly palette to use.
 Defaults to \code{"viridis"}.}
+
+\item{...}{Additional arguments passed to \code{ggplot2}.}
 }
 \value{
-A \code{ggplot2} object showing observed values, fitted joinpoint regression
-lines, and optional joinpoints.
+A \code{ggplot2} object showing observed values, fitted joinpoint
+regression lines, and optionally the estimated joinpoints and AAPC.
 }
 \description{
-Creates a ggplot showing observed values, fitted joinpoint regression lines,
-and optional joinpoints.
+Creates a \code{ggplot2} visualization of joinpoint regression models,
+showing observed values, fitted regression lines, and optionally the
+estimated joinpoints and Average Annual Percent Change (AAPC).
 }
 \details{
-Available colorblind-friendly palettes can be checked using \code{plot_cbpal()}.
+Available colorblind-friendly palettes can be checked using
+\code{plot_cbpal()}.
 }
 \examples{
 # Load packages
 library(dplyr)
 
-# Load data
-data(hiv_data)
-
-# Create a reduced dataset
+# Create an example dataset
 data <- hiv_data |>
 filter(between(admin, "ARG", "Chubut"))
 
@@ -86,13 +72,12 @@ mods <- model_jp_grid(data = data, rate = hiv_rate, time = year,
 group = c("admin", "sex"))
 
 # Plot results
-gg_jpoint(mods = mods, geom = "linepoint", jp = TRUE)
+gg_jpoint(mods = mods, jp = TRUE)
 
-# Plot results as area
-gg_jpoint(mods = mods, geom = "area", jp = TRUE, aapc = TRUE)
+# Plot results as area and show AAPC
+gg_jpoint(mods = mods, geom = "area", aapc = TRUE)
 
-## Plot results as line and reverse the facets
-gg_jpoint(mods = mods, geom = "line", facets = "grid2", jp = TRUE,
-cbpal.name = "managua")
+## Display as rates
+gg_jpoint(mods = mods,  exp = TRUE, facets = "grid2")
 
 }
