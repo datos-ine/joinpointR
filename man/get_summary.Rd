@@ -4,42 +4,38 @@
 \alias{get_summary}
 \alias{get_apc}
 \alias{get_aapc}
+\alias{Get}
+\alias{summary}
+\alias{data}
 \title{Summary statistics for joinpoint regression models}
 \usage{
-get_apc(mods, level = 0.95, sig = TRUE)
-
-get_aapc(mods, level = 0.95, sig = TRUE)
-
 get_summary(
   mods,
-  ci = c("both", "apc", "aapc", "hide"),
-  sig = TRUE,
-  level = 0.95,
+  stats = c("both", "apc", "aapc"),
+  hide = c("none", "ci", "sig"),
+  level.ci = 0.95,
   as.ft = FALSE,
   dec = c(".", ",")
 )
+
+get_apc(mods, stats = "apc", ...)
+
+get_aapc(mods, stats = "aapc", ...)
 }
 \arguments{
 \item{mods}{A model or a list of models of class \code{model_jp}.}
 
-\item{level}{Numeric. Confidence level used to calculate confidence
+\item{stats}{Character. Summary statistics to display in the table.
+One of \code{"both"}, \code{"apc"}, or \code{"aapc"}. Defaults to \code{"both"}.}
+
+\item{hide}{Character. Whether to hide the confidence interval \code{"ci"},
+the significance stars (\code{"sig"}) or none (\code{"none"}). Defaults to \code{"none"}.}
+
+\item{level.ci}{Numeric. Confidence level used to calculate confidence
 intervals. Must be between 0 and 1. Defaults to \code{0.95}.}
-
-\item{sig}{Logical. Whether to display significance stars for the APC
-and AAPC. Defaults to \code{TRUE}.}
-
-\item{ci}{Character. Controls which confidence intervals are displayed
-in the summary table. One of \code{"both"}, \code{"apc"},
-\code{"aapc"}, or \code{"hide"}. Defaults to \code{"both"}.}
 
 \item{as.ft}{Logical. Whether to display the model summary as a \code{flextable}
 object. Defaults to \code{FALSE}.}
-
-\item{dec}{Character. When \code{dec = "."} is selected, the table displays
-decimal separators as points and thousand separators as commans;
-when \code{dec = ","} is selected, the table display decimal separators as commas
-and thousand separatos as points. Defaults to \code{"."}. This argument will be
-ignore when \code{as.ft = FALSE}.}
 }
 \value{
 For \code{get_summary()}, a \code{tibble} containing the APC and AAPC
@@ -143,15 +139,15 @@ dplyr::filter(admin == "ARG")
 mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = "sex")
 
 # Obtain the model summary
-get_summary(mods, level = 0.95, ci = "both", sig = TRUE)
+get_summary(mods, level.ci = 0.95, ci = "both", sig = TRUE)
 
 # Same output calling summary(mods)
 summary(mods, as.ft = TRUE)
 
 # Obtain the APC with 95\% CI
-get_apc(mods = mods, level = 0.95, sig = TRUE)
+get_apc(mods = mods, level.ci = 0.95, sig = TRUE)
 
 # Obtain the AAPC with 95\% CI
-get_aapc(mods = mods, level = 0.95, sig = TRUE)
+get_aapc(mods = mods, level.ci = 0.95, sig = TRUE)
 
 }

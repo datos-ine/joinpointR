@@ -1,5 +1,5 @@
 ---
-title: "Introduction"
+title: "Introduction to joinpointR"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{introduction}
@@ -7,7 +7,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r}
+#| id: setup
+#| include: false
 knitr::opts_chunk$set(
   warning = FALSE,
   collapse = TRUE,
@@ -67,7 +69,38 @@ mods_admin <- model_jp_grid(
 )
 ```
 
-## Annual percentage change (APC)
+## Summarise model results
+### Summary tables
+The functions `get_summary()` provides a summary table containing:
+- `model`: Model name.
+- `jp`: The number of fitted joinpoints.
+- `period`: The time segments defined by the observed joinpoints. Defaults to the whole period when no joinpoints were detected.
+- `apc`,`apc_lower`, `apc_upper`, `apc_sig`: The Annual Percent Change (APC) with its confidence interval and significance stars.
+- `aapc`,`aapc_lower`, `aapc_upper`, `apc_sig`: The Average Annual Percent Change (APC) with its confidence interval and significance stars. 
+
+ ```{r}
+ #| id: get_summary-1
+ get_summary(mods)
+ ```
+
+The confidence level defaults to 95% and can be changed using the argument `level.ci`:
+```{r}
+#| id: get_summary-2
+get_summary(mods, level.ci = .9)
+ ```
+
+Users can pick to show confidence intervals for the APC, AAPC, both (the Default), or none using the argument `ci`:
+```{r}
+#| id: get_summary-3
+get_summary(mods, ci = "hide")
+ ```
+
+ ```{r}
+#| id: get_summary-3
+get_summary(mods, sig = FALSE)
+ ```
+
+### Annual percentage change (APC)
 The function `get_apc()` provides the annual percentage change and its 95% confidence interval for models of class `"model_jp"`.
 
 ```{r}
@@ -77,7 +110,7 @@ get_apc(mods = mods_sex)
 get_apc(mods = mods_admin)
 ```
 
-## Average annual percent change (AAPC)
+### Average annual percent change (AAPC)
 The function `get_aapc()` allows users to estimate the global trend for models of class `"model_jp"` using the parametric method for estimating the IC.
 
 ```{r}
@@ -87,5 +120,3 @@ get_aapc(mods = mods_sex)
 get_aapc(mods = mods_admin)
 ```
 
-## Summary tables
-The functions `get_summary()` or `summary()s`

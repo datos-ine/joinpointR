@@ -6,24 +6,17 @@
 #'
 #' @param mods A model or a list of models of class \code{model_jp}.
 #'
-#' @param level Numeric. Confidence level used to calculate confidence
+#' @param level.ci Numeric. Confidence level used to calculate confidence
 #' intervals. Must be between 0 and 1. Defaults to \code{0.95}.
 #'
-#' @param ci Character. Controls which confidence intervals are displayed
-#' in the summary table. One of \code{"both"}, \code{"apc"},
-#' \code{"aapc"}, or \code{"hide"}. Defaults to \code{"both"}.
+#' @param stats Character. Summary statistics to display in the table.
+#' One of \code{"both"}, \code{"apc"}, or \code{"aapc"}. Defaults to \code{"both"}.
 #'
-#' @param sig Logical. Whether to display significance stars for the APC
-#' and AAPC. Defaults to \code{TRUE}.
+#' @param hide Character. Whether to hide the confidence interval \code{"ci"},
+#' the significance stars (\code{"sig"}) or none (\code{"none"}). Defaults to \code{"none"}.
 #'
 #' @param as.ft Logical. Whether to display the model summary as a \code{flextable}
 #' object. Defaults to \code{FALSE}.
-#'
-#' @param dec Character. When \code{dec = "."} is selected, the table displays
-#' decimal separators as points and thousand separators as commans;
-#' when \code{dec = ","} is selected, the table display decimal separators as commas
-#' and thousand separatos as points. Defaults to \code{"."}. This argument will be
-#' ignore when \code{as.ft = FALSE}.
 #'
 #' @return
 #' For \code{get_summary()}, a \code{tibble} containing the APC and AAPC
@@ -123,59 +116,159 @@
 #' mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = "sex")
 #'
 #' # Obtain the model summary
-#' get_summary(mods, level = 0.95, ci = "both", sig = TRUE)
+#' get_summary(mods, level.ci = 0.95, ci = "both", sig = TRUE)
 #'
 #' # Same output calling summary(mods)
 #' summary(mods, as.ft = TRUE)
 #'
 #' # Obtain the APC with 95% CI
-#' get_apc(mods = mods, level = 0.95, sig = TRUE)
+#' get_apc(mods = mods, level.ci = 0.95, sig = TRUE)
 #'
 #' # Obtain the AAPC with 95% CI
-#' get_aapc(mods = mods, level = 0.95, sig = TRUE)
+#' get_aapc(mods = mods, level.ci = 0.95, sig = TRUE)
 #'
 #' @name get_summary
 #' @aliases get_summary get_apc get_aapc
-#'
+
+#' Get summary data
 #' @export
-#'
-get_apc <- function(
+get_summary <- function(
   mods,
-  level = 0.95,
-  sig = TRUE
+  stats = c("both", "apc", "aapc"),
+  hide = c("none", "ci", "sig"),
+  level.ci = 0.95,
+  as.ft = FALSE,
+  dec = c(".", ",")
 ) {
+  # ------------------------------------------------------------------------
+  # ---- Set defaults ----
+  # ------------------------------------------------------------------------
+  stats <- match.arg(stats)
+
+  hide <- match.arg(hide)
+
+  dec <- match.arg(dec)
+
+  # ------------------------------------------------------------------------
+  # ---- Get model data ----
+  # ------------------------------------------------------------------------
+  extract_mod <- function(x) {
+    # --- Model fit ---
+    fit <- x$fit
+
+    # --- Coefficients ---
+    beta <- stats::coef(fit)
+
+    # --- Variance/covariance matrix ---
+    var <- stats::vcov(fit)
+
+    # --- Joinpoints ---
+    jp <- x$joinpoints
+
+    # --- Number of segments ---
+    segments <- length(jp) + 1
+
+    # --- Time breaks ---
+    breaks <- sort(c(
+      min(x$time, na.rm = TRUE),
+      jp,
+      max(x$time, na.rm = TRUE)
+    ))
+
+    # --- Time segments ---
+    period <- tibble::tibble(
+      period = paste(
+        head(breaks, -1),
+        tail(breaks, -1),
+        sep = "-"
+      )
+    )
+
+    # --- Hinge variable names ---
+    delta <- grep(
+      "^U\\.",
+      names(beta),
+      value = TRUE
+    )
+
+    # --- Slopes ---
+    slopes <- c(
+      beta["x"],
+      beta["x"] + cumsum(beta[delta])
+    )
+
+    # --- Contrast matrix ---
+    L <- matrix(
+      0,
+      nrow = segments,
+      ncol = length(beta),
+      dimnames = list(
+        paste0("segment", seq_len(segments)),
+        names(beta)
+      )
+    )
+
+    # --- First segment ---
+    L[1, "x"] <- 1
+
+    # --- Remaining segments ---
+    if (length(delta) > 0) {
+      for (i in seq_along(delta)) {
+        L[i + 1, "x"] <- 1
+
+        L[i + 1, delta[seq_len(i)]] <- 1
+      }
+    }
+
+    # --- Return ---
+    list(
+      fit = fit,
+      beta = beta,
+      delta = delta,
+      slopes = slopes,
+      var = var,
+      L = L,
+      jp = jp,
+      segments = segments,
+      period = period
+    )
+  }
+
+  # ------------------------------------------------------------------------
+  # ---- Calculate APC ----
+  # ------------------------------------------------------------------------
   apc <- purrr::map(
     mods,
     function(x) {
       # ---- Get model data ----
-      mod_data <- extract_jp_mod(x)
+      data <- extract_mod(x)
 
       # ---- Variance of the slopes ----
-      var_slopes <- mod_data$L %*%
-        mod_data$var %*%
-        t(mod_data$L)
+      var_slopes <- data$L %*%
+        data$var %*%
+        t(data$L)
 
       # ---- Standard error ----
       se <- sqrt(diag(var_slopes))
 
       # ---- Critical value ----
       critical <- stats::qt(
-        1 - (1 - level) / 2,
-        df = stats::df.residual(mod_data$fit)
+        1 - (1 - level.ci) / 2,
+        df = stats::df.residual(data$fit)
       )
 
       # ---- APC ----
-      apc <- (exp(mod_data$slopes) - 1) * 100
+      apc <- (exp(data$slopes) - 1) * 100
 
       # ---- Confidence interval ----
-      apc_lower <- (exp(mod_data$slopes - critical * se) - 1) * 100
+      apc_lower <- (exp(data$slopes - critical * se) - 1) * 100
 
-      apc_upper <- (exp(mod_data$slopes + critical * se) - 1) * 100
+      apc_upper <- (exp(data$slopes + critical * se) - 1) * 100
 
       # ---- Return ----
       tibble::tibble(
-        jp = mod_data$segments - 1,
-        period = mod_data$period$period,
+        jp = data$segments - 1,
+        period = data$period$period,
         apc = apc,
         apc_lower = apc_lower,
         apc_upper = apc_upper,
@@ -188,35 +281,17 @@ get_apc <- function(
     }
   )
 
-  # ---- Return ----
-  apc <- apc |>
-    purrr::list_rbind(names_to = "model")
-
-  if (!sig) {
-    apc |> dplyr::select(-sig)
-  } else {
-    apc
-  }
-}
-
-
-#' Get AAPC
-#' @rdname get_summary
-#' @export
-#'
-get_aapc <- function(
-  mods,
-  level = 0.95,
-  sig = TRUE
-) {
+  # ------------------------------------------------------------------------
+  # ---- Calculate AAPC ----
+  # ------------------------------------------------------------------------
   aapc <- purrr::map(
     mods,
     function(x) {
       # ---- Get model data ----
-      mod_data <- extract_jp_mod(x)
+      data <- extract_mod(x)
 
       # ---- Segment lengths ----
-      years <- stringr::str_split_fixed(mod_data$period$period, "-", 2)
+      years <- stringr::str_split_fixed(data$period$period, "-", 2)
 
       segment_length <- as.numeric(years[, 2]) -
         as.numeric(years[, 1])
@@ -225,12 +300,12 @@ get_aapc <- function(
       wt <- segment_length / sum(segment_length)
 
       # ---- Weighted slope ----
-      beta <- sum(wt * mod_data$slopes)
+      beta <- sum(wt * data$slopes)
 
       # ---- Variance-covariance matrix of slopes ----
-      var_slopes <- mod_data$L %*%
-        mod_data$var %*%
-        t(mod_data$L)
+      var_slopes <- data$L %*%
+        data$var %*%
+        t(data$L)
 
       # ---- Variance of weighted slope ----
       var_beta <- t(wt) %*%
@@ -242,8 +317,8 @@ get_aapc <- function(
 
       # ---- Critical value ----
       critical <- stats::qt(
-        1 - (1 - level) / 2,
-        df = stats::df.residual(mod_data$fit)
+        1 - (1 - level.ci) / 2,
+        df = stats::df.residual(data$fit)
       )
 
       # ---- AAPC ----
@@ -268,100 +343,40 @@ get_aapc <- function(
     }
   )
 
-  # ---- Return ----
-  aapc <- aapc |>
-    purrr::list_rbind(names_to = "model")
-
-  if (!sig) {
-    aapc |>
-      dplyr::select(-aapc_sig)
-  } else {
-    aapc
-  }
-}
-
-
-#' Summarise Joinpoint Regression
-#' @rdname get_summary
-#' @export
-#'
-get_summary <- function(
-  mods,
-  ci = c("both", "apc", "aapc", "hide"),
-  sig = TRUE,
-  level = 0.95,
-  as.ft = FALSE,
-  dec = c(".", ",")
-) {
-  # -----------------------------------------------------------------
-  # ---- Defaults ----
-  # -----------------------------------------------------------------
-  ci <- match.arg(ci)
-
-  dec <- match.arg(dec)
-
-  # -----------------------------------------------------------------
-  # ---- Validations ----
-  # -----------------------------------------------------------------
-  # --- Significance stars and CI ---
-  if (ci == "hide" && !sig) {
-    stop(
-      "Summary table must include either the 95% confidence interval or the significance stars.",
-      call. = FALSE
-    )
-  }
-
-  # --- CI level ---
-  if (level != 0.95) {
-    message(paste0(
-      "Confidence level changed to ",
-      level,
-      " (",
-      scales::percent(level),
-      "CI)."
-    ))
-  }
-
-  # --- Format as flextable ---
-  if (as.ft) {
-    message("The summary table will be displayed as a flextable object.")
-  }
-
-  # ---- Decimal mark ----
-  if (dec == ",") {
-    message(
-      "Decimal mark changed to comma, thousands mark will display as point."
-    )
-  }
-
-  # -----------------------------------------------------------------
-  # ---- Calculate APC ----
-  # -----------------------------------------------------------------
-  apc <- get_apc(mods, level = level, sig = sig)
-
-  # ---- Calculate AAPC ----
-  aapc <- get_aapc(mods, level = level, sig = sig)
-
-  # ---- Generate table ----
-  tab <- dplyr::left_join(
+  # ------------------------------------------------------------------------
+  # ---- Summary table ----
+  # ------------------------------------------------------------------------
+  tab <- purrr::map2(
     apc,
     aapc,
-    by = "model"
-  )
+    ~ dplyr::bind_cols(
+      .x,
+      .y
+    )
+  ) |>
+    purrr::list_rbind(names_to = "model")
 
-  # ---- Select which CIs to display ----
-  if (ci == "apc") {
-    tab <- tab |>
-      dplyr::select(-aapc_lower, -aapc_upper, -aapc_ci)
-  } else if (ci == "aapc") {
-    tab <- tab |>
-      dplyr::select(-apc_lower, -apc_upper)
-  } else if (ci == "hide") {
-    tab <- tab |>
-      dplyr::select(!dplyr::contains(c("lower", "upper")))
+  # ------------------------------------------------------------------------
+  # ---- Table stats ----
+  # ------------------------------------------------------------------------
+  if (stats == "apc") {
+    tab <- tab |> dplyr::select(!dplyr::starts_with("aapc"))
+  } else if (stats == "aapc") {
+    tab <- tab |> dplyr::select(!dplyr::starts_with("apc"))
   }
 
-  # ---- Flextable ----
+  # ------------------------------------------------------------------------
+  # ---- Hide CI ----
+  # ------------------------------------------------------------------------
+  if (hide == "ci") {
+    tab <- tab |> dplyr::select(!dplyr::ends_with(c("lower", "upper")))
+  } else if (hide == "sig") {
+    tab <- tab |> dplyr::select(!dplyr::ends_with("sig"))
+  }
+
+  # ------------------------------------------------------------------------
+  # ---- Transform to flextable ----
+  # ------------------------------------------------------------------------
   if (as.ft) {
     tab <- tab |>
       # --- Period as factor ---
@@ -375,122 +390,91 @@ get_summary <- function(
         too_few = "align_start"
       ) |>
 
+      # --- Remove empty cols ---
+      dplyr::select(
+        where(~ !all(is.na(.x) | .x == ""))
+      ) |>
+
       # --- Flextable ---
       flextable::flextable() |>
       flextable::colformat_double(
         big.mark = if (dec == ",") "." else ",",
         decimal.mark = if (dec == ",") "," else ".",
         digits = 2
-      ) |>
-
-      # --- Combine columns ---
-      flextable::merge_v(
-        j = c("group", "subgroup", "jp"),
-        combine = TRUE
-      ) |>
-      flextable::merge_v(
-        j = grep("aapc", names(tab), value = TRUE),
-        combine = TRUE
       )
+
+    # --- Combine columns ---
+    if ("subgroup" %in% names(tab)) {
+      tab <- tab |>
+        flextable::merge_v(
+          j = c("group", "subgroup", "jp"),
+          combine = TRUE
+        )
+    } else {
+      tab <- tab |>
+        flextable::merge_v(
+          j = c("group", "jp"),
+          combine = TRUE
+        )
+    }
+
+    # --- Merge AAPC ---
+    if (stats != "apc") {
+      tab <- tab |>
+        flextable::merge_v(
+          j = grep("aapc", names(tab), value = TRUE),
+          combine = TRUE
+        )
+    }
   }
 
+  # ------------------------------------------------------------------------
   # ---- Return ----
+  # ------------------------------------------------------------------------
   return(tab)
 }
 
-# ---- Use summary ----
+#' Get Annual Percent Change (APC)
+#' @rdname get_summary
 #' @export
-summary.model_jp <- function(
-  object,
+#'
+get_apc <- function(
+  mods,
+  stats = "apc",
   ...
 ) {
   get_summary(
-    object,
+    mods,
+    stats = "apc",
     ...
   )
 }
 
 
-#' Extract model data
-#' @keywords internal
-extract_jp_mod <- function(x) {
-  # --- Model fit ---
-  fit <- x$fit
-
-  # --- Coefficients ---
-  beta <- stats::coef(fit)
-
-  # --- Variance/covariance matrix ---
-  var <- stats::vcov(fit)
-
-  # --- Joinpoints ---
-  jp <- x$joinpoints
-
-  # --- Number of segments ---
-  segments <- length(jp) + 1
-
-  # --- Time breaks ---
-  breaks <- sort(c(
-    min(x$time, na.rm = TRUE),
-    jp,
-    max(x$time, na.rm = TRUE)
-  ))
-
-  # --- Time segments ---
-  period <- tibble::tibble(
-    period = paste(
-      head(breaks, -1),
-      tail(breaks, -1),
-      sep = "-"
-    )
+#' Get Average Annual Percent Change (APC)
+#' @rdname get_summary
+#' @export
+#'
+get_aapc <- function(
+  mods,
+  stats = "aapc",
+  ...
+) {
+  get_summary(
+    mods,
+    stats = "aapc",
+    ...
   )
+}
 
-  # --- Hinge variable names ---
-  delta <- grep(
-    "^U\\.",
-    names(beta),
-    value = TRUE
-  )
-
-  # --- Slopes ---
-  slopes <- c(
-    beta["x"],
-    beta["x"] + cumsum(beta[delta])
-  )
-
-  # --- Contrast matrix ---
-  L <- matrix(
-    0,
-    nrow = segments,
-    ncol = length(beta),
-    dimnames = list(
-      paste0("segment", seq_len(segments)),
-      names(beta)
-    )
-  )
-
-  # --- First segment ---
-  L[1, "x"] <- 1
-
-  # --- Remaining segments ---
-  if (length(delta) > 0) {
-    for (i in seq_along(delta)) {
-      L[i + 1, "x"] <- 1
-
-      L[i + 1, delta[seq_len(i)]] <- 1
-    }
-  }
-
-  # --- Return ---
-  list(
-    fit = fit,
-    beta = beta,
-    delta = delta,
-    slopes = slopes,
-    var = var,
-    L = L,
-    jp = jp,
-    segments = segments,
-    period = period
+#' Use summary()
+#' @export
+summary.model_jp <- function(
+  mods,
+  ...
+) {
+  get_summary(
+    mods,
+    ...
   )
 }
