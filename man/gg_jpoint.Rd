@@ -75,9 +75,9 @@ group = c("admin", "sex"))
 gg_jpoint(mods = mods, jp = TRUE)
 
 # Plot results as area and show AAPC
-gg_jpoint(mods = mods, geom = "area", aapc = TRUE)
+gg_jpoint(mods = mods, aapc = TRUE)
 
 ## Display as rates
-gg_jpoint(mods = mods,  exp = TRUE, facets = "grid2")
+gg_jpoint(mods = mods, exp = TRUE, facets = "grid2")
 
 }

@@ -58,10 +58,10 @@
 #' gg_jpoint(mods = mods, jp = TRUE)
 #'
 #' # Plot results as area and show AAPC
-#' gg_jpoint(mods = mods, geom = "area", aapc = TRUE)
+#' gg_jpoint(mods = mods, aapc = TRUE)
 #'
 #' ## Display as rates
-#' gg_jpoint(mods = mods,  exp = TRUE, facets = "grid2")
+#' gg_jpoint(mods = mods, exp = TRUE, facets = "grid2")
 #'
 #' @export
 #'
@@ -78,32 +78,29 @@ gg_jpoint <- function(
   # =============================================================
   # ---- Set defaults ----
   # =============================================================
-  # --- Number of models ---
+  # ---- Number of models ----
   n_mod <- length(mods)
 
-  # --- Geometries ---
+  # ---- Geometries ----
   geom <- match.arg(geom)
 
-  # --- Palette name ---
+  # ---- Palette name ----
   if (!is.null(cbpal)) {
-    pal_names <- cbpal_list |> dplyr::pull(name)
+    # pal_names <- cbpal_list |> dplyr::pull(name)
 
-    cbpal <- match.arg(cbpal, choices = pal_names)
+    cbpal <- match.arg(cbpal, choices = dplyr::pull(cbpal_list, name))
   } else {
     cbpal <- "viridis"
   }
 
-  # --- Facets layout ---
+  # ---- Facets layout ----
   if (n_mod > 1) {
     facets <- match.arg(facets)
   } else {
     facets <- "none"
   }
 
-  # --- Additional arguments ---
-  dots <- rlang::list2(...)
-
-  # --- Overwrite default values ---
+  # ---- Additional arguments ----
   geom_args <- purrr::list_modify(
     .x = list(
       lwd = 1,
@@ -113,11 +110,12 @@ gg_jpoint <- function(
       angle = 90,
       text.size = 8,
       hjust = 1,
+      vjust = 0.5,
+      border.color = NA,
       date_breaks = "2 years",
-      name = "Period",
-      border.color = NA
+      name = "Period"
     ),
-    !!!dots
+    !!!rlang::list2(...)
   )
 
   # =============================================================
@@ -125,7 +123,7 @@ gg_jpoint <- function(
   # =============================================================
   # ---- Joinpoints ----
   if (!jp) {
-    message("Joinpoint position(s) will not be displayed.")
+    message("Position of joinpoints will not be displayed.")
   }
 
   # ---- Facets ----
@@ -143,7 +141,9 @@ gg_jpoint <- function(
     .f = ~ tibble::tibble(
       time = .x$time,
       log_rate = .x$log_rate,
+      rate = exp(log_rate),
       fitted = stats::fitted(.x$fit),
+      exp_fitted = exp(fitted),
       period = findInterval(.x$time, .x$joinpoints) + 1,
       jp_pos = .x$joinpoints[period]
     )
@@ -182,11 +182,11 @@ gg_jpoint <- function(
     data = data,
     mapping = ggplot2::aes(
       x = time,
-      y = if (exp) exp(log_rate) else log_rate,
+      y = if (exp) rate else log_rate,
     )
   ) +
 
-    # --- X axis as date ---
+    # --- X axis date format ---
     ggplot2::scale_x_date(
       date_labels = "%Y",
       date_breaks = geom_args$date_breaks
@@ -247,7 +247,7 @@ gg_jpoint <- function(
       # --- Fitted lines ---
       ggplot2::geom_line(
         mapping = ggplot2::aes(
-          y = if (exp) exp(fitted) else fitted,
+          y = if (exp) exp_fitted else fitted,
           color = if (facets == "grid2") subgroup else group
         ),
         lwd = geom_args$lwd
@@ -270,7 +270,7 @@ gg_jpoint <- function(
     g <- g +
       ggplot2::geom_area(
         mapping = ggplot2::aes(
-          y = if (exp) exp(fitted) else fitted,
+          y = if (exp) exp_fitted else fitted,
           fill = factor(breaks),
           group = group_var
         ),
@@ -287,7 +287,7 @@ gg_jpoint <- function(
     g <- g +
       ggplot2::geom_line(
         mapping = ggplot2::aes(
-          y = if (exp) exp(fitted) else fitted,
+          y = if (exp) exp_fitted else fitted,
           color = factor(period),
           group = group_var
         ),
@@ -319,14 +319,14 @@ gg_jpoint <- function(
         ggplot2::aes(
           x = max(data$time),
           y = min(data$log_rate),
-          label = paste0("AAPC: ", aapc)
+          label = paste0("AAPC: ", round(aapc, 2), aapc_sig)
         ),
         size = geom_args$text.size,
         size.unit = "pt",
-        vjust = 0.5,
-        hjust = 1,
+        vjust = geom_args$vjust,
+        hjust = geom_args$hjust,
         alpha = 0.8,
-        position = "jitter"
+        border.color = geom_args$border.color
       )
   }
 
