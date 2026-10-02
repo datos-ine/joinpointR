@@ -61,7 +61,7 @@ data_admin <- hiv_data |>
   filter(between(admin, "Buenos Aires", "Chubut"))
 
 ## Fit the joinpoint model
-mods_admin <- model_jp_grid(
+mods <- model_jp_grid(
   data = data_admin,
   rate = hiv_rate,
   time = year,
@@ -80,43 +80,47 @@ The functions `get_summary()` provides a summary table containing:
 
  ```{r}
  #| id: get_summary-1
- get_summary(mods)
+ get_summary(mods_sex)
  ```
+
+By default, `get_summary()` displays both the APC and AAPC, to show only the APC use:
+
+```{r}
+#| id: get_summary-2
+get_summary(mods_sex, stats = "apc")
+
+get_apc(mods_sex)
+```
+
+To display only the AAPC use:
+```{r}
+#| id: get_summary-3
+get_summary(mods_sex, stats = "aapc")
+
+get_aapc(mods_sex)
+```
+
+The confidence interval or significance stars can be changed using the argument `hide`:
+
+```{r}
+#|id: get_summary-4
+# Hide the confidence interval
+get_summary(mods_sex, hide = "ci")
+
+# Hide the significance stars
+get_summary(mods_sex, hide = "sig")
+```
 
 The confidence level defaults to 95% and can be changed using the argument `level.ci`:
 ```{r}
-#| id: get_summary-2
-get_summary(mods, level.ci = .9)
- ```
-
-Users can pick to show confidence intervals for the APC, AAPC, both (the Default), or none using the argument `ci`:
-```{r}
-#| id: get_summary-3
-get_summary(mods, ci = "hide")
- ```
-
- ```{r}
-#| id: get_summary-3
-get_summary(mods, sig = FALSE)
- ```
-
-### Annual percentage change (APC)
-The function `get_apc()` provides the annual percentage change and its 95% confidence interval for models of class `"model_jp"`.
-
-```{r}
-#| id: apc-1
-get_apc(mods = mods_sex)
-
-get_apc(mods = mods_admin)
+#| id: get_summary-5
+get_summary(mods_sex, level.ci = .9)
 ```
 
-### Average annual percent change (AAPC)
-The function `get_aapc()` allows users to estimate the global trend for models of class `"model_jp"` using the parametric method for estimating the IC.
+Results can also be displayed as a `flextable`:
 
 ```{r}
-#| id: aapc-1
-get_aapc(mods = mods_sex)
-
-get_aapc(mods = mods_admin)
+#| id: get_summary-6
+get_summary(mods_sex, as.ft = TRUE)
 ```
 
