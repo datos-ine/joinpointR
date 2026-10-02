@@ -92,10 +92,10 @@ gg_jpoint <- function(
   geom <- match.arg(geom)
 
   # ---- Palette name ----
-  if (!is.null(cbpal)) {
-    cbpal <- match.arg(cbpal, choices = dplyr::pull(cbpal_list, name))
-  } else {
+  if (missing(cbpal) || is.null(cbpal)) {
     cbpal <- "viridis"
+  } else {
+    cbpal <- match.arg(cbpal, choices = dplyr::pull(cbpal_list, name))
   }
 
   # ---- Facets layout ----

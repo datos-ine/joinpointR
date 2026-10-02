@@ -66,7 +66,7 @@ scale_cbpal_color <- function(
 
 #' @rdname scale_cbpal
 #' @export
-#' 
+#'
 scale_cbpal_fill <- function(
   palette = "viridis",
   reverse = FALSE,
@@ -94,16 +94,16 @@ scale_cbpal_fill <- function(
 
 #' Selects a colorblind-friendly palette
 #' @keywords internal
-#' 
+#'
 cbpal <- function(
   palette = "viridis",
   reverse = FALSE
 ) {
   # --- Load list of available palettes ---
-  data(cbpal_list)
+  valid_pal <- cbpal_list
 
   # --- Filter data ---
-  pal <- cbpal_list |>
+  pal <- valid_pal |>
     dplyr::filter(name == palette) |>
     tidyr::pivot_longer(
       cols = x1:x7,
@@ -118,5 +118,5 @@ cbpal <- function(
   }
 
   # --- Return ---
-  colorRampPalette(colors = pal)
+  return(colorRampPalette(colors = pal))
 }
