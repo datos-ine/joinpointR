@@ -388,3 +388,29 @@ gg_jpoint <- function(
   }
   return(g)
 }
+
+# ---- Shortcuts ----
+#' @export
+gg_jpoint_area <- function(
+  mods,
+  ...
+) {
+  gg_jpoint(
+    mods,
+    geom = "area",
+    ...
+  )
+}
+
+
+#' @export
+gg_jpoint_line <- function(
+  mods,
+  ...
+) {
+  gg_jpoint(
+    mods,
+    geom = "line",
+    ...
+  )
+}
