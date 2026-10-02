@@ -4,9 +4,6 @@
 \alias{get_summary}
 \alias{get_apc}
 \alias{get_aapc}
-\alias{Get}
-\alias{summary}
-\alias{data}
 \title{Summary statistics for joinpoint regression models}
 \usage{
 get_summary(
@@ -139,15 +136,15 @@ dplyr::filter(admin == "ARG")
 mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = "sex")
 
 # Obtain the model summary
-get_summary(mods, level.ci = 0.95, ci = "both", sig = TRUE)
+get_summary(mods)
 
 # Same output calling summary(mods)
-summary(mods, as.ft = TRUE)
+summary(mods)
 
 # Obtain the APC with 95\% CI
-get_apc(mods = mods, level.ci = 0.95, sig = TRUE)
+get_apc(mods = mods)
 
 # Obtain the AAPC with 95\% CI
-get_aapc(mods = mods, level.ci = 0.95, sig = TRUE)
+get_aapc(mods = mods)
 
 }

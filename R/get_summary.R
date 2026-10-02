@@ -116,21 +116,18 @@
 #' mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = "sex")
 #'
 #' # Obtain the model summary
-#' get_summary(mods, level.ci = 0.95, ci = "both", sig = TRUE)
+#' get_summary(mods)
 #'
 #' # Same output calling summary(mods)
-#' summary(mods, as.ft = TRUE)
+#' summary(mods)
 #'
 #' # Obtain the APC with 95% CI
-#' get_apc(mods = mods, level.ci = 0.95, sig = TRUE)
+#' get_apc(mods = mods)
 #'
 #' # Obtain the AAPC with 95% CI
-#' get_aapc(mods = mods, level.ci = 0.95, sig = TRUE)
+#' get_aapc(mods = mods)
 #'
 #' @name get_summary
-#' @aliases get_summary get_apc get_aapc
-
-#' Get summary data
 #' @export
 get_summary <- function(
   mods,
@@ -235,61 +232,41 @@ get_summary <- function(
   }
 
   # ------------------------------------------------------------------------
-  # ---- Calculate APC ----
+  # ---- Get summary stats ----
   # ------------------------------------------------------------------------
-  apc <- purrr::map(
+  apc_aapc <- purrr::map(
     mods,
     function(x) {
       # ---- Get model data ----
       data <- extract_mod(x)
 
-      # ---- Variance of the slopes ----
+      # ---- Variance matrix of the slopes ----
       var_slopes <- data$L %*%
         data$var %*%
         t(data$L)
 
+      # -------------------------------------------------------------
+      # ---- Calculate APC ----
+      # -------------------------------------------------------------
       # ---- Standard error ----
-      se <- sqrt(diag(var_slopes))
+      se_apc <- sqrt(diag(var_slopes))
 
       # ---- Critical value ----
-      critical <- stats::qt(
+      crit_apc <- stats::qt(
         1 - (1 - level.ci) / 2,
         df = stats::df.residual(data$fit)
       )
 
-      # ---- APC ----
+      # ---- APC (CI) ----
       apc <- (exp(data$slopes) - 1) * 100
 
-      # ---- Confidence interval ----
-      apc_lower <- (exp(data$slopes - critical * se) - 1) * 100
+      apc_lower <- (exp(data$slopes - crit_apc * se_apc) - 1) * 100
 
-      apc_upper <- (exp(data$slopes + critical * se) - 1) * 100
+      apc_upper <- (exp(data$slopes + crit_apc * se_apc) - 1) * 100
 
-      # ---- Return ----
-      tibble::tibble(
-        jp = data$segments - 1,
-        period = data$period$period,
-        apc = apc,
-        apc_lower = apc_lower,
-        apc_upper = apc_upper,
-        apc_sig = ifelse(
-          apc_lower > 0 | apc_upper < 0,
-          "*",
-          ""
-        )
-      )
-    }
-  )
-
-  # ------------------------------------------------------------------------
-  # ---- Calculate AAPC ----
-  # ------------------------------------------------------------------------
-  aapc <- purrr::map(
-    mods,
-    function(x) {
-      # ---- Get model data ----
-      data <- extract_mod(x)
-
+      # -------------------------------------------------------------
+      # ---- Calculate AAPC ----
+      # -------------------------------------------------------------
       # ---- Segment lengths ----
       years <- stringr::str_split_fixed(data$period$period, "-", 2)
 
@@ -302,42 +279,50 @@ get_summary <- function(
       # ---- Weighted slope ----
       beta <- sum(wt * data$slopes)
 
-      # ---- Variance-covariance matrix of slopes ----
-      var_slopes <- data$L %*%
-        data$var %*%
-        t(data$L)
-
       # ---- Variance of weighted slope ----
       var_beta <- t(wt) %*%
         var_slopes %*%
         wt
 
       # ---- Standard error ----
-      se <- sqrt(as.numeric(var_beta))
+      se_aapc <- sqrt(as.numeric(var_beta))
 
       # ---- Critical value ----
-      critical <- stats::qt(
+      crit_aapc <- stats::qt(
         1 - (1 - level.ci) / 2,
         df = stats::df.residual(data$fit)
       )
 
-      # ---- AAPC ----
+      # ---- AAPC (CI) ----
       aapc <- (exp(beta) - 1) * 100
 
-      # ---- Confidence interval ----
-      aapc_lower <- (exp(beta - critical * se) - 1) * 100
+      aapc_lower <- (exp(beta - crit_aapc * se_aapc) - 1) * 100
 
-      aapc_upper <- (exp(beta + critical * se) - 1) * 100
+      aapc_upper <- (exp(beta + crit_aapc * se_aapc) - 1) * 100
 
+      # -------------------------------------------------------------
       # ---- Return ----
-      tibble::tibble(
-        aapc = aapc,
-        aapc_lower = aapc_lower,
-        aapc_upper = aapc_upper,
-        aapc_sig = ifelse(
-          aapc_lower > 0 | aapc_upper < 0,
-          "*",
-          ""
+      # -------------------------------------------------------------
+      return(
+        tibble::tibble(
+          jp = data$segments - 1,
+          period = data$period$period,
+          apc = apc,
+          apc_lower = apc_lower,
+          apc_upper = apc_upper,
+          apc_sig = ifelse(
+            apc_lower > 0 | apc_upper < 0,
+            "*",
+            ""
+          ),
+          aapc = aapc,
+          aapc_lower = aapc_lower,
+          aapc_upper = aapc_upper,
+          aapc_sig = ifelse(
+            aapc_lower > 0 | aapc_upper < 0,
+            "*",
+            ""
+          ),
         )
       )
     }
@@ -346,14 +331,7 @@ get_summary <- function(
   # ------------------------------------------------------------------------
   # ---- Summary table ----
   # ------------------------------------------------------------------------
-  tab <- purrr::map2(
-    apc,
-    aapc,
-    ~ dplyr::bind_cols(
-      .x,
-      .y
-    )
-  ) |>
+  tab <- apc_aapc |>
     purrr::list_rbind(names_to = "model")
 
   # ------------------------------------------------------------------------
@@ -378,49 +356,28 @@ get_summary <- function(
   # ---- Transform to flextable ----
   # ------------------------------------------------------------------------
   if (as.ft) {
-    tab <- tab |>
-      # --- Period as factor ---
-      dplyr::mutate(jp = factor(jp)) |>
-
-      # --- Separate grouping vars ---
-      tidyr::separate_wider_delim(
-        cols = model,
-        delim = "_",
-        names = c("group", "subgroup"),
-        too_few = "align_start"
-      ) |>
-
-      # --- Remove empty cols ---
-      dplyr::select(
-        where(~ !all(is.na(.x) | .x == ""))
-      ) |>
-
-      # --- Flextable ---
+    ftab <- tab |>
       flextable::flextable() |>
+
+      # --- Format numbers ---
       flextable::colformat_double(
+        j = setdiff(
+          names(tab)[vapply(tab, is.numeric, logical(1))],
+          "jp"
+        ),
         big.mark = if (dec == ",") "." else ",",
         decimal.mark = if (dec == ",") "," else ".",
         digits = 2
+      ) |>
+
+      # --- Group columns ----
+      flextable::merge_v(
+        j = c("model", "jp"),
+        combine = TRUE
       )
 
-    # --- Combine columns ---
-    if ("subgroup" %in% names(tab)) {
-      tab <- tab |>
-        flextable::merge_v(
-          j = c("group", "subgroup", "jp"),
-          combine = TRUE
-        )
-    } else {
-      tab <- tab |>
-        flextable::merge_v(
-          j = c("group", "jp"),
-          combine = TRUE
-        )
-    }
-
-    # --- Merge AAPC ---
     if (stats != "apc") {
-      tab <- tab |>
+      ftab <- ftab |>
         flextable::merge_v(
           j = grep("aapc", names(tab), value = TRUE),
           combine = TRUE
@@ -431,7 +388,7 @@ get_summary <- function(
   # ------------------------------------------------------------------------
   # ---- Return ----
   # ------------------------------------------------------------------------
-  return(tab)
+  if (!as.ft) return(tab) else return(ftab)
 }
 
 #' Get Annual Percent Change (APC)
