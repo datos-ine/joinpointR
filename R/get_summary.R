@@ -119,7 +119,7 @@
 #' get_summary(mods)
 #'
 #' # Same output calling summary(mods)
-#' summary(mods)
+#' summary(mods, as.ft = TRUE)
 #'
 #' # Obtain the APC with 95% CI
 #' get_apc(mods = mods)
