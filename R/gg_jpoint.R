@@ -20,6 +20,12 @@
 #' \code{facets = "grid2"} displays subgroups in rows and groups in columns.
 #' This argument is ignored when only one model is provided.
 #'
+#' @param color.by Character. Determines whether the data should be colored using
+#' the grouping variable (\code{"group"}), the time period (\code{"period"}), or
+#' the rate trend (\code{"trend"}). Defaults to \code{"group"} for
+#' \code{geom = "linepoint"} and to \code{"period"} for \code{geom = "area"} and
+#' \code{geom = "line"}.
+#'
 #' @param exp Logical. Whether to display observed and fitted values on the
 #' original rate scale. Defaults to \code{FALSE}.
 #'
@@ -69,6 +75,7 @@ gg_jpoint <- function(
   mods,
   geom = c("linepoint", "line", "area"),
   facets = c("wrap", "grid", "grid2"),
+  color.by = c("group", "period", "trend"),
   exp = FALSE,
   jp = TRUE,
   aapc = FALSE,
@@ -86,8 +93,6 @@ gg_jpoint <- function(
 
   # ---- Palette name ----
   if (!is.null(cbpal)) {
-    # pal_names <- cbpal_list |> dplyr::pull(name)
-
     cbpal <- match.arg(cbpal, choices = dplyr::pull(cbpal_list, name))
   } else {
     cbpal <- "viridis"
@@ -99,6 +104,9 @@ gg_jpoint <- function(
   } else {
     facets <- "none"
   }
+
+  # ---- Color layout ----
+  color.by <- match.arg(color.by)
 
   # ---- Additional arguments ----
   geom_args <- purrr::list_modify(
@@ -112,8 +120,15 @@ gg_jpoint <- function(
       hjust = 1,
       vjust = 0.5,
       border.color = NA,
+      reverse = FALSE,
       date_breaks = "2 years",
-      name = "Period"
+      name = if (color.by == "period") {
+        "Period"
+      } else if (color.by == "trend") {
+        "Trend"
+      } else {
+        "Group"
+      }
     ),
     !!!rlang::list2(...)
   )
@@ -169,11 +184,36 @@ gg_jpoint <- function(
       cols_remove = FALSE
     ) |>
 
-    # --- Add breaks ---
+    # --- Add trend per period and group ---
+    dplyr::mutate(
+      trend = dplyr::if_else(
+        (dplyr::last(fitted) - dplyr::first(fitted)) >= 0,
+        "Asc.",
+        "Desc."
+      ),
+      .by = c(group_var, period)
+    ) |>
+
+    # --- Add area breaks ---
     dplyr::mutate(
       breaks = dplyr::coalesce(dplyr::lag(period), period),
       .by = group_var
     )
+
+  # =============================================================
+  # ---- Color scheme ----
+  # =============================================================
+  plot_color <- if (color.by == "group") {
+    if (facets == "grid2") data$subgroup else data$group
+  } else if (color.by == "period") {
+    if (geom == "area") {
+      factor(data$breaks)
+    } else {
+      factor(data$period)
+    }
+  } else {
+    factor(data$trend)
+  }
 
   # =============================================================
   # ---- Base plot layout ----
@@ -202,10 +242,7 @@ gg_jpoint <- function(
     ggplot2::theme_minimal() +
     ggplot2::theme(
       legend.position = "bottom",
-      axis.text.x = ggplot2::element_text(angle = geom_args$angle),
-      legend.title = if (geom == "linepoint") {
-        ggplot2::element_blank()
-      }
+      axis.text.x = ggplot2::element_text(angle = geom_args$angle)
     )
 
   # =============================================================
@@ -248,7 +285,8 @@ gg_jpoint <- function(
       ggplot2::geom_line(
         mapping = ggplot2::aes(
           y = if (exp) exp_fitted else fitted,
-          color = if (facets == "grid2") subgroup else group
+          group = group_var,
+          color = plot_color
         ),
         lwd = geom_args$lwd
       ) +
@@ -256,7 +294,7 @@ gg_jpoint <- function(
       # --- Observed points ---
       ggplot2::geom_point(
         mapping = ggplot2::aes(
-          color = if (facets == "grid2") subgroup else group
+          color = plot_color
         ),
         size = geom_args$size,
         alpha = geom_args$alpha
@@ -271,7 +309,7 @@ gg_jpoint <- function(
       ggplot2::geom_area(
         mapping = ggplot2::aes(
           y = if (exp) exp_fitted else fitted,
-          fill = factor(breaks),
+          fill = plot_color,
           group = group_var
         ),
         position = "identity",
@@ -288,7 +326,7 @@ gg_jpoint <- function(
       ggplot2::geom_line(
         mapping = ggplot2::aes(
           y = if (exp) exp_fitted else fitted,
-          color = factor(period),
+          color = plot_color,
           group = group_var
         ),
         lwd = geom_args$lwd
@@ -334,9 +372,19 @@ gg_jpoint <- function(
   # ---- Return ----
   # =============================================================
   if (geom == "area") {
-    g <- g + scale_cbpal_fill(palette = cbpal, name = geom_args$name)
+    g <- g +
+      scale_cbpal_fill(
+        palette = cbpal,
+        reverse = geom_args$reverse,
+        name = geom_args$name
+      )
   } else {
-    g <- g + scale_cbpal_color(palette = cbpal, name = geom_args$name)
+    g <- g +
+      scale_cbpal_color(
+        palette = cbpal,
+        reverse = geom_args$reverse,
+        name = geom_args$name
+      )
   }
   return(g)
 }

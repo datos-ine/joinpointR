@@ -8,6 +8,7 @@ gg_jpoint(
   mods,
   geom = c("linepoint", "line", "area"),
   facets = c("wrap", "grid", "grid2"),
+  color.by = c("group", "period", "trend"),
   exp = FALSE,
   jp = TRUE,
   aapc = FALSE,
@@ -30,6 +31,12 @@ displays one facet for each grouping level; \code{facets = "grid"}
 displays groups in rows and subgroups in columns; and
 \code{facets = "grid2"} displays subgroups in rows and groups in columns.
 This argument is ignored when only one model is provided.}
+
+\item{color.by}{Character. Determines whether the data should be colored using
+the grouping variable (\code{"group"}), the time period (\code{"period"}), or
+the rate trend (\code{"trend"}). Defaults to \code{"group"} for
+\code{geom = "linepoint"} and to \code{"period"} for \code{geom = "area"} and
+\code{geom = "line"}.}
 
 \item{exp}{Logical. Whether to display observed and fitted values on the
 original rate scale. Defaults to \code{FALSE}.}
