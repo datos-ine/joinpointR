@@ -69,6 +69,8 @@
 #' ## Display as rates
 #' gg_jpoint(mods = mods, exp = TRUE, facets = "grid2")
 #'
+#' @name gg_jpoint
+#' @aliases gg_jpoint gg_jpoint_area gg_jpoint_line
 #' @export
 #'
 gg_jpoint <- function(
@@ -310,9 +312,8 @@ gg_jpoint <- function(
         mapping = ggplot2::aes(
           y = if (exp) exp_fitted else fitted,
           fill = plot_color,
-          group = group_var
+          group = 1
         ),
-        position = "identity",
         alpha = geom_args$alpha,
         color = "grey20"
       )
@@ -390,27 +391,34 @@ gg_jpoint <- function(
 }
 
 # ---- Shortcuts ----
+#' Geom area
+#' @rdname gg_jpoint
 #' @export
 gg_jpoint_area <- function(
   mods,
+  color.by = "trend",
   ...
 ) {
   gg_jpoint(
     mods,
     geom = "area",
+    color.by = "trend",
     ...
   )
 }
 
-
+#' Geom line
+#' @rdname gg_jpoint
 #' @export
 gg_jpoint_line <- function(
   mods,
+  color.by = "period",
   ...
 ) {
   gg_jpoint(
     mods,
     geom = "line",
+    color.by = "period",
     ...
   )
 }

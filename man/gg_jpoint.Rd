@@ -2,6 +2,8 @@
 % Please edit documentation in R/gg_jpoint.R
 \name{gg_jpoint}
 \alias{gg_jpoint}
+\alias{gg_jpoint_area}
+\alias{gg_jpoint_line}
 \title{Plot Joinpoint Regression Models}
 \usage{
 gg_jpoint(
@@ -15,6 +17,10 @@ gg_jpoint(
   cbpal = NULL,
   ...
 )
+
+gg_jpoint_area(mods, color.by = "trend", ...)
+
+gg_jpoint_line(mods, color.by = "period", ...)
 }
 \arguments{
 \item{mods}{A list of models of class \code{model_jp}, returned by

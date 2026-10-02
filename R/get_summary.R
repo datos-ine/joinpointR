@@ -361,19 +361,41 @@ get_summary <- function(
       dplyr::select(!dplyr::contains(c("lower", "upper")))
   }
 
-  # ---- Return ----
+  # ---- Flextable ----
   if (as.ft) {
-    tab |>
+    tab <- tab |>
+      # --- Period as factor ---
+      dplyr::mutate(jp = factor(jp)) |>
+
+      # --- Separate grouping vars ---
+      tidyr::separate_wider_delim(
+        cols = model,
+        delim = "_",
+        names = c("group", "subgroup"),
+        too_few = "align_start"
+      ) |>
+
+      # --- Flextable ---
       flextable::flextable() |>
       flextable::colformat_double(
-        j = -2,
         big.mark = if (dec == ",") "." else ",",
         decimal.mark = if (dec == ",") "," else ".",
         digits = 2
+      ) |>
+
+      # --- Combine columns ---
+      flextable::merge_v(
+        j = c("group", "subgroup", "jp"),
+        combine = TRUE
+      ) |>
+      flextable::merge_v(
+        j = grep("aapc", names(tab), value = TRUE),
+        combine = TRUE
       )
-  } else {
-    tab
   }
+
+  # ---- Return ----
+  return(tab)
 }
 
 # ---- Use summary ----
