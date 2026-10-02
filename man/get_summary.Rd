@@ -25,31 +25,37 @@ get_aapc(mods, stats = "aapc", ...)
 \item{stats}{Character. Summary statistics to display in the table.
 One of \code{"both"}, \code{"apc"}, or \code{"aapc"}. Defaults to \code{"both"}.}
 
-\item{hide}{Character. Whether to hide the confidence interval \code{"ci"},
-the significance stars (\code{"sig"}) or none (\code{"none"}). Defaults to \code{"none"}.}
+\item{hide}{Character. Which elements to hide: the confidence interval (\code{"ci"}),
+significance stars (\code{"sig"}), or none (\code{"none"}). Defaults to \code{"none"}.}
 
 \item{level.ci}{Numeric. Confidence level used to calculate confidence
 intervals. Must be between 0 and 1. Defaults to \code{0.95}.}
 
-\item{as.ft}{Logical. Whether to display the model summary as a \code{flextable}
-object. Defaults to \code{FALSE}.}
+\item{as.ft}{Logical. Whether to return the summary as a \code{flextable}
+object instead of a \code{tibble}. Defaults to \code{FALSE}.}
+
+\item{dec}{Character. Decimal separator to use, either a point (\code{"."}) or
+a comma (\code{","}). Defaults to \code{"."}.}
 }
 \value{
-For \code{get_summary()}, a \code{tibble} containing the APC and AAPC
-for each model, together with their confidence intervals and/or
-significance stars according to the values of \code{ci} and \code{sig}.
+For \code{get_summary()}, a \code{\link[tibble]{tibble}} or a
+\code{\link[flextable]{flextable}} containing the APC and/or AAPC for each model,
+along with their confidence intervals and significance stars according to the
+values of \code{stats} and \code{hide}.
 
-For \code{get_apc()}, a \code{tibble} containing the APC for each
-segment, including the corresponding time period, confidence interval,
-and significance stars when \code{sig = TRUE}.
+For \code{get_apc()}, a \code{\link[tibble]{tibble}} or a
+\code{\link[flextable]{flextable}} containing the APC for each model, along
+with its confidence intervals and significance stars according to the
+value of \code{hide}.
 
-For \code{get_aapc()}, a \code{tibble} containing the AAPC for each
-model, including its confidence interval and significance stars when
-\code{sig = TRUE}.
+For \code{get_aapc()}, a \code{\link[tibble]{tibble}} or a
+\code{\link[flextable]{flextable}} containing the AAPC for each model, along
+with its confidence intervals and significance stars according to the
+value of \code{hide}.
 }
 \description{
 Calculates the annual percent change (APC) and the average annual
-percent change (AAPC) of joinpoint regression models.
+percent change (AAPC) for joinpoint regression models.
 }
 \details{
 For each segment, the Annual Percent Change (APC) is calculated from the
@@ -103,22 +109,14 @@ back-transformed to the AAPC scale:
 
 \deqn{
 AAPC_{lower} =
-100\left[
-\exp\left{
-\hat{\beta}{AAPC} -
-t_{1-\alpha/2,df}SE(\hat{\beta}{AAPC})
-\right} - 1
-\right],
+100 \left[ \exp
+\left\{ \hat{\beta}_{\text{AAPC}} -
+t_{1-\alpha/2, \text{df}} SE(\hat{\beta}_{\text{AAPC}}) \right\} - 1 \right].
 }
 
 \deqn{
-AAPC_{upper} =
-100\left[
-\exp\left{
-\hat{\beta}{AAPC} +
-t{1-\alpha/2,df}SE(\hat{\beta}_{AAPC})
-\right} - 1
-\right].
+AAPC_{upper} = 100 \left[ \exp \left\{ \hat{\beta}_{\text{AAPC}} +
+t_{1-\alpha/2, \text{df}} SE(\hat{\beta}_{\text{AAPC}}) \right\} - 1 \right].
 }
 
 The confidence intervals described above are based on the
