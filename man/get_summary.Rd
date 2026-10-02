@@ -102,7 +102,7 @@ residual degrees of freedom of the fitted model, and are then
 back-transformed to the AAPC scale:
 
 \deqn{
-AAPC{lower} =
+AAPC_{lower} =
 100\left[
 \exp\left{
 \hat{\beta}{AAPC} -
@@ -112,7 +112,7 @@ t_{1-\alpha/2,df}SE(\hat{\beta}{AAPC})
 }
 
 \deqn{
-AAPC{upper} =
+AAPC_{upper} =
 100\left[
 \exp\left{
 \hat{\beta}{AAPC} +
@@ -139,7 +139,7 @@ mods <- model_jp_grid(data = data, rate = hiv_rate, time = year, group = "sex")
 get_summary(mods)
 
 # Same output calling summary(mods)
-summary(mods)
+summary(mods, as.ft = TRUE)
 
 # Obtain the APC with 95\% CI
 get_apc(mods = mods)

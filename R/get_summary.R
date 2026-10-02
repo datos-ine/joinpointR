@@ -82,7 +82,7 @@
 #' back-transformed to the AAPC scale:
 #'
 #' \deqn{
-#' AAPC{lower} =
+#' AAPC_{lower} =
 #' 100\left[
 #' \exp\left{
 #' \hat{\beta}{AAPC} -
@@ -92,7 +92,7 @@
 #' }
 #'
 #' \deqn{
-#' AAPC{upper} =
+#' AAPC_{upper} =
 #' 100\left[
 #' \exp\left{
 #' \hat{\beta}{AAPC} +
@@ -129,6 +129,7 @@
 #'
 #' @name get_summary
 #' @export
+#'
 get_summary <- function(
   mods,
   stats = c("both", "apc", "aapc"),
