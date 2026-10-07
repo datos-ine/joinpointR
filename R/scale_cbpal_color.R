@@ -35,6 +35,40 @@
 #' geom_bar() +
 #' scale_cbpal_fill()
 #'
+#' @keywords internal
+#'
+cbpal <- function(
+  palette = NULL,
+  reverse = FALSE
+) {
+  # --- Defaults ---
+  palette <- if (is.null(palette)) {
+    "viridis"
+  } else {
+    match.arg(palette, choices = dplyr::pull(cbpal_list, .data$name))
+  }
+
+  # --- Filter data ---
+  pal <- cbpal_list |>
+    dplyr::filter(.data$name == palette) |>
+    tidyr::pivot_longer(
+      cols = .data$x1:.data$x7,
+      names_to = "pos",
+      values_to = "color"
+    ) |>
+    dplyr::pull(.data$color)
+
+  # --- Reverse colors ---
+  if (reverse) {
+    pal <- rev(pal)
+  }
+
+  # --- Return ---
+  return(grDevices::colorRampPalette(colors = pal))
+}
+
+
+#' Colorblind-friendly palettes for joinpoint regression
 #' @name scale_cbpal
 #' @aliases scale_cbpal_fill scale_cbpal_color
 #' @export
@@ -89,34 +123,4 @@ scale_cbpal_fill <- function(
       ...
     )
   }
-}
-
-
-#' Selects a colorblind-friendly palette
-#' @keywords internal
-#'
-cbpal <- function(
-  palette = "viridis",
-  reverse = FALSE
-) {
-  # --- Load list of available palettes ---
-  valid_pal <- cbpal_list
-
-  # --- Filter data ---
-  pal <- valid_pal |>
-    dplyr::filter(name == palette) |>
-    tidyr::pivot_longer(
-      cols = x1:x7,
-      names_to = "pos",
-      values_to = "color"
-    ) |>
-    dplyr::pull(color)
-
-  # --- Reverse colors ---
-  if (reverse) {
-    pal <- rev(pal)
-  }
-
-  # --- Return ---
-  return(grDevices::colorRampPalette(colors = pal))
 }

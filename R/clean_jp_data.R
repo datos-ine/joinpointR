@@ -25,6 +25,7 @@
 #' \item \code{k} An integer containing the recommended maximum number of joinpoints to
 #'  test.}
 #' @keywords internal
+#' @importFrom rlang .data
 #'
 clean_jp_data <- function(
   data,

@@ -4,7 +4,7 @@
 \alias{summary.model_jp}
 \title{Use summary()}
 \usage{
-\method{summary}{model_jp}(models, ...)
+\method{summary}{model_jp}(object, ...)
 }
 \description{
 Use summary()

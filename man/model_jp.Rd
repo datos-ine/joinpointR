@@ -20,7 +20,7 @@ model_jp_grid(
 
 model_jp(data, ...)
 
-\method{update}{model_jp}(mod, ...)
+\method{update}{model_jp}(object, ...)
 }
 \arguments{
 \item{data}{A \code{data.frame} or \code{tibble} containing rates, time points,

@@ -174,8 +174,8 @@ get_summary <- function(
     # --- Time periods ---
     period <- tibble::tibble(
       period = paste(
-        head(breaks, -1),
-        tail(breaks, -1),
+        utils::head(breaks, -1),
+        utils::tail(breaks, -1),
         sep = "-"
       )
     )
@@ -449,11 +449,11 @@ get_aapc <- function(
 #' Use summary()
 #' @export
 summary.model_jp <- function(
-  models,
+  object,
   ...
 ) {
   get_summary(
-    models,
+    object,
     ...
   )
 }

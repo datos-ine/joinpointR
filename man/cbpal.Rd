@@ -2,11 +2,46 @@
 % Please edit documentation in R/scale_cbpal_color.R
 \name{cbpal}
 \alias{cbpal}
-\title{Selects a colorblind-friendly palette}
+\title{Colorblind-friendly scales}
 \usage{
-cbpal(palette = "viridis", reverse = FALSE)
+cbpal(palette = NULL, reverse = FALSE)
+}
+\arguments{
+\item{palette}{Character string specifying the palette.}
+
+\item{reverse}{Logical; if \code{TRUE}, reverses the palette.}
+
+\item{discrete}{Logical; should the scale be discrete?}
+
+\item{...}{Other arguments passed to the underlying ggplot2 scale.}
+}
+\value{
+A \code{ggplot2} scale.
 }
 \description{
-Selects a colorblind-friendly palette
+Scales for applying colorblind-friendly palettes to ggplot2 aesthetics.
+}
+\examples{
+library(ggplot2)
+data(iris)
+
+# Use a discrete variable for color
+iris |>
+ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+geom_point() +
+scale_cbpal_color()
+
+# Use a continuous variable for color
+iris |>
+ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = Petal.Length)) +
+geom_point() +
+scale_cbpal_color(discrete = FALSE)
+
+# Use a discrete variable for fill
+iris |>
+ggplot(aes(x = Sepal.Length, fill = Species)) +
+geom_bar() +
+scale_cbpal_fill()
+
 }
 \keyword{internal}

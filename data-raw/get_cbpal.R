@@ -43,5 +43,6 @@ cbpal_list <- purrr::map(
 # ---- Generate data ----
 usethis::use_data(
   cbpal_list,
+  internal = TRUE,
   overwrite = TRUE
 )

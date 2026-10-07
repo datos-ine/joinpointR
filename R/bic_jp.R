@@ -5,7 +5,7 @@
 #' the penalized BIC (BIC3), and the weighted BIC (WBIC) for
 #' models of class \code{model_jp}.
 #'
-#' @param mod Models of class \code{model_jp}.
+#' @param models Models of class \code{model_jp}.
 #'
 #' @return A \code{tibble} containing the values for the BIC, BIC3, WBIC and the
 #' weights used to estimate the WBIC.
@@ -46,6 +46,37 @@
 #' # Check the BIC, BIC3, WBIC values for a single model
 #' bic_jp(mods[1])
 #'
+#' @export
+bic_jp <- function(models) {
+  # ------------------------------------------------------------------------
+  # ---- Calculate BIC ----
+  # ------------------------------------------------------------------------
+  bic <- purrr::map(
+    models,
+    function(x) {
+      fit <- x$fit
+      calc_bic_jp(fit)
+    }
+  ) |>
+
+    # --- List to tibble ---
+    purrr::list_rbind(names_to = "model") |>
+
+    # --- Format grouping variable ---
+    dplyr::mutate(
+      model = stringr::str_replace_all(
+        .data$model,
+        c("\\." = " ", "_" = ": ")
+      )
+    )
+
+  # ------------------------------------------------------------------------
+  # ---- Return ----
+  # ------------------------------------------------------------------------
+  return(bic)
+}
+
+
 #' @keywords internal
 calc_bic_jp <- function(
   mod
@@ -113,37 +144,4 @@ calc_bic_jp <- function(
       WBIC = wbic
     )
   )
-}
-
-
-#' Calculate BIC, BIC3 and WBIC for joinpoint regression models
-#' @name bic_jp
-#' @export
-bic_jp <- function(models) {
-  # ------------------------------------------------------------------------
-  # ---- Calculate BIC ----
-  # ------------------------------------------------------------------------
-  bic <- purrr::map(
-    models,
-    function(x) {
-      fit <- x$fit
-      calc_bic_jp(fit)
-    }
-  ) |>
-
-    # --- List to tibble ---
-    purrr::list_rbind(names_to = "model") |>
-
-    # --- Format grouping variable ---
-    dplyr::mutate(
-      model = stringr::str_replace_all(
-        .data$model,
-        c("\\." = " ", "_" = ": ")
-      )
-    )
-
-  # ------------------------------------------------------------------------
-  # ---- Return ----
-  # ------------------------------------------------------------------------
-  return(bic)
 }

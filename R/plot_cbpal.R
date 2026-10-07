@@ -50,11 +50,10 @@ plot_cbpal <- function(
   # ============================================================
   cbpal_list <- cbpal_list |>
     tidyr::pivot_longer(
-      cols = .data$x1:.data$x7,
+      cols = dplyr::contains("x"),
       names_to = "pos",
       values_to = "color"
     ) |>
-
     dplyr::mutate(pos = readr::parse_number(.data$pos))
 
   # ============================================================

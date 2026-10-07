@@ -314,11 +314,11 @@ model_jp_grid <- function(
         results <- dplyr::bind_rows(results)
 
         if (method == "wbic") {
-            results <- results |> dplyr::arrange(WBIC)
+            results <- results |> dplyr::arrange(.data$WBIC)
         } else if (method == "bic3") {
-            results <- results |> dplyr::arrange(BIC3)
+            results <- results |> dplyr::arrange(.data$BIC3)
         } else {
-            results <- results |> dplyr::arrange(BIC)
+            results <- results |> dplyr::arrange(.data$BIC)
         }
         #     dplyr::arrange(BIC)
 
@@ -328,21 +328,21 @@ model_jp_grid <- function(
         if (method == "wbic") {
             best <- results |>
                 dplyr::slice_min(
-                    WBIC,
+                    .data$WBIC,
                     n = 1,
                     with_ties = FALSE
                 )
         } else if (method == "bic3") {
             best <- results |>
                 dplyr::slice_min(
-                    BIC3,
+                    .data$BIC3,
                     n = 1,
                     with_ties = FALSE
                 )
         } else {
             best <- results |>
                 dplyr::slice_min(
-                    BIC,
+                    .data$BIC,
                     n = 1,
                     with_ties = FALSE
                 )
@@ -459,7 +459,7 @@ model_jp <- function(
 #' @rdname model_jp
 #' @export
 #'
-update.model_jp <- function(mod, ...) {
+update.model_jp <- function(object, ...) {
     # --- Extract the model call ---
     call <- attr(mod, "call")
 
