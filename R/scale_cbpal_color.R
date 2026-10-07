@@ -118,5 +118,5 @@ cbpal <- function(
   }
 
   # --- Return ---
-  return(colorRampPalette(colors = pal))
+  return(grDevices::colorRampPalette(colors = pal))
 }

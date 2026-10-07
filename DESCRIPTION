@@ -1,16 +1,22 @@
 Package: joinpointR
-Title: What the Package Does (One Line, Title Case)
+Title: Tidy Tools for Joinpoint Regression Models
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+    person(
+        "Tamara", "Ricardo", , 
+        email ="tamararicardo83@gmail.com", 
+        role = c("aut", "cre"),
+        comment = c(ORCID = "0000-0002-0921-2611"))
+Description: Provides tools to fit joinpoint regression models with a log-linear specification by levels of one or two categorical variable(s) using the grid-search method. It includes functions to estimate the Annual Percent Change (APC) and the Average Annual Percent Change (AAPC), along with their 95% confidence intervals, and to generate formatted summary tables and plots of results.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
+URL: https://github.com/datos-ine/joinpointR
 Imports: 
     dplyr,
     flextable,
     ggplot2,
+    grDevices,
     lubridate,
     purrr,
     readr,
@@ -22,7 +28,7 @@ Imports:
     utils
 Config/roxygen2/version: 8.1.0
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1)
 LazyData: true
 Suggests: 
     knitr,

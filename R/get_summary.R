@@ -338,7 +338,7 @@ get_summary <- function(
     # --- Format grouping variable ---
     dplyr::mutate(
       group_var = stringr::str_replace_all(
-        group_var,
+        .data$group_var,
         c("\\." = " ", "_" = ": ")
       )
     )
@@ -368,7 +368,7 @@ get_summary <- function(
     ftab <- tab |>
       # --- Separate grouping variable ---
       tidyr::separate_wider_delim(
-        group_var,
+        .data$group_var,
         delim = ": ",
         names = c("group", "subgroup"),
         too_few = "align_start",

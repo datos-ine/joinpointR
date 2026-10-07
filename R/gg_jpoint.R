@@ -178,14 +178,14 @@ gg_jpoint <- function(
     # --- Format grouping variable ---
     dplyr::mutate(
       group_var = stringr::str_replace_all(
-        group_var,
+        .data$group_var,
         c("\\." = " ", "_" = ": ")
       )
     ) |>
 
     # --- Separate grouping variable ---
     tidyr::separate_wider_delim(
-      group_var,
+      .data$group_var,
       delim = ": ",
       names = c("group", "subgroup"),
       too_few = "align_start",
@@ -202,8 +202,8 @@ gg_jpoint <- function(
     # --- Add trend ---
     dplyr::mutate(
       trend = dplyr::case_when(
-        apc > 0 & apc_sig == "*" ~ "Increasing",
-        apc < 0 & apc_sig == "*" ~ "Decreasing",
+        .data$apc > 0 & .data$apc_sig == "*" ~ "Increasing",
+        .data$apc < 0 & .data$apc_sig == "*" ~ "Decreasing",
         .default = "Stable"
       )
     )
@@ -213,7 +213,7 @@ gg_jpoint <- function(
     dat <- dat |>
       dplyr::mutate(
         dplyr::across(
-          .cols = c(time, jp_pos),
+          .cols = c(.data$time, .data$jp_pos),
           .fns = ~ lubridate::ymd(paste0(.x, "01-01"), quiet = TRUE)
         )
       )
@@ -221,7 +221,7 @@ gg_jpoint <- function(
     dat <- dat |>
       dplyr::mutate(
         dplyr::across(
-          .cols = c(time, jp_pos, begin, end),
+          .cols = c(.data$time, .data$jp_pos),
           .fns = ~ lubridate::ymd(paste0(.x, "01"), quiet = TRUE)
         )
       )
@@ -246,8 +246,8 @@ gg_jpoint <- function(
   g <- ggplot2::ggplot(
     data = dat,
     mapping = ggplot2::aes(
-      x = time,
-      y = log_rate,
+      x = .data$time,
+      y = .data$log_rate,
     )
   ) +
 
@@ -291,7 +291,7 @@ gg_jpoint <- function(
     g <- g +
       ggplot2::geom_vline(
         mapping = ggplot2::aes(
-          xintercept = jp_pos
+          xintercept = .data$jp_pos
         ),
         lwd = 0.75,
         color = "darkgrey",
@@ -309,8 +309,8 @@ gg_jpoint <- function(
       # --- Fitted lines ---
       ggplot2::geom_line(
         mapping = ggplot2::aes(
-          y = fitted,
-          group = group_var,
+          y = .data$fitted,
+          group = .data$group_var,
           color = plot_color
         ),
         lwd = geom_args$lwd
@@ -337,7 +337,7 @@ gg_jpoint <- function(
       ggplot2::geom_ribbon(
         mapping = ggplot2::aes(
           ymin = -Inf,
-          ymax = fitted,
+          ymax = .data$fitted,
           fill = plot_color,
           group = 1
         ),
@@ -353,9 +353,9 @@ gg_jpoint <- function(
     g <- g +
       ggplot2::geom_label(
         ggplot2::aes(
-          x = max(time),
-          y = min(log_rate),
-          label = paste0("AAPC: ", round(aapc, 2), aapc_sig)
+          x = max(.data$time),
+          y = min(.data$log_rate),
+          label = paste0("AAPC: ", round(.data$aapc, 2), .data$aapc_sig)
         ),
         size = geom_args$text.size,
         size.unit = "pt",

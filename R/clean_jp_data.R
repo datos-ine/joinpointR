@@ -104,7 +104,7 @@ clean_jp_data <- function(
 
     # --- Create new variables ---
     dplyr::mutate(
-      log_rate = log(rate),
+      log_rate = log(.data$rate),
       group_var = if (!is.null(group)) {
         interaction(!!!rlang::syms(group), sep = ": ")
       } else {
@@ -113,14 +113,14 @@ clean_jp_data <- function(
     ) |>
 
     # --- Sort data ---
-    dplyr::arrange(time, group_var) |>
+    dplyr::arrange(.data$time, .data$group_var) |>
 
     # --- Select columns ---
     dplyr::select(
-      time,
-      rate,
-      log_rate,
-      group_var
+      .data$time,
+      .data$rate,
+      .data$log_rate,
+      .data$group_var
     )
 
   # ============================================================
@@ -128,8 +128,8 @@ clean_jp_data <- function(
   # ============================================================
   #  --- Group levels ---
   group_levels <- data |>
-    dplyr::distinct(group_var) |>
-    dplyr::pull(group_var) |>
+    dplyr::distinct(.data$group_var) |>
+    dplyr::pull(.data$group_var) |>
     as.character()
 
   # --- Number of levels of time ---
@@ -149,7 +149,7 @@ clean_jp_data <- function(
   # ============================================================
   if (!is.null(group)) {
     data_split <- data |>
-      dplyr::group_split(group_var, .keep = FALSE) |>
+      dplyr::group_split(.data$group_var, .keep = FALSE) |>
       purrr::set_names(group_levels)
   } else {
     data_split <- list(data)

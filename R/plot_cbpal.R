@@ -50,12 +50,12 @@ plot_cbpal <- function(
   # ============================================================
   cbpal_list <- cbpal_list |>
     tidyr::pivot_longer(
-      cols = x1:x7,
+      cols = .data$x1:.data$x7,
       names_to = "pos",
       values_to = "color"
     ) |>
 
-    dplyr::mutate(pos = readr::parse_number(pos))
+    dplyr::mutate(pos = readr::parse_number(.data$pos))
 
   # ============================================================
   # ---- Prepare data ----
@@ -63,19 +63,19 @@ plot_cbpal <- function(
   # ---- Filter by type ----
   if (pal_type != "all") {
     cbpal_list <- cbpal_list |>
-      dplyr::filter(type == pal_type)
+      dplyr::filter(.data$type == pal_type)
   }
 
   # ---- Filter by series ----
   if (!is.null(series)) {
     cbpal_list <- cbpal_list |>
-      dplyr::filter(series %in% {{ series }})
+      dplyr::filter(.data$series %in% {{ series }})
   }
 
   # ---- Filter by name ----
   if (!is.null(name)) {
     cbpal_list <- cbpal_list |>
-      dplyr::filter(name %in% {{ name }})
+      dplyr::filter(.data$name %in% {{ name }})
   }
 
   # ============================================================
@@ -84,9 +84,9 @@ plot_cbpal <- function(
   g <- ggplot2::ggplot(
     data = cbpal_list,
     mapping = ggplot2::aes(
-      x = pos,
-      y = name,
-      fill = color
+      x = .data$pos,
+      y = .data$name,
+      fill = .data$color
     )
   ) +
     ggplot2::geom_tile(color = "white") +

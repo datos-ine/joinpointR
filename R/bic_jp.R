@@ -70,7 +70,7 @@ calc_bic_jp <- function(
 
     # --- Base SSE ---
     sse_base <- sum(
-      stats::residuals(object = lm(y ~ x, data = md))^2
+      stats::residuals(object = stats::lm(y ~ x, data = md))^2
     )
 
     # --- Hinge variable names ---
@@ -137,7 +137,7 @@ bic_jp <- function(models) {
     # --- Format grouping variable ---
     dplyr::mutate(
       model = stringr::str_replace_all(
-        model,
+        .data$model,
         c("\\." = " ", "_" = ": ")
       )
     )
