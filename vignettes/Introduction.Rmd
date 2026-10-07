@@ -1,0 +1,259 @@
+---
+title: "Introduction to joinpointR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+#| id: setup
+#| include: false
+knitr::opts_chunk$set(
+  warning = FALSE,
+  collapse = TRUE,
+  dev = "ragg_png",
+  comment = "#>"
+)
+```
+
+Joinpoint regression is commonly used in epidemiology to identify changes in temporal trends. The joinpointR package provides tools to fit joinpoint regression models using the grid-search method, estimate summary statistics, and present results.
+
+## Joinpoint regression models by group
+The function `model_jp_grid()` allows to fit joinpoint regression models with a log-response by levels of up to two categorical variables, using the grid-search method and model selection based in the Bayesian Information Criteria (BIC).
+For the examples, we are going to use a dataset with the HIV rates by sex in Argentina by jurisdiction between 2010 and 2022:
+
+```{r}
+#| message: false
+#| id: example-data
+# Load required packages
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(joinpointR)
+
+# Load example data
+data(hiv_data)
+```
+
+### Model selection by one grouping variable
+
+```{r}
+#| id: fit-1
+## Create a reduced dataset
+data_sex <- hiv_data |>
+  filter(admin == "ARG")
+
+## Fit the joinpoint model
+mods_sex <- model_jp_grid(
+  data = data_sex,
+  rate = hiv_rate,
+  time = year,
+  group = "sex"
+)
+```
+
+### Model selection by two grouping variables
+```{r}
+#| id: fit-2
+## Create a reduced dataset
+data_admin <- hiv_data |>
+  filter(between(admin, "Buenos Aires", "Chaco"))
+
+## Fit the joinpoint model
+mods_admin <- model_jp_grid(
+  data = data_admin,
+  rate = hiv_rate,
+  time = year,
+  group = c("admin", "sex")
+)
+```
+
+### Change model selection method
+By default `model_jp_grid()` uses the Bayesian Information Criteria (BIC) to select the best-fit model. Model selection method can be changed using the argument `method`.
+
+```{r}
+#| id: fit-3
+# Fit the model using the weighted BIC
+mods_wbic <- model_jp_grid(
+  data = data_admin,
+  rate = hiv_rate,
+  time = year,
+  group = c("sex", "admin"),
+  method = "wbic"
+)
+```
+
+## Summarise model results
+### Bayesian Information Criteria
+Regardless of the method selected, all the BIC metrics can be accesed using the function `bic_jp()`:
+
+```{r}
+#| id: bic
+# BIC table for all the models
+bic_jp(mods_admin)
+
+# BIC table for a single model
+bic_jp(mods_admin[1])
+```
+
+### Summary tables
+The functions `get_summary()` provides a summary table containing:
+- `model`: Model name.
+- `jp`: The number of fitted joinpoints.
+- `period`: The time segments defined by the observed joinpoints. Defaults to the whole period when no joinpoints were detected.
+- `apc`,`apc_lower`, `apc_upper`, `apc_sig`: The Annual Percent Change (APC) with its confidence interval and significance stars.
+- `aapc`,`aapc_lower`, `aapc_upper`, `apc_sig`: The Average Annual Percent Change (APC) with its confidence interval and significance stars. 
+
+ ```{r}
+ #| id: get_summary-1
+ get_summary(mods_sex)
+ ```
+
+By default, `get_summary()` displays both the APC and AAPC, to show only the APC use:
+
+```{r}
+#| id: get_summary-2
+get_summary(mods_sex, stats = "apc")
+
+get_apc(mods_sex)
+```
+
+To display only the AAPC use:
+```{r}
+#| id: get_summary-3
+get_summary(mods_sex, stats = "aapc")
+
+get_aapc(mods_sex)
+```
+
+The confidence interval or significance stars can be hided using the argument `hide`:
+
+```{r}
+#|id: get_summary-4
+# Hide the confidence interval
+get_summary(mods_sex, hide = "ci")
+
+# Hide the significance stars
+get_summary(mods_sex, hide = "sig")
+```
+
+The confidence level defaults to 95% and can be changed using the argument `level.ci`:
+```{r}
+#| id: get_summary-5
+get_summary(mods_sex, level.ci = .9)
+```
+
+Results can also be displayed as a `flextable`:
+
+```{r}
+#| id: get_summary-6
+get_summary(mods_sex, as.ft = TRUE)
+```
+
+## Regression plots
+### Default plot
+One grouping variable
+```{r}
+#| id: ggjpoint-1
+gg_jpoint(mods_sex)
+```
+
+Two grouping variables
+```{r}
+#| id: ggjpoint-2
+gg_jpoint(mods_admin)
+```
+
+Change the facets layout
+```{r}
+#| id: ggjpoint-3
+gg_jpoint(mods_admin, facets = "grid")
+```
+
+Reverse the facet grid
+```{r}
+#| id: ggjpoint-4
+gg_jpoint(mods_admin, facets = "grid2")
+```
+
+Change the colors by APC trend
+
+```{r}
+#| id: ggjpoint-5
+gg_jpoint(mods_admin, facets = "grid2", color.by = "trend")
+```
+
+Change the colors by time segment
+
+```{r}
+#| id: ggjpoint-6
+gg_jpoint(mods_admin, facets = "grid2", color.by = "segment")
+```
+
+Change the colors by time period
+
+```{r}
+#| id: ggjpoint-7
+gg_jpoint(mods_admin, facets = "grid2", color.by = "period")
+```
+
+Show Average Annual Percent Change (AAPC)
+```{r}
+#| id: ggjpoint-8
+gg_jpoint(mods_admin, facets = "grid2", aapc = TRUE)
+```
+
+Hide joinpoint positions
+```{r}
+#| id: ggjpoint-9
+gg_jpoint(mods_admin, facets = "grid2", jp = FALSE)
+```
+
+
+### Plot fitted lines
+The observed log-rates can be hidden using `geom = "line"`
+```{r}
+#| id: ggjpoint-10
+gg_jpoint(mods_admin, facets = "grid2", geom = "line")
+```
+
+Alternatively, the same results can be achieved using `gg_jpoint_line()`
+```{r}
+#| id: ggjpoint-11
+gg_jpoint_line(mods_admin, facets = "grid2")
+```
+
+### Plot fitted areas
+```{r}
+#| id: ggjpoint-12
+gg_jpoint(mods_sex, facets = "grid2", geom = "area")
+```
+
+The shortcut `gg_jpoint_area()`produces the same result
+```{r}
+#| id: ggjpoint-13
+gg_jpoint_area(mods_sex, facets = "grid2")
+```
+
+### Change the default colors
+By default, `gg_jpoint()` uses the default colorblind-friendly palette `"viridis"` for coloring the plots. Colorblind-friendly palettes can be changed using the functions `scale_cbpal_color()` and `scale_cbpal_fill()`.
+
+```{r}
+#| id: ggjpoint-14
+gg_jpoint_line(mods_sex) +
+  scale_cbpal_color(palette = "algae")
+
+gg_jpoint_area(mods_sex, color.by = "trend") +
+  scale_cbpal_fill(palette = "blue_fluoride")
+```
+
+The available colorblind-friendly palettes can be checked using `plot_cbpal()`:
+
+```{r}
+#| id: cbpal
+plot_cbpal(type = "div")
+
+plot_cbpal(series = "scico")
+```
