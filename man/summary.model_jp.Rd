@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{object}{Model or list of models to update.}
+
+\item{...}{Additional arguments passed to \code{get_summary()}.}
 }
 \description{
 Use the shortcut summary()

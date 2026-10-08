@@ -64,7 +64,7 @@
 #' gg_jpoint(models = mods, geom = "area", aapc = TRUE)
 #'
 #' # Same result using gg_jpoint_area
-#' gg_jpoint_area(models = mods, aapc = TRUE)
+#' gg_jpoint_area(models = mods, aapc = TRUE, alpha = .5)
 #'
 #' # Change facet layout and color scheme
 #' gg_jpoint_line(models = mods, facets = "grid2", color.by = "trend")
@@ -112,7 +112,10 @@ gg_jpoint <- function(
   } else if (geom == "line" && is.null(color.by)) {
     "segment"
   } else {
-    match.arg(color.by, choices = c("group", "period", "segment", "trend"))
+    match.arg(
+      color.by,
+      choices = c("group", "period", "segment", "trend")
+    )
   }
 
   # ---- Additional arguments ----
@@ -206,14 +209,20 @@ gg_jpoint <- function(
         .data$apc < 0 & .data$apc_sig == "*" ~ "Decreasing",
         .default = "Stable"
       )
+    ) |>
+
+    # --- Add begin and end ---
+    dplyr::mutate(
+      begin = stringr::str_remove(.data$period, "-.*") |> as.numeric(),
+      end = stringr::str_remove(.data$period, ".*-") |> as.numeric()
     )
 
-  # ---- Convert to date ----
+  # ---- Convert to date format ----
   if (time.var == "year") {
     dat <- dat |>
       dplyr::mutate(
         dplyr::across(
-          .cols = c(.data$time, .data$jp_pos),
+          .cols = c(.data$time, .data$jp_pos, .data$begin, .data$end),
           .fns = ~ lubridate::ymd(paste0(.x, "01-01"), quiet = TRUE)
         )
       )
@@ -230,15 +239,16 @@ gg_jpoint <- function(
   # =============================================================
   # ---- Color scheme ----
   # =============================================================
-  plot_color <- if (color.by == "group") {
-    if (facets == "grid2") dat$subgroup else dat$group
-  } else if (color.by == "period") {
-    factor(dat$period)
-  } else if (color.by == "trend") {
-    factor(dat$trend)
-  } else {
-    factor(dat$segment)
-  }
+  dat <- dat |>
+    dplyr::mutate(
+      plot_color = dplyr::case_when(
+        color.by == "group" & facets == "grid2" ~ .data$subgroup,
+        color.by == "group" ~ .data$group,
+        color.by == "period" ~ .data$period,
+        color.by == "trend" ~ .data$trend,
+        .default = as.character(.data$segment)
+      )
+    )
 
   # =============================================================
   # ---- Base plot layout ----
@@ -285,6 +295,68 @@ gg_jpoint <- function(
   }
 
   # =============================================================
+  # ---- Geom: Line and Linepoint ----
+  # =============================================================
+  if (geom %in% c("line", "linepoint")) {
+    g <- g +
+      # --- Fitted lines ---
+      ggplot2::geom_line(
+        mapping = ggplot2::aes(
+          y = .data$fitted,
+          group = .data$group_var,
+          color = .data$plot_color
+        ),
+        lwd = geom_args$lwd
+      )
+  }
+
+  if (geom == "linepoint") {
+    g <- g +
+      # --- Observed points ---
+      ggplot2::geom_point(
+        mapping = ggplot2::aes(
+          color = .data$plot_color
+        ),
+        size = geom_args$size,
+        alpha = geom_args$alpha
+      )
+  }
+
+  # =============================================================
+  # ---- Geom: Area ----
+  # =============================================================
+  if (geom == "area") {
+    dat_area <- dat |>
+      dplyr::distinct(
+        .data$group_var,
+        .data$period,
+        .data$segment,
+        .data$trend,
+        .keep_all = TRUE
+      )
+
+    g <- g +
+      ggplot2::geom_rect(
+        data = dat_area,
+        mapping = ggplot2::aes(
+          ymin = -Inf,
+          ymax = Inf,
+          xmin = .data$begin,
+          xmax = .data$end,
+          fill = .data$plot_color
+        ),
+        alpha = geom_args$alpha,
+        inherit.aes = FALSE
+      ) +
+      ggplot2::geom_line(
+        mapping = ggplot2::aes(
+          y = .data$fitted,
+          group = .data$group_var
+        )
+      )
+  }
+
+  # =============================================================
   # ---- Show joinpoints ----
   # =============================================================
   if (jp) {
@@ -298,51 +370,6 @@ gg_jpoint <- function(
         linetype = "dashed",
         alpha = 0.75,
         na.rm = TRUE
-      )
-  }
-
-  # =============================================================
-  # ---- Geom: Line and Linepoint ----
-  # =============================================================
-  if (geom %in% c("line", "linepoint")) {
-    g <- g +
-      # --- Fitted lines ---
-      ggplot2::geom_line(
-        mapping = ggplot2::aes(
-          y = .data$fitted,
-          group = .data$group_var,
-          color = plot_color
-        ),
-        lwd = geom_args$lwd
-      )
-  }
-
-  if (geom == "linepoint") {
-    g <- g +
-      # --- Observed points ---
-      ggplot2::geom_point(
-        mapping = ggplot2::aes(
-          color = plot_color
-        ),
-        size = geom_args$size,
-        alpha = geom_args$alpha
-      )
-  }
-
-  # =============================================================
-  # ---- Geom: Area ----
-  # =============================================================
-  if (geom == "area") {
-    g <- g +
-      ggplot2::geom_ribbon(
-        mapping = ggplot2::aes(
-          ymin = -Inf,
-          ymax = .data$fitted,
-          fill = plot_color,
-          group = 1
-        ),
-        alpha = geom_args$alpha,
-        color = "grey20"
       )
   }
 

@@ -87,7 +87,7 @@ gg_jpoint(models = mods)
 gg_jpoint(models = mods, geom = "area", aapc = TRUE)
 
 # Same result using gg_jpoint_area
-gg_jpoint_area(models = mods, aapc = TRUE)
+gg_jpoint_area(models = mods, aapc = TRUE, alpha = .5)
 
 # Change facet layout and color scheme
 gg_jpoint_line(models = mods, facets = "grid2", color.by = "trend")

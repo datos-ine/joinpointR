@@ -450,6 +450,7 @@ get_aapc <- function(
 
 #' Use the shortcut summary()
 #' @param object Model or list of models to update.
+#' @param ... Additional arguments passed to \code{get_summary()}.
 #' @export
 #'
 summary.model_jp <- function(

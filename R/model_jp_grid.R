@@ -463,7 +463,7 @@ model_jp <- function(
 #'
 update.model_jp <- function(object, ...) {
     # --- Extract the model call ---
-    call <- attr(mod, "call")
+    call <- attr(object, "call")
 
     # --- Capture new arguments ---
     extras <- rlang::enquos(...)
