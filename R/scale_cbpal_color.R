@@ -122,10 +122,10 @@ scale_cbpal_fill <- function(aesthetics = "fill", ...) {
 
 #' @rdname scale_cbpal
 #' @export
-scale_cbpal_color <- function(aesthetics = "color", ...) {
+scale_cbpal_colour <- function(aesthetics = "color", ...) {
   scale_cbpal(aesthetics = aesthetics, ...)
 }
 
 #' @rdname scale_cbpal
 #' @export
-scale_cbpal_colour <- scale_cbpal_color
+scale_cbpal_color <- scale_cbpal_colour

@@ -225,7 +225,7 @@ Alternatively, the same results can be achieved using `gg_jpoint_line()`
 gg_jpoint_line(mods_admin, facets = "grid2")
 ```
 
-### Plot fitted areas
+### Plot fitted lines with background
 ```{r}
 #| id: ggjpoint-12
 gg_jpoint(mods_sex, facets = "grid2", geom = "area")

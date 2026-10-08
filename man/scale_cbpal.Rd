@@ -17,9 +17,9 @@ scale_cbpal(
 
 scale_cbpal_fill(aesthetics = "fill", ...)
 
-scale_cbpal_color(aesthetics = "color", ...)
-
 scale_cbpal_colour(aesthetics = "color", ...)
+
+scale_cbpal_color(aesthetics = "color", ...)
 }
 \arguments{
 \item{palette}{Character. String specifying the palette name. Defaults to

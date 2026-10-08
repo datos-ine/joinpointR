@@ -12,7 +12,8 @@
 #' \code{geom = "line"} displays the fitted regression lines;
 #' \code{geom = "linepoint"} displays the fitted regression lines together
 #' with the observed data points; and \code{geom = "area"} displays the
-#' fitted values as a smoothed area. Defaults to \code{"linepoint"}.
+#' fitted lines with background color depending on the grouping variable,
+#' time period or trend. Defaults to \code{"linepoint"}.
 #'
 #' @param facets Character. Determines the facet layout. \code{facets = "wrap"}
 #' displays one facet for each grouping level; \code{facets = "grid"}

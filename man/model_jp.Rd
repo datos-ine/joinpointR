@@ -7,7 +7,7 @@
 \alias{update}
 \title{Fit Joinpoint Regression Models Using Grid Search}
 \usage{
-model_jp_grid(
+model_jp(
   data,
   rate,
   time,
@@ -18,7 +18,7 @@ model_jp_grid(
   silent = FALSE
 )
 
-model_jp(data, ...)
+model_jp_grid(data, ...)
 
 \method{update}{model_jp}(object, ...)
 }
@@ -100,11 +100,11 @@ dplyr::filter(
 dplyr::between(admin, "ARG", "Chaco"))
 
 # Fit the joinpoint models
-mods <- model_jp_grid(data = data, rate = hiv_rate,
+mods <- model_jp(data = data, rate = hiv_rate,
 time = year, group = c("admin", "sex"))
 
 # Fit the models based on the WBIC
-mods_wbic <-  model_jp(data = data, rate = hiv_rate,
+mods_wbic <-  model_jp_grid(data = data, rate = hiv_rate,
 time = year, group = c("admin", "sex"), method = "wbic")
 
 # Update model using the BIC3

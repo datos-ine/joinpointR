@@ -78,20 +78,20 @@
 #' dplyr::between(admin, "ARG", "Chaco"))
 #'
 #' # Fit the joinpoint models
-#' mods <- model_jp_grid(data = data, rate = hiv_rate,
+#' mods <- model_jp(data = data, rate = hiv_rate,
 #' time = year, group = c("admin", "sex"))
 #'
 #' # Fit the models based on the WBIC
-#' mods_wbic <-  model_jp(data = data, rate = hiv_rate,
+#' mods_wbic <-  model_jp_grid(data = data, rate = hiv_rate,
 #' time = year, group = c("admin", "sex"), method = "wbic")
 #'
 #' # Update model using the BIC3
 #' mods_bic3 <- update(mods, method = "bic3")
 #'
 #' @name model_jp
-#' @aliases model_jp_grid model_jp update.model_jp update
+#' @aliases model_jp model_jp_grid  update.model_jp update
 #' @export
-model_jp_grid <- function(
+model_jp <- function(
     data,
     rate,
     time,
@@ -445,11 +445,11 @@ model_jp_grid <- function(
 #' @rdname model_jp
 #' @export
 #'
-model_jp <- function(
+model_jp_grid <- function(
     data,
     ...
 ) {
-    model_jp_grid(
+    model_jp(
         data,
         ...
     )
