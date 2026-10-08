@@ -48,6 +48,10 @@ or \code{"wbic"} for weighted BIC (WBIC). Defaults to \code{"bic"} (see Details)
 \item{silent}{Logical. Whether to display a message showing the model name,
 number of joinpoints detected and BIC of the best fit model. Defaults
 to \code{TRUE}.}
+
+\item{...}{Additional parameters passed to \code{model_jp()}.}
+
+\item{object}{Model or list of models to update.}
 }
 \value{
 A named list with one element per group, where each element contains:
@@ -90,9 +94,6 @@ When grouping variables are specified, all groups must contain the same
 number of time points.
 }
 \examples{
-# Load data
-data(hiv_data)
-
 # Create a reduced dataset
 data <- hiv_data |>
 dplyr::filter(
@@ -105,6 +106,9 @@ time = year, group = c("admin", "sex"))
 # Fit the models based on the WBIC
 mods_wbic <-  model_jp(data = data, rate = hiv_rate,
 time = year, group = c("admin", "sex"), method = "wbic")
+
+# Update model using the BIC3
+mods_bic3 <- update(mods, method = "bic3")
 
 }
 \references{

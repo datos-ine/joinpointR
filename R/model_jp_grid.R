@@ -72,9 +72,6 @@
 #' https://doi.org/10.1002/(sici)1097-0258(20000215)19:3%253C335::aid-sim336%253E3.0.co;2-z
 #'
 #' @examples
-#' # Load data
-#' data(hiv_data)
-#'
 #' # Create a reduced dataset
 #' data <- hiv_data |>
 #' dplyr::filter(
@@ -87,6 +84,9 @@
 #' # Fit the models based on the WBIC
 #' mods_wbic <-  model_jp(data = data, rate = hiv_rate,
 #' time = year, group = c("admin", "sex"), method = "wbic")
+#'
+#' # Update model using the BIC3
+#' mods_bic3 <- update(mods, method = "bic3")
 #'
 #' @name model_jp
 #' @aliases model_jp_grid model_jp update.model_jp update
@@ -457,6 +457,8 @@ model_jp <- function(
 
 #' Update model_jp
 #' @rdname model_jp
+#' @param object Model or list of models to update.
+#' @param ... Additional parameters passed to \code{model_jp()}.
 #' @export
 #'
 update.model_jp <- function(object, ...) {
