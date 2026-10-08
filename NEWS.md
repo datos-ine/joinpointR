@@ -1,7 +1,5 @@
 # joinpointR 2.0.0
 
-# joinpointR 1.0.0
-
 * JoinpointR 2.0 is here!!!
 ## Improvements
 
