@@ -74,16 +74,15 @@
 #' @examples
 #' # Create a reduced dataset
 #' data <- hiv_data |>
-#' dplyr::filter(
-#' dplyr::between(admin, "ARG", "Chaco"))
+#' dplyr::filter(admin == "ARG")
 #'
 #' # Fit the joinpoint models
 #' mods <- model_jp(data = data, rate = hiv_rate,
-#' time = year, group = c("admin", "sex"))
+#' time = year, group = "sex")
 #'
 #' # Fit the models based on the WBIC
 #' mods_wbic <-  model_jp_grid(data = data, rate = hiv_rate,
-#' time = year, group = c("admin", "sex"), method = "wbic")
+#' time = year, group = "sex", method = "wbic")
 #'
 #' # Update model using the BIC3
 #' mods_bic3 <- update(mods, method = "bic3")

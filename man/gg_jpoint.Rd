@@ -70,12 +70,9 @@ Available colorblind-friendly palettes can be checked using
 \code{plot_cbpal()}.
 }
 \examples{
-# Load packages
-library(dplyr)
-
 # Create an example dataset
 data <- hiv_data |>
-filter(between(admin, "Buenos Aires", "Chubut"))
+dplyr::filter(admin \%in\% c("CABA", "Catamarca"))
 
 # Fit models
 mods <- model_jp_grid(data = data, rate = hiv_rate, time = year,
@@ -85,9 +82,6 @@ group = c("admin", "sex"))
 gg_jpoint(models = mods)
 
 # Plot results as area and show the AAPC
-gg_jpoint(models = mods, geom = "area", aapc = TRUE)
-
-# Same result using gg_jpoint_area
 gg_jpoint_area(models = mods, aapc = TRUE, alpha = .5)
 
 # Change facet layout and color scheme
