@@ -2,14 +2,64 @@
 % Please edit documentation in R/scale_cbpal_color.R
 \name{scale_cbpal}
 \alias{scale_cbpal}
-\alias{scale_cbpal_color}
 \alias{scale_cbpal_fill}
-\title{Colorblind-friendly palettes for joinpoint regression}
+\alias{scale_cbpal_color}
+\alias{scale_cbpal_colour}
+\title{Colorblind-friendly scales}
 \usage{
-scale_cbpal_color(palette = "viridis", reverse = FALSE, discrete = TRUE, ...)
+scale_cbpal(
+  palette = NULL,
+  reverse = FALSE,
+  discrete = TRUE,
+  aesthetics = c("fill", "color"),
+  ...
+)
 
-scale_cbpal_fill(palette = "viridis", reverse = FALSE, discrete = TRUE, ...)
+scale_cbpal_fill(aesthetics = "fill", ...)
+
+scale_cbpal_color(aesthetics = "color", ...)
+
+scale_cbpal_colour(aesthetics = "color", ...)
+}
+\arguments{
+\item{palette}{Character. String specifying the palette name. Defaults to
+\code{"viridis"}.}
+
+\item{reverse}{Logical. If \code{TRUE}, reverses the order of colors in the
+palette. Defaults to \code{FALSE}.}
+
+\item{discrete}{Logical. Should the scale be discrete?}
+
+\item{aesthetics}{Character vector of aesthetics to apply the scale to.}
+
+\item{...}{Additional arguments passed to \code{ggplot2} scale constructor.}
+}
+\value{
+A \code{ggplot2} scale.
 }
 \description{
-Colorblind-friendly palettes for joinpoint regression
+Scales for applying colorblind-friendly palettes to ggplot2 aesthetics.
+}
+\examples{
+library(ggplot2)
+data(iris)
+
+# Use a discrete variable for color
+iris |>
+ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+geom_point() +
+scale_cbpal_color()
+
+# Use a continuous variable for color
+iris |>
+ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = Petal.Length)) +
+geom_point() +
+scale_cbpal_color(discrete = FALSE)
+
+# Use a discrete variable for fill
+iris |>
+ggplot(aes(x = Sepal.Length, fill = Species)) +
+geom_bar() +
+scale_cbpal_fill()
+
 }

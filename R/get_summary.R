@@ -21,6 +21,8 @@
 #' @param dec Character. Decimal separator to use, either a point (\code{"."}) or
 #'  a comma (\code{","}). Defaults to \code{"."}.
 #'
+#' @param ... Additional arguments passed to \code{get_summary()}.
+#'
 #' @return
 #' For \code{get_summary()}, a \code{\link[tibble]{tibble}} or a
 #' \code{\link[flextable]{flextable}} containing the APC and/or AAPC for each model,
@@ -413,7 +415,7 @@ get_summary <- function(
   if (!as.ft) return(tab) else return(ftab)
 }
 
-#' Get Annual Percent Change (APC)
+#' Get Annual Percent Change (APC) and its confidence interval (CI)
 #' @rdname get_summary
 #' @export
 #'
@@ -430,7 +432,7 @@ get_apc <- function(
 }
 
 
-#' Get Average Annual Percent Change (APC)
+#' Get Average Annual Percent Change (AAPC) and its confidence interval (CI)
 #' @rdname get_summary
 #' @export
 #'
@@ -446,8 +448,10 @@ get_aapc <- function(
   )
 }
 
-#' Use summary()
+#' Use the shortcut summary()
+#' @param object Model or list of models to update.
 #' @export
+#'
 summary.model_jp <- function(
   object,
   ...

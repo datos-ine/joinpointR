@@ -36,6 +36,8 @@ object instead of a \code{tibble}. Defaults to \code{FALSE}.}
 
 \item{dec}{Character. Decimal separator to use, either a point (\code{"."}) or
 a comma (\code{","}). Defaults to \code{"."}.}
+
+\item{...}{Additional arguments passed to \code{get_summary()}.}
 }
 \value{
 For \code{get_summary()}, a \code{\link[tibble]{tibble}} or a

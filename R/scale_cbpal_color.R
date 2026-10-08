@@ -3,13 +3,18 @@
 #' @description
 #' Scales for applying colorblind-friendly palettes to ggplot2 aesthetics.
 #'
-#' @param palette Character string specifying the palette.
+#' @param palette Character. String specifying the palette name. Defaults to
+#' \code{"viridis"}.
 #'
-#' @param reverse Logical; if `TRUE`, reverses the palette.
+#' @param reverse Logical. If \code{TRUE}, reverses the order of colors in the
+#' palette. Defaults to \code{FALSE}.
 #'
-#' @param discrete Logical; should the scale be discrete?
+#' @param discrete Logical. Should the scale be discrete?
 #'
-#' @param ... Other arguments passed to the underlying ggplot2 scale.
+#' @param aesthetics Character vector of aesthetics to apply the scale to.
+#'
+#' @param ... Additional arguments passed to \code{ggplot2} scale constructor.
+#'
 #'
 #' @return A \code{ggplot2} scale.
 #'
@@ -35,92 +40,92 @@
 #' geom_bar() +
 #' scale_cbpal_fill()
 #'
-#' @keywords internal
-#'
-cbpal <- function(
-  palette = NULL,
-  reverse = FALSE
-) {
-  # --- Defaults ---
-  palette <- if (is.null(palette)) {
-    "viridis"
-  } else {
-    match.arg(palette, choices = dplyr::pull(cbpal_list, .data$name))
-  }
-
-  # --- Filter data ---
-  pal <- cbpal_list |>
-    dplyr::filter(.data$name == palette) |>
-    tidyr::pivot_longer(
-      cols = .data$x1:.data$x7,
-      names_to = "pos",
-      values_to = "color"
-    ) |>
-    dplyr::pull(.data$color)
-
-  # --- Reverse colors ---
-  if (reverse) {
-    pal <- rev(pal)
-  }
-
-  # --- Return ---
-  return(grDevices::colorRampPalette(colors = pal))
-}
-
-
-#' Colorblind-friendly palettes for joinpoint regression
 #' @name scale_cbpal
-#' @aliases scale_cbpal_fill scale_cbpal_color
+#' @aliases scale_cbpal scale_cbpal_fill scale_cbpal_color scale_cbpal_colour
 #' @export
 #'
-scale_cbpal_color <- function(
-  palette = "viridis",
+scale_cbpal <- function(
+  palette = NULL,
   reverse = FALSE,
   discrete = TRUE,
+  aesthetics = c("fill", "color"),
   ...
 ) {
-  # --- Call the colorblind-friendly palette ---
+  # ---- Default settings ----
+  aesthetics <- match.arg(
+    aesthetics,
+    choices = c("fill", "color", "colour"),
+    several.ok = TRUE
+  )
+
+  # ---- Aditional arguments ----
+  dots <- rlang::list2(...)
+
+  # ---- Create palettes ----
+  cbpal <- function(
+    palette = NULL,
+    reverse = FALSE
+  ) {
+    # --- Default  palette ---
+    palette <- if (!is.null(palette)) {
+      match.arg(palette, choices = dplyr::pull(cbpal_list, .data$name))
+    } else {
+      "viridis"
+    }
+
+    # --- Filter data ---
+    pal <- cbpal_list |>
+      dplyr::filter(.data$name == palette) |>
+      tidyr::pivot_longer(
+        cols = dplyr::starts_with("x"),
+        names_to = "pos",
+        values_to = "color"
+      ) |>
+      dplyr::pull(.data$color)
+
+    # --- Reverse colors ---
+    if (reverse) {
+      pal <- rev(pal)
+    }
+
+    # --- Return ---
+    return(grDevices::colorRampPalette(colors = pal))
+  }
+
+  # ---- Create palette ----
   pal <- cbpal(palette = palette, reverse = reverse)
 
-  # --- Pick between discrete or continuous palette ---
+  # ---- Pick between discrete and continuous scale ----
   if (discrete) {
-    ggplot2::discrete_scale(
-      aesthetics = "colour",
+    rlang::exec(
+      ggplot2::discrete_scale,
+      aesthetics = aesthetics,
+      scale_name = "cbpal",
       palette = pal,
-      ...
+      !!!dots
     )
   } else {
-    ggplot2::scale_color_gradientn(
+    rlang::exec(
+      ggplot2::scale_fill_gradientn,
+      aesthetics = aesthetics,
       colours = pal(256),
-      ...
+      !!!dots
     )
   }
 }
-
 
 #' @rdname scale_cbpal
 #' @export
-#'
-scale_cbpal_fill <- function(
-  palette = "viridis",
-  reverse = FALSE,
-  discrete = TRUE,
-  ...
-) {
-  # --- Call the colorblind-friendly palette ---
-  pal <- cbpal(palette = palette, reverse = reverse)
-
-  # --- Pick between discrete or continuous palette ---
-  if (discrete) {
-    ggplot2::discrete_scale(
-      aesthetics = "fill",
-      palette = pal,
-      ...
-    )
-  } else {
-    ggplot2::scale_fill_gradientn(
-      colours = pal(256),
-      ...
-    )
-  }
+scale_cbpal_fill <- function(aesthetics = "fill", ...) {
+  scale_cbpal(aesthetics = aesthetics, ...)
 }
+
+#' @rdname scale_cbpal
+#' @export
+scale_cbpal_color <- function(aesthetics = "color", ...) {
+  scale_cbpal(aesthetics = aesthetics, ...)
+}
+
+#' @rdname scale_cbpal
+#' @export
+scale_cbpal_colour <- scale_cbpal_color

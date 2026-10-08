@@ -2,10 +2,13 @@
 % Please edit documentation in R/get_summary.R
 \name{summary.model_jp}
 \alias{summary.model_jp}
-\title{Use summary()}
+\title{Use the shortcut summary()}
 \usage{
 \method{summary}{model_jp}(object, ...)
 }
+\arguments{
+\item{object}{Model or list of models to update.}
+}
 \description{
-Use summary()
+Use the shortcut summary()
 }
