@@ -78,17 +78,7 @@ dplyr::filter(admin \%in\% c("CABA", "Catamarca"))
 mods <- model_jp_grid(data = data, rate = hiv_rate, time = year,
 group = c("admin", "sex"))
 
-# Plot results with default features
-gg_jpoint(models = mods)
-
-# Plot results as area and show the AAPC
-gg_jpoint_area(models = mods, aapc = TRUE, alpha = .5)
-
-# Change facet layout and color scheme
-gg_jpoint_line(models = mods, facets = "grid2", color.by = "trend")
-
-# Use a different palette
-gg_jpoint(models = mods, color.by = "segment") +
-scale_cbpal_color(palette = "algae")
+# Plot results with AAPC
+gg_jpoint(models = mods, aapc = TRUE)
 
 }

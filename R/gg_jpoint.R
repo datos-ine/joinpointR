@@ -55,23 +55,13 @@
 #' mods <- model_jp_grid(data = data, rate = hiv_rate, time = year,
 #' group = c("admin", "sex"))
 #'
-#' # Plot results with default features
-#' gg_jpoint(models = mods)
+#' # Plot results with AAPC
+#' gg_jpoint(models = mods, aapc = TRUE)
 #'
-#' # Plot results as area and show the AAPC
-#' gg_jpoint_area(models = mods, aapc = TRUE, alpha = .5)
-#'
-#' # Change facet layout and color scheme
-#' gg_jpoint_line(models = mods, facets = "grid2", color.by = "trend")
-#'
-#' # Use a different palette
-#' gg_jpoint(models = mods, color.by = "segment") +
-#' scale_cbpal_color(palette = "algae")
-#'
-
 #' @name gg_jpoint
 #' @aliases gg_jpoint gg_jpoint_area gg_jpoint_line
 #' @export
+#'
 gg_jpoint <- function(
   models,
   geom = c("linepoint", "line", "area"),
@@ -415,6 +405,7 @@ gg_jpoint <- function(
 #' Geom area
 #' @rdname gg_jpoint
 #' @export
+#'
 gg_jpoint_area <- function(
   models,
   ...
@@ -429,6 +420,7 @@ gg_jpoint_area <- function(
 #' Geom line
 #' @rdname gg_jpoint
 #' @export
+#'
 gg_jpoint_line <- function(
   models,
   ...

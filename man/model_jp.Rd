@@ -102,10 +102,6 @@ dplyr::filter(admin == "ARG")
 mods <- model_jp(data = data, rate = hiv_rate,
 time = year, group = "sex")
 
-# Fit the models based on the WBIC
-mods_wbic <-  model_jp_grid(data = data, rate = hiv_rate,
-time = year, group = "sex", method = "wbic")
-
 # Update model using the BIC3
 mods_bic3 <- update(mods, method = "bic3")
 
