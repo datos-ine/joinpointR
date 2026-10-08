@@ -49,11 +49,11 @@
 #' @examples
 #' # Create an example dataset
 #' data <- hiv_data |>
-#' dplyr::filter(admin %in% c("CABA", "Catamarca"))
+#' dplyr::filter(admin == "Catamarca")
 #'
 #' # Fit models
 #' mods <- model_jp_grid(data = data, rate = hiv_rate, time = year,
-#' group = c("admin", "sex"))
+#' group = "sex")
 #'
 #' # Plot results with AAPC
 #' gg_jpoint(models = mods, aapc = TRUE)
